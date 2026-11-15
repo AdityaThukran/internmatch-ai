@@ -20,6 +20,31 @@ const studentProfileSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    name: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    email: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    phone: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    degree: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    institution: {
+      type: String,
+      trim: true,
+      default: '',
+    },
     education: {
       type: [educationSchema],
       default: [],

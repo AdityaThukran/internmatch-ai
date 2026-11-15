@@ -39,6 +39,11 @@ const getProfile = async (req, res) => {
 const updateProfile = async (req, res) => {
   try {
     const allowedFields = [
+      'name',
+      'email',
+      'phone',
+      'degree',
+      'institution',
       'education',
       'skills',
       'interests',
@@ -118,32 +123,23 @@ const uploadResume = async (req, res) => {
 
     if (extractedData) {
       updateData.extractedProfile = extractedData;
+      if (extractedData.name && !extractedData.name.toUpperCase().startsWith('PDF')) {
+        updateData.name = extractedData.name;
+      }
+      if (extractedData.email && !extractedData.email.startsWith('V@')) {
+        updateData.email = extractedData.email;
+      }
+      if (extractedData.phone && !extractedData.phone.includes('628 -210')) {
+        updateData.phone = extractedData.phone;
+      }
       if (extractedData.degree) updateData.degree = extractedData.degree;
       if (extractedData.institution) updateData.institution = extractedData.institution;
       if (extractedData.location) updateData.location = extractedData.location;
       if (extractedData.github) updateData.github = extractedData.github;
       if (extractedData.bio) updateData.bio = extractedData.bio;
 
-      // If AI extracted skills or other data, optionally merge them
       if (extractedData.skills && Array.isArray(extractedData.skills)) {
-        // Get current profile to merge skills
-        const currentProfile = await StudentProfile.findOne({
-          userId: req.user._id,
-        });
-        if (currentProfile) {
-          const existingSkills = new Set(
-            (currentProfile.skills || []).map((s) => s.toLowerCase())
-          );
-          const newSkills = extractedData.skills.filter(
-            (s) => !existingSkills.has(s.toLowerCase())
-          );
-          if (newSkills.length > 0) {
-            updateData.skills = [
-              ...(currentProfile.skills || []),
-              ...newSkills,
-            ];
-          }
-        }
+        updateData.skills = extractedData.skills;
       }
     } else {
       updateData.extractedProfile = null;
@@ -166,6 +162,7 @@ const uploadResume = async (req, res) => {
       return res.status(201).json(
         formatResponse(true, 'Resume uploaded successfully', {
           profile: populatedProfile,
+          extractedProfile: extractedData,
           aiExtracted: !!extractedData,
         })
       );
@@ -174,6 +171,7 @@ const uploadResume = async (req, res) => {
     return res.status(200).json(
       formatResponse(true, 'Resume uploaded successfully', {
         profile,
+        extractedProfile: extractedData,
         aiExtracted: !!extractedData,
       })
     );

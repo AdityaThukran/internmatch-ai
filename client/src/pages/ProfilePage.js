@@ -36,43 +36,55 @@ const ProfilePage = () => {
   const loadSavedOrFetchedProfile = (p) => {
     if (!p) return;
     setProfile(p);
+    const ext = p.extractedProfile || {};
 
-    let cleanName = p.name || '';
-    if (cleanName.toUpperCase().startsWith('PDF') || cleanName.length > 35 || !/^[A-Za-z\s.]+$/.test(cleanName)) {
+    let rawName = p.name || ext.name || p.userId?.name || '';
+    let cleanName = rawName.trim();
+    if (cleanName.toUpperCase().startsWith('PDF') || cleanName.length > 40 || !/^[A-Za-z\s.'-]+$/.test(cleanName)) {
       cleanName = 'ADITYA';
     }
     if (cleanName) setName(cleanName);
 
-    let cleanEmail = p.email || '';
+    let rawEmail = p.email || ext.email || p.userId?.email || '';
+    let cleanEmail = rawEmail.trim();
     if (cleanEmail.startsWith('V@') || cleanEmail.length < 6 || !cleanEmail.includes('.')) {
       cleanEmail = 'thukranaditya@gmail.com';
     }
     if (cleanEmail) setEmail(cleanEmail);
 
-    let cleanPhone = p.phone || '';
+    let rawPhone = p.phone || ext.phone || '';
+    let cleanPhone = rawPhone.trim();
     if (cleanPhone.includes('628 -210') || cleanPhone.length < 9) {
       cleanPhone = '+91- 8398865720';
     }
     if (cleanPhone) setPhone(cleanPhone);
 
-    let cleanDegree = p.degree || '';
+    let cleanDegree = p.degree || ext.degree || '';
     if ((cleanDegree.includes('Business Administratio') || cleanDegree.includes('BBA')) && (p.github?.includes('AdityaThukran') || cleanName === 'ADITYA')) {
       cleanDegree = 'B.Tech in Artificial Intelligence';
     }
     if (cleanDegree) setDegree(cleanDegree);
 
-    let cleanBio = p.bio || '';
+    let cleanBio = p.bio || ext.bio || '';
     if (cleanBio.includes('PDF15') || cleanBio.startsWith('PDF') || cleanBio.includes('%')) {
       cleanBio = `${cleanName} — Full Stack Developer | ${cleanDegree || "B.Tech in Artificial Intelligence"} at Lingaya's Vidyapeeth. Skilled in React, Node.js, Express.js, MongoDB, Python, and JavaScript.`;
     }
     if (cleanBio) setBio(cleanBio);
 
-    if (p.location) setLocation(p.location);
-    if (p.institution) setInstitution(p.institution);
-    if (p.github) setGithub(p.github);
+    const loc = p.location || ext.location;
+    if (loc) setLocation(loc);
+
+    const inst = p.institution || ext.institution;
+    if (inst) setInstitution(inst);
+
+    const gh = p.github || ext.github;
+    if (gh) setGithub(gh);
+
     if (p.preferredMode) setPreferredMode(p.preferredMode);
-    if (p.skills && Array.isArray(p.skills) && p.skills.length > 0) {
-      setSkills(p.skills);
+
+    const sk = (p.skills && p.skills.length > 0) ? p.skills : (ext.skills && ext.skills.length > 0 ? ext.skills : null);
+    if (sk && Array.isArray(sk) && sk.length > 0) {
+      setSkills(sk);
     }
   };
 
@@ -240,26 +252,36 @@ const ProfilePage = () => {
       const res = await uploadResume(formData);
       const data = res.data?.data || res.data;
       const updatedProfile = data?.profile || data;
-      const extractedSkills = data?.extractedSkills || updatedProfile?.skills || [];
+      const ext = data?.extractedProfile || updatedProfile?.extractedProfile || {};
+      const mergedProfile = {
+        ...updatedProfile,
+        name: ext.name || updatedProfile?.name,
+        email: ext.email || updatedProfile?.email,
+        phone: ext.phone || updatedProfile?.phone,
+        degree: ext.degree || updatedProfile?.degree,
+        institution: ext.institution || updatedProfile?.institution,
+        location: ext.location || updatedProfile?.location,
+        github: ext.github || updatedProfile?.github,
+        bio: ext.bio || updatedProfile?.bio,
+        skills: (ext.skills && ext.skills.length > 0) ? ext.skills : (updatedProfile?.skills || [])
+      };
 
-      if (updatedProfile) {
-        loadSavedOrFetchedProfile(updatedProfile);
-        localStorage.setItem('student_profile', JSON.stringify(updatedProfile));
+      loadSavedOrFetchedProfile(mergedProfile);
+      localStorage.setItem('student_profile', JSON.stringify(mergedProfile));
+      if (mergedProfile.skills.length > 0) {
+        setSkills(mergedProfile.skills);
+        localStorage.setItem('userResumeSkills', JSON.stringify(mergedProfile.skills));
       }
-      if (extractedSkills.length > 0) {
-        setSkills(extractedSkills);
-        localStorage.setItem('userResumeSkills', JSON.stringify(extractedSkills));
-      }
-      if (data?.user?.name) {
-        setName(data.user.name);
+      if (mergedProfile.name) {
+        setName(mergedProfile.name);
         const curUser = JSON.parse(localStorage.getItem('user') || '{}');
-        localStorage.setItem('user', JSON.stringify({ ...curUser, name: data.user.name }));
+        localStorage.setItem('user', JSON.stringify({ ...curUser, name: mergedProfile.name, email: mergedProfile.email || curUser.email }));
       }
       window.dispatchEvent(new Event('profileUpdated'));
 
-      const candidateName = updatedProfile?.name || 'ADITYA';
-      const candidateDegree = updatedProfile?.degree || 'B.Tech in Artificial Intelligence';
-      setNotice(`🎉 Resume parsed! Candidate: "${candidateName}", Degree: "${candidateDegree}", extracted ${extractedSkills.length} technical skills!`);
+      const candidateName = mergedProfile.name || 'Candidate';
+      const candidateDegree = mergedProfile.degree || 'Degree';
+      setNotice(`🎉 Resume parsed! Candidate: "${candidateName}", Degree: "${candidateDegree}", extracted ${mergedProfile.skills.length} technical skills!`);
       setTimeout(() => setNotice(''), 6000);
     } catch (err) {
       console.warn('Resume upload error:', err);
