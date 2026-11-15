@@ -74,13 +74,13 @@ const Footer = () => {
               Project: <strong>B.Tech CSE (AI) Capstone</strong>
             </p>
             <p style={{ fontSize: '0.85rem', color: '#4D5C6D', marginBottom: '6px' }}>
-              Lead Developer: <strong>Jon Doe</strong>
+              Lead Developer: <strong>Aditya</strong>
             </p>
             <p style={{ fontSize: '0.85rem', color: '#4D5C6D', marginBottom: '6px' }}>
               Institution: <strong>Lingaya’s Vidyapeeth</strong>
             </p>
             <p style={{ fontSize: '0.85rem', color: '#4D5C6D', marginBottom: '6px' }}>
-              Supervisor: <strong>Dr. Arvind Kumar</strong>
+              Supervisor: <strong>Dr. Avinash</strong>
             </p>
             <div style={{ marginTop: '14px', display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#E6F7F2', color: '#008C6B', padding: '4px 10px', borderRadius: '12px', fontSize: '0.78rem', fontWeight: 700 }}>
               <span>✓</span> Verified Capstone Project
@@ -101,7 +101,7 @@ const Footer = () => {
             color: '#8E98A4'
           }}
         >
-          <p>© 2026 InternMatch AI. Built by Jon Doe for Lingaya's Vidyapeeth. All rights reserved.</p>
+          <p>© 2026 InternMatch AI. Built by Aditya for Lingaya's Vidyapeeth. All rights reserved.</p>
           <p>Lingaya’s Vidyapeeth • Faculty of Engineering & Technology, Faridabad</p>
         </div>
       </div>

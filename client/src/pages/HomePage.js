@@ -2182,7 +2182,7 @@ const HomePage = () => {
             {[
               {
                 quote: 'The cosine similarity scores were shockingly accurate. I saw a 94% match on the Google internship, polished my Docker skills using the gap diagnostics, and landed the technical interview!',
-                name: 'Jon Doe',
+                name: 'Aditya',
                 role: 'B.Tech CSE (AI) Student',
                 school: 'Lingaya’s Vidyapeeth'
               },
