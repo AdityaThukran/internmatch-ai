@@ -48,6 +48,7 @@ const Footer = () => {
               <li><Link to="/applications" style={{ color: '#4D5C6D', textDecoration: 'none' }}>4-Stage Application Pipeline</Link></li>
               <li><Link to="/profile" style={{ color: '#4D5C6D', textDecoration: 'none' }}>PDF Resume Parser & Skills</Link></li>
               <li><Link to="/notifications" style={{ color: '#4D5C6D', textDecoration: 'none' }}>Weekly Cron Alert Digests</Link></li>
+              <li><Link to="/help" style={{ color: '#008C6B', fontWeight: 700, textDecoration: 'none' }}>🌿 Help Center &amp; FAQs</Link></li>
             </ul>
           </div>
 

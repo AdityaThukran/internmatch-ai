@@ -11,7 +11,8 @@ import {
   FiCpu,
   FiShield,
   FiLayers,
-  FiBell
+  FiBell,
+  FiHelpCircle
 } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
 import NotificationBell from '../notifications/NotificationBell';
@@ -146,6 +147,15 @@ const Navbar = () => {
             <span>Live Tracker</span>
           </Link>
 
+          {/* 4. Help & Student Support */}
+          <Link
+            to="/help"
+            className={`bonsai-nav-link ${isActive('/help') ? 'bonsai-nav-link-active' : ''}`}
+          >
+            <FiHelpCircle size={15} />
+            <span>Help</span>
+          </Link>
+
           {/* 4. Live AI Crawler Status Pill */}
           <div className="bonsai-crawler-indicator" title="Autonomous AI crawler is continuously scanning corporate portals for new openings">
             <span className="bonsai-crawler-pulse-dot" />
@@ -208,6 +218,9 @@ const Navbar = () => {
                     </Link>
                     <Link to="/notifications" className="bonsai-dropdown-link" onClick={() => setUserDropdownOpen(false)}>
                       <FiBell /> Notification Center
+                    </Link>
+                    <Link to="/help" className="bonsai-dropdown-link" onClick={() => setUserDropdownOpen(false)}>
+                      <FiHelpCircle /> Help & FAQs
                     </Link>
 
                     {user?.role === 'admin' && (
@@ -279,6 +292,10 @@ const Navbar = () => {
             <Link to="/notifications" className="bonsai-mobile-link" onClick={() => setMobileOpen(false)}>
               <FiBell size={17} color="#00B289" />
               <span>Notifications & Alerts</span>
+            </Link>
+            <Link to="/help" className="bonsai-mobile-link" onClick={() => setMobileOpen(false)}>
+              <FiHelpCircle size={17} color="#00B289" />
+              <span>Help & Student Guides</span>
             </Link>
 
             {isAuthenticated ? (

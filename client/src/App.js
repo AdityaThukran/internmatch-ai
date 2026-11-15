@@ -17,6 +17,7 @@ import RecommendationsPage from './pages/RecommendationsPage';
 import ApplicationsPage from './pages/ApplicationsPage';
 import NotificationsPage from './pages/NotificationsPage';
 import AdminPage from './pages/AdminPage';
+import HelpPage from './pages/HelpPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
 function App() {
@@ -91,6 +92,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route path="/help" element={<HelpPage />} />
           </Routes>
           <Footer />
           <AndroidBottomNav />
