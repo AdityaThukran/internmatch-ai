@@ -17,6 +17,11 @@ const supabaseService = {
     const salt = await bcrypt.genSalt(10);
     const password_hash = await bcrypt.hash(password || 'password123', salt);
 
+    // If role is recruiter, store role as 'admin' in Supabase to pass the users_role_check constraint,
+    // while keeping true role 'recruiter' in preferences
+    const isRecruiter = role === 'recruiter';
+    const dbRole = isRecruiter ? 'admin' : role;
+
     const { data: user, error } = await supabase
       .from('users')
       .insert([
@@ -24,8 +29,13 @@ const supabaseService = {
           name,
           email,
           password_hash,
-          role,
-          preferences: { domain: 'Artificial Intelligence', preferredModes: ['remote', 'hybrid'] },
+          role: dbRole,
+          preferences: {
+            role: isRecruiter ? 'recruiter' : role,
+            isRecruiter,
+            domain: isRecruiter ? 'Corporate Hiring & Recruitment' : 'Artificial Intelligence',
+            preferredModes: ['remote', 'hybrid']
+          },
           notification_settings: { emailEnabled: true, weeklyDigest: true }
         }
       ])
@@ -34,17 +44,23 @@ const supabaseService = {
 
     if (error) throw error;
 
-    // Create default student profile for user
-    await supabase.from('student_profiles').insert([
-      {
-        user_id: user.id,
-        bio: `${name} - Student pursuing B.Tech in CSE / AI`,
-        skills: ['React', 'Node.js', 'Python', 'Machine Learning', 'SQL'],
-        interests: ['Machine Learning', 'Full-Stack Development'],
-        location: 'Delhi NCR, India',
-        preferred_mode: 'remote'
-      }
-    ]);
+    // Only create student profile if user is an internship seeker (student)
+    if (!isRecruiter) {
+      await supabase.from('student_profiles').insert([
+        {
+          user_id: user.id,
+          bio: `${name} - Student pursuing B.Tech in CSE / AI`,
+          skills: ['React', 'Node.js', 'Python', 'Machine Learning', 'SQL'],
+          interests: ['Machine Learning', 'Full-Stack Development'],
+          location: 'Delhi NCR, India',
+          preferred_mode: 'remote'
+        }
+      ]);
+    }
+
+    if (isRecruiter) {
+      user.role = 'recruiter';
+    }
 
     return user;
   },
@@ -69,6 +85,11 @@ const supabaseService = {
       }
     }
 
+    // Restore recruiter role if saved in preferences
+    if (user.preferences?.role === 'recruiter' || user.preferences?.isRecruiter) {
+      user.role = 'recruiter';
+    }
+
     return user;
   },
 
@@ -76,6 +97,9 @@ const supabaseService = {
     if (!isSupabaseConfigured()) return null;
     const { data, error } = await supabase.from('users').select('*').eq('id', userId).single();
     if (error) return null;
+    if (data && (data.preferences?.role === 'recruiter' || data.preferences?.isRecruiter)) {
+      data.role = 'recruiter';
+    }
     return data;
   },
 

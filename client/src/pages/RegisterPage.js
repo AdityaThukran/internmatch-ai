@@ -43,7 +43,11 @@ const RegisterPage = () => {
         password: formData.password,
         role: formData.role,
       });
-      navigate('/dashboard');
+      if (formData.role === 'recruiter') {
+        navigate('/recruiter');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err) {
       setError(
         err.response?.data?.message ||

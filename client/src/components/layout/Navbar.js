@@ -156,6 +156,17 @@ const Navbar = () => {
             <span>Help</span>
           </Link>
 
+          {/* 5. Recruiter Portal & ATS */}
+          {(user?.role === 'recruiter' || user?.role === 'admin') && (
+            <Link
+              to="/recruiter"
+              className={`bonsai-nav-link ${isActive('/recruiter') ? 'bonsai-nav-link-active' : ''}`}
+            >
+              <FiBriefcase size={15} />
+              <span>Recruiter ATS</span>
+            </Link>
+          )}
+
           {/* 4. Live AI Crawler Status Pill */}
           <div className="bonsai-crawler-indicator" title="Autonomous AI crawler is continuously scanning corporate portals for new openings">
             <span className="bonsai-crawler-pulse-dot" />
@@ -200,13 +211,18 @@ const Navbar = () => {
                         <p className="bonsai-dropdown-username">{displayName}</p>
                         <p className="bonsai-dropdown-useremail">{user?.email || 'thukranaditya@gmail.com'}</p>
                         <span className="bonsai-role-chip">
-                          {user?.role === 'admin' ? '🛡️ Placement Guide' : '🎓 Student Candidate'}
+                          {user?.role === 'recruiter' ? '🏢 Corporate Recruiter' : (user?.role === 'admin' ? '🛡️ Placement Guide' : '🎓 Student Candidate')}
                         </span>
                       </div>
                     </div>
 
                     <div className="bonsai-dropdown-divider" />
 
+                    {(user?.role === 'recruiter' || user?.role === 'admin') && (
+                      <Link to="/recruiter" className="bonsai-dropdown-link" onClick={() => setUserDropdownOpen(false)}>
+                        <FiBriefcase /> Recruiter Portal &amp; ATS
+                      </Link>
+                    )}
                     <Link to="/profile" className="bonsai-dropdown-link" onClick={() => setUserDropdownOpen(false)}>
                       <FiUser /> Profile & Resume
                     </Link>
@@ -304,6 +320,12 @@ const Navbar = () => {
                   <FiUser size={17} color="#00B289" />
                   <span>My Profile & Resume</span>
                 </Link>
+                {(user?.role === 'recruiter' || user?.role === 'admin') && (
+                  <Link to="/recruiter" className="bonsai-mobile-link" onClick={() => setMobileOpen(false)}>
+                    <FiBriefcase size={17} color="#00B289" />
+                    <span>Recruiter Portal &amp; ATS</span>
+                  </Link>
+                )}
                 {user?.role === 'admin' && (
                   <Link to="/admin" className="bonsai-mobile-link" onClick={() => setMobileOpen(false)}>
                     <FiShield size={17} color="#00B289" />

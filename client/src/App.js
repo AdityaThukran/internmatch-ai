@@ -18,6 +18,7 @@ import ApplicationsPage from './pages/ApplicationsPage';
 import NotificationsPage from './pages/NotificationsPage';
 import AdminPage from './pages/AdminPage';
 import HelpPage from './pages/HelpPage';
+import RecruiterPage from './pages/RecruiterPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
 function App() {
@@ -93,6 +94,14 @@ function App() {
               }
             />
             <Route path="/help" element={<HelpPage />} />
+            <Route
+              path="/recruiter"
+              element={
+                <ProtectedRoute>
+                  <RecruiterPage />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
           <Footer />
           <AndroidBottomNav />

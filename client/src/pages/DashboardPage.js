@@ -112,16 +112,17 @@ const DashboardPage = () => {
   return (
     <div className="page-wrapper">
       <div className="container">
-        {/* Welcome Banner */}
+        {/* Welcome Banner - Modern Emerald Light Theme */}
         <div
           className="card"
           style={{
-            background: 'linear-gradient(135deg, #1B2533 0%, #223243 100%)',
-            color: '#ffffff',
-            padding: '36px',
+            background: 'linear-gradient(135deg, #FFFFFF 0%, #F5FBF8 100%)',
+            color: '#1B2533',
+            padding: '36px 40px',
             marginBottom: '32px',
-            borderRadius: '16px',
-            boxShadow: '0 8px 30px rgba(27, 37, 51, 0.15)',
+            borderRadius: '20px',
+            border: '1.5px solid #E2E8F0',
+            boxShadow: '0 4px 20px rgba(0, 178, 137, 0.07), 0 1px 3px rgba(0, 0, 0, 0.02)',
             display: 'flex',
             flexWrap: 'wrap',
             justifyContent: 'space-between',
@@ -135,45 +136,115 @@ const DashboardPage = () => {
           <div
             style={{
               position: 'absolute',
-              top: '-40px',
-              right: '-40px',
-              width: '200px',
-              height: '200px',
+              top: '-60px',
+              right: '-60px',
+              width: '240px',
+              height: '240px',
               borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(0, 178, 137, 0.25) 0%, rgba(0, 178, 137, 0) 70%)',
+              background: 'radial-gradient(circle, rgba(0, 178, 137, 0.12) 0%, rgba(0, 178, 137, 0) 70%)',
               pointerEvents: 'none'
             }}
           />
 
           <div>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#00B289', marginBottom: '8px' }}>
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                backgroundColor: '#E6F7F2',
+                color: '#008C6B',
+                border: '1px solid #B3E8DC',
+                padding: '5px 14px',
+                borderRadius: '100px',
+                marginBottom: '12px'
+              }}
+            >
               <span>🎓</span>
-              <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.4px' }}>
-                Lingaya’s Vidyapeeth • B.Tech CSE (Artificial Intelligence)
+              <span style={{ fontSize: '0.82rem', fontWeight: 700, letterSpacing: '0.3px' }}>
+                {user?.role === 'recruiter' ? 'Verified Corporate Recruiter' : 'Lingaya’s Vidyapeeth • B.Tech CSE (Artificial Intelligence)'}
               </span>
             </div>
-            <h1 style={{ fontSize: '2.1rem', fontWeight: 800, color: '#ffffff', marginBottom: '8px' }}>
+            <h1 style={{ fontSize: '2.1rem', fontWeight: 800, color: '#1B2533', marginBottom: '8px', letterSpacing: '-0.5px' }}>
               Welcome back, {user?.name || 'Scholar'}!
             </h1>
-            <p style={{ fontSize: '0.95rem', color: '#C5C9D3', maxWidth: '620px', lineHeight: 1.6 }}>
-              Your profile is matched with <strong>{recommendations.length} curated opportunities</strong> across Bangalore, Hyderabad, Delhi NCR, and Remote modes.
+            <p style={{ fontSize: '0.96rem', color: '#64748B', maxWidth: '620px', lineHeight: 1.6, margin: 0 }}>
+              {user?.role === 'recruiter'
+                ? 'Manage your corporate internship postings, review candidate resumes, and track live applicant stages.'
+                : <>Your profile is matched with <strong style={{ color: '#008C6B' }}>{recommendations.length} curated opportunities</strong> across Bangalore, Hyderabad, Delhi NCR, and Remote modes.</>
+              }
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-            <button
-              onClick={handleTriggerAI}
-              disabled={matchingInProgress}
-              className="btn btn-primary"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', boxShadow: '0 4px 15px rgba(0, 178, 137, 0.35)' }}
-            >
-              <FiRefreshCw className={matchingInProgress ? 'spin' : ''} />
-              <span>{matchingInProgress ? 'AI Analyzing...' : 'Run Vector Matcher'}</span>
-            </button>
-            <Link to="/profile" className="btn btn-outline" style={{ borderColor: 'rgba(255,255,255,0.4)', color: '#ffffff' }}>
-              <FiUpload />
-              <span>Upload PDF Resume</span>
-            </Link>
+          <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', alignItems: 'center' }}>
+            {user?.role === 'recruiter' ? (
+              <Link
+                to="/recruiter"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  backgroundColor: '#00B289',
+                  color: '#FFFFFF',
+                  padding: '12px 24px',
+                  borderRadius: '100px',
+                  textDecoration: 'none',
+                  fontWeight: 700,
+                  fontSize: '0.92rem',
+                  boxShadow: '0 4px 15px rgba(0, 178, 137, 0.35)',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <span>🏢 Open Recruiter Portal &amp; ATS</span>
+              </Link>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={handleTriggerAI}
+                  disabled={matchingInProgress}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    backgroundColor: '#00B289',
+                    color: '#FFFFFF',
+                    padding: '12px 24px',
+                    borderRadius: '100px',
+                    border: 'none',
+                    fontWeight: 700,
+                    fontSize: '0.92rem',
+                    cursor: matchingInProgress ? 'not-allowed' : 'pointer',
+                    boxShadow: '0 4px 15px rgba(0, 178, 137, 0.35)',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  <FiRefreshCw className={matchingInProgress ? 'spin' : ''} />
+                  <span>{matchingInProgress ? 'AI Analyzing...' : 'Run Vector Matcher'}</span>
+                </button>
+                <Link
+                  to="/profile"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    backgroundColor: '#FFFFFF',
+                    color: '#008C6B',
+                    border: '2px solid #00B289',
+                    padding: '10px 22px',
+                    borderRadius: '100px',
+                    textDecoration: 'none',
+                    fontWeight: 700,
+                    fontSize: '0.92rem',
+                    boxShadow: '0 2px 10px rgba(0, 178, 137, 0.12)',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  <FiUpload style={{ strokeWidth: 2.5 }} />
+                  <span>Upload PDF Resume</span>
+                </Link>
+              </>
+            )}
           </div>
         </div>
 

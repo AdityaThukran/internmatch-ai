@@ -17,8 +17,13 @@ const LoginPage = () => {
     setLoading(true);
 
     try {
-      await login(email, password);
-      navigate('/dashboard');
+      const res = await login(email, password);
+      const loggedUser = res?.user || JSON.parse(localStorage.getItem('user') || '{}');
+      if (loggedUser?.role === 'recruiter') {
+        navigate('/recruiter');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err) {
       setError(
         err.response?.data?.message ||
