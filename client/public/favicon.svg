@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <!-- Background Gradient: Vibrant Mint to Deep Jewel Emerald -->
+    <linearGradient id="imBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00E5A3" />
+      <stop offset="48%" stop-color="#00B289" />
+      <stop offset="100%" stop-color="#007355" />
+    </linearGradient>
+
+    <!-- Cap Diamond Gradient -->
+    <linearGradient id="imCapGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#F0FDF8" />
+    </linearGradient>
+
+    <!-- AI Spark Glow -->
+    <filter id="imAiGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#00E5A3" flood-opacity="0.7"/>
+    </filter>
+
+    <!-- Cap Drop Shadow -->
+    <filter id="imCapShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#004D38" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Base Rounded Squircle with Subtle Translucent Rim -->
+  <rect x="16" y="16" width="480" height="480" rx="116" fill="url(#imBgGrad)" />
+  <rect x="22" y="22" width="468" height="468" rx="110" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="8" />
+
+  <!-- Graduation Cap / Career Chevron Diamond -->
+  <g filter="url(#imCapShadow)">
+    <path d="M256 112L410 196L256 280L102 196Z" fill="url(#imCapGrad)" />
+  </g>
+
+  <!-- Cap Crown / Arch Base (Connected Match Curve) -->
+  <path d="M148 256V324C148 360 194 386 256 386C318 386 364 360 364 324V256C346 268 306 288 256 288C206 288 166 268 148 256Z" fill="#FFFFFF" fill-opacity="0.96" />
+
+  <!-- Match Tassel Node -->
+  <path d="M102 196V286" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" />
+  <circle cx="102" cy="296" r="16" fill="#FFFFFF" />
+
+  <!-- AI Spark (✦) at Top Right with Radiant Center -->
+  <g filter="url(#imAiGlow)">
+    <path d="M414 74C414 98 424 112 444 114C424 116 414 130 414 154C414 130 404 116 384 114C404 112 414 98 414 74Z" fill="#FFFFFF" />
+    <circle cx="414" cy="114" r="6" fill="#00E5A3" />
+  </g>
+</svg>
