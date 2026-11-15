@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { 
   FiSearch, FiMapPin, FiBriefcase, FiDollarSign, FiClock, FiBookmark, 

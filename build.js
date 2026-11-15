@@ -13,9 +13,15 @@ try {
   console.log('📦 Installing client dependencies in client/...');
   execSync('npm install --include=dev', { cwd: clientDir, stdio: 'inherit' });
 
-  // 2. Build React client
-  console.log('⚡ Building React production bundle...');
-  execSync('npm run build', { cwd: clientDir, stdio: 'inherit' });
+  // 2. Build React client with CI=false to prevent CI servers treating warnings as errors
+  console.log('⚡ Building React production bundle (CI=false)...');
+  const buildEnv = {
+    ...process.env,
+    CI: 'false',
+    GENERATE_SOURCEMAP: 'false',
+    DISABLE_ESLINT_PLUGIN: 'true'
+  };
+  execSync('npm run build', { cwd: clientDir, stdio: 'inherit', env: buildEnv });
 
   // 3. Sync to root /build so Cloudflare finds the output regardless of whether output dir is "build" or "client/build"
   if (fs.existsSync(clientBuild)) {

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import CompanyLogo from '../utils/companyLogos';

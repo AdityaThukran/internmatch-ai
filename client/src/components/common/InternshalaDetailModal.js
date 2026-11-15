@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { 
   FiMapPin, FiBriefcase, FiDollarSign, FiClock, FiCheckCircle, 

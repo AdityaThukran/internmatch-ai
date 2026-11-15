@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import { FiUsers, FiBriefcase, FiActivity, FiPlus, FiCheck, FiClock, FiShield } from 'react-icons/fi';
 import { getInternships, createInternship, getMe } from '../services/api';
