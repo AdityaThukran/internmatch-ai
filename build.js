@@ -23,7 +23,8 @@ try {
     ...process.env,
     CI: 'false',
     GENERATE_SOURCEMAP: 'false',
-    DISABLE_ESLINT_PLUGIN: 'true'
+    DISABLE_ESLINT_PLUGIN: 'true',
+    REACT_APP_API_URL: 'https://internmatch-ai-ourb.onrender.com/api'
   };
   execSync('npm run build', { cwd: clientDir, stdio: 'inherit', env: buildEnv });
 
