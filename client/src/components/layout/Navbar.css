@@ -1,0 +1,735 @@
+/* ══════════════════════════════════════════════════════════════════
+   HELLOBONSAI SIGNATURE SAAS NAVBAR STYLESHEET
+   Reference: https://www.hellobonsai.com/partners/dribbble
+   ══════════════════════════════════════════════════════════════════ */
+
+.bonsai-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+}
+
+.bonsai-navbar-scrolled {
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border-bottom-color: rgba(0, 0, 0, 0.09);
+}
+
+.bonsai-navbar-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 28px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Brand Logo Link */
+.bonsai-brand-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.bonsai-brand-link:hover {
+  transform: translateY(-1px);
+}
+
+/* ── Center Desktop Nav Links ── */
+.bonsai-nav-desktop {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.bonsai-nav-item-dropdown {
+  position: relative;
+}
+
+.bonsai-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #333333;
+  font-size: 0.94rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 8px 4px;
+  transition: color 0.2s ease;
+  font-family: inherit;
+}
+
+.bonsai-nav-link:hover,
+.bonsai-nav-link-active {
+  color: #00B289;
+  /* HelloBonsai Signature Emerald Green */
+}
+
+.bonsai-chevron {
+  font-size: 0.85rem;
+  transition: transform 0.25s ease;
+  color: #888888;
+}
+
+.bonsai-nav-link:hover .bonsai-chevron {
+  color: #00B289;
+}
+
+.bonsai-chevron-up {
+  transform: rotate(180deg);
+  color: #00B289;
+}
+
+.bonsai-pill-tag {
+  background: #E6F7F2;
+  color: #008C6B;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 10px;
+  letter-spacing: 0.5px;
+}
+
+/* Live AI Crawler Status Pill in Navbar */
+.bonsai-crawler-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #E6F7F2;
+  border: 1px solid #A7F3D0;
+  padding: 6px 14px;
+  border-radius: 200px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #008C6B;
+  letter-spacing: -0.01em;
+  user-select: none;
+  cursor: default;
+  transition: all 0.2s ease;
+}
+
+.bonsai-crawler-indicator:hover {
+  background: #d1fae5;
+  border-color: #6ee7b7;
+}
+
+.bonsai-crawler-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #00B289;
+  box-shadow: 0 0 0 0 rgba(0, 178, 137, 0.7);
+  animation: pulseDot 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+@keyframes pulseDot {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 178, 137, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px rgba(0, 178, 137, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 178, 137, 0);
+  }
+}
+
+/* ── HelloBonsai Style Mega Dropdown Panels ── */
+.bonsai-dropdown-panel {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 48px -6px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.04);
+  z-index: 1200;
+  padding: 32px 36px;
+  animation: bonsaiDropIn 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes bonsaiDropIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* 4-Column Mega Dropdown Panel matching HelloBonsai */
+.bonsai-mega-dropdown-panel {
+  width: 1040px;
+  max-width: 96vw;
+}
+
+.bonsai-dropdown-mega-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1.32fr;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.bonsai-mega-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.bonsai-mega-heading {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1B2533;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.2px;
+}
+
+.bonsai-mega-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bonsai-mega-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 8px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #1B2533;
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.bonsai-mega-item:hover {
+  background: #F8FAF9;
+  color: #00B289;
+  transform: translateX(2px);
+}
+
+.bonsai-mega-icon {
+  font-size: 1.1rem;
+  color: #1B2533;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 22px;
+  transition: color 0.15s ease;
+}
+
+.bonsai-mega-item:hover .bonsai-mega-icon {
+  color: #00B289;
+}
+
+.bonsai-mega-label {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: inherit;
+  line-height: 1.25;
+}
+
+/* Right Feature Column with Photo */
+.bonsai-mega-feature-col {
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.bonsai-mega-photo-wrapper {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border: 1px solid #E5E7EB;
+  margin-bottom: 14px;
+  background: #1B2533;
+  aspect-ratio: 16 / 10;
+}
+
+.bonsai-mega-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s ease;
+}
+
+.bonsai-mega-feature-col:hover .bonsai-mega-photo {
+  transform: scale(1.02);
+}
+
+.bonsai-mega-feature-title {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #1B2533;
+  margin: 0 0 6px;
+  letter-spacing: -0.2px;
+}
+
+.bonsai-mega-feature-desc {
+  font-size: 0.83rem;
+  color: #64748B;
+  line-height: 1.48;
+  margin: 0 0 12px;
+}
+
+.bonsai-mega-feature-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #00B289;
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: gap 0.2s ease, color 0.2s ease;
+}
+
+.bonsai-mega-feature-link:hover {
+  color: #008C6B;
+  gap: 10px;
+}
+
+/* Right Actions: HelloBonsai Auth Buttons */
+.bonsai-actions-desktop {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.bonsai-auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.bonsai-login-link {
+  color: #1B2533;
+  font-size: 0.94rem;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 8px 10px;
+  transition: color 0.2s ease;
+}
+
+.bonsai-login-link:hover {
+  color: #00B289;
+}
+
+/* HelloBonsai Signature Try Bonsai for free Pill Button */
+.bonsai-try-free-btn {
+  background: #000000;
+  color: #ffffff !important;
+  text-decoration: none;
+  font-family: var(--font-sans, 'Geist', sans-serif);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  padding: 10px 24px;
+  height: 44px;
+  border-radius: 200px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transition: all 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+.bonsai-try-free-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transform: skewX(-25deg);
+  transition: left 0.65s ease;
+  pointer-events: none;
+}
+
+.bonsai-try-free-btn:hover::before {
+  left: 140%;
+}
+
+.bonsai-try-free-btn:hover {
+  background: #1B2533;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -4px rgba(27, 37, 51, 0.35), 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.bonsai-try-free-btn:active {
+  transform: translateY(0px) scale(0.975);
+}
+
+/* Authenticated User Menu */
+.bonsai-user-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.bonsai-user-menu {
+  position: relative;
+}
+
+.bonsai-user-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #F8F9FA;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 30px;
+  padding: 4px 12px 4px 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bonsai-user-trigger:hover {
+  background: #EDF2F7;
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.bonsai-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00B289 0%, #008f6d 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.8rem;
+}
+
+.bonsai-user-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #2D3748;
+}
+
+.bonsai-user-dropdown-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 270px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+  z-index: 1200;
+  padding: 16px;
+  animation: bonsaiDropIn 0.2s ease;
+}
+
+.bonsai-user-dropdown-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.bonsai-user-avatar-large {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00B289 0%, #008f6d 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.bonsai-dropdown-username {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #2D3748;
+  margin: 0;
+}
+
+.bonsai-dropdown-useremail {
+  font-size: 0.76rem;
+  color: #718096;
+  margin: 2px 0 4px;
+}
+
+.bonsai-role-chip {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #00B289;
+  background: rgba(0, 178, 137, 0.12);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.bonsai-dropdown-divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.07);
+  margin: 10px 0;
+}
+
+.bonsai-dropdown-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: #4A5568;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.bonsai-dropdown-link:hover {
+  background: #F8F9FA;
+  color: #00B289;
+}
+
+.bonsai-logout-btn {
+  width: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #E53E3E;
+  text-align: left;
+  font-family: inherit;
+}
+
+.bonsai-logout-btn:hover {
+  background: rgba(229, 62, 62, 0.08);
+  color: #C53030;
+}
+
+/* Mobile Toggle Button */
+.bonsai-mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #2D3748;
+  cursor: pointer;
+  padding: 6px;
+}
+
+/* Mobile Drawer */
+.bonsai-mobile-drawer {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .bonsai-mega-dropdown-panel {
+    width: 920px;
+    padding: 24px 28px;
+  }
+
+  .bonsai-dropdown-mega-grid {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 980px) {
+  .bonsai-nav-desktop {
+    display: none;
+  }
+
+  .bonsai-navbar-container {
+    height: 64px;
+    padding: 0 16px;
+  }
+
+  .bonsai-mobile-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    color: #1B2533;
+    cursor: pointer;
+    margin-left: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .bonsai-mobile-toggle:active {
+    transform: scale(0.92);
+    background: #E2E8F0;
+  }
+
+  .bonsai-mobile-drawer {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom: 2px solid #00B289;
+    padding: 16px 18px 22px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+    animation: bonsaiMobileDrawerSlide 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1100;
+  }
+
+  @keyframes bonsaiMobileDrawerSlide {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .bonsai-mobile-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .bonsai-mobile-link {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #1B2533;
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #F8FAFC;
+    border: 1px solid #F1F5F9;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 46px;
+    transition: all 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .bonsai-mobile-link:active {
+    background: #E6F7F2;
+    border-color: #A7F3D0;
+    color: #008C6B;
+    transform: scale(0.98);
+  }
+
+  .bonsai-mobile-auth {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .bonsai-mobile-login {
+    text-align: center;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #1B2533;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 10px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+  }
+
+  .bonsai-mobile-logout {
+    width: 100%;
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    color: #DC2626;
+    font-weight: 700;
+    font-size: 0.88rem;
+    text-align: left;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    transition: all 0.15s ease;
+  }
+
+  .bonsai-mobile-logout:active {
+    background: #FEE2E2;
+  }
+
+  .bonsai-user-dropdown-panel {
+    position: fixed;
+    top: 70px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-width: 380px;
+    margin-left: auto;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@media (max-width: 640px) {
+  .bonsai-navbar-container {
+    height: 58px;
+    padding: 0 12px;
+  }
+
+  .bonsai-user-name {
+    display: none !important;
+  }
+
+  .bonsai-user-trigger .bonsai-chevron {
+    display: none !important;
+  }
+
+  .bonsai-user-trigger {
+    padding: 2px !important;
+    background: transparent !important;
+    border: none !important;
+  }
+
+  .bonsai-user-avatar {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 0.80rem !important;
+  }
+
+  .bonsai-user-wrap {
+    gap: 6px;
+  }
+
+  .bonsai-try-free-btn {
+    padding: 8px 14px;
+    font-size: 0.82rem;
+  }
+}

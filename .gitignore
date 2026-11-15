@@ -1,0 +1,54 @@
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+*/node_modules/
+
+# Environment Variables & Secrets (CRITICAL - Never commit secrets!)
+.env
+.env.*
+!.env.example
+server/.env
+server/.env.*
+!server/.env.example
+client/.env
+client/.env.*
+!client/.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+ai-service/venv/
+ai-service/__pycache__/
+*/__pycache__/
+*.egg-info/
+
+# User Uploads & Resumes
+server/uploads/*
+!server/uploads/.gitkeep
+uploads/*
+
+# Temporary logs & Scratch files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+scratch/
+.DS_Store
+Thumbs.db
+
+# Build Artifacts
+build/
+client/build/
+dist/
+
+# Editor configurations
+.vscode/
+.idea/

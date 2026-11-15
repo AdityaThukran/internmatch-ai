@@ -1,0 +1,831 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* HelloBonsai Signature Typography & Geometry */
+  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-heading: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'Geist Mono', Consolas, monospace;
+
+  /* HelloBonsai Signature Emerald & Mint Palette */
+  --primary: #00B289;
+  --primary-dark: #008C6B;
+  --primary-light: #E6F7F2;
+  --secondary: #1B2533;
+  --secondary-light: #2D3748;
+  --accent: #00B289;
+  --accent-dark: #008C6B;
+
+  /* Clean, crisp backgrounds matching HomePage */
+  --bg-primary: #F9FBFA;
+  --bg-secondary: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-sidebar: #1B2533;
+
+  /* Typography */
+  --text-primary: #1B2533;
+  --text-secondary: #4D5C6D;
+  --text-light: #64748B;
+  --text-on-primary: #FFFFFF;
+
+  /* Status colors */
+  --success: #00B289;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --info: #0284C7;
+
+  /* Borders & shadows */
+  --border: #E5E7EB;
+  --border-light: #F1F5F9;
+  --shadow-sm: 0 1px 3px rgba(16, 24, 40, 0.04);
+  --shadow-md: 0 4px 14px rgba(27, 37, 51, 0.06);
+  --shadow-lg: 0 10px 30px rgba(27, 37, 51, 0.08);
+  --shadow-warm: 0 4px 16px rgba(0, 178, 137, 0.2);
+
+  /* Border radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-pill: 200px;
+
+  /* Transitions */
+  --transition: all 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  letter-spacing: -0.015em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: inherit;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  outline: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-light);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Toast customization */
+.Toastify__toast {
+  border-radius: var(--radius-md) !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.Toastify__toast--success {
+  background: var(--success) !important;
+}
+
+.Toastify__toast--error {
+  background: var(--danger) !important;
+}
+
+.Toastify__toast--warning {
+  background: var(--warning) !important;
+  color: var(--text-primary) !important;
+}
+
+.Toastify__toast--info {
+  background: var(--info) !important;
+}
+
+/* Utility classes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.page-wrapper {
+  min-height: calc(100vh - 70px);
+  padding: 30px 0;
+}
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   HELLOBONSAI SIGNATURE BUTTONS & FLUID HOVER ANIMATIONS
+   Reference: https://www.hellobonsai.com/partners/dribbble?fpr=dribbble
+   ══════════════════════════════════════════════════════════════════ */
+.btn,
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 26px;
+  min-height: 48px;
+  border-radius: 200px !important; /* HelloBonsai Signature 200px Pill */
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.92rem;
+  letter-spacing: -0.015em;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  transition: all 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+/* Subtle gloss sweep effect across button on hover */
+.btn::before,
+.button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+  transform: skewX(-25deg);
+  transition: left 0.65s ease;
+  pointer-events: none;
+}
+
+.btn:hover::before,
+.button:hover::before {
+  left: 140%;
+}
+
+/* Spring interactive click press */
+.btn:active,
+.button:active {
+  transform: translateY(0px) scale(0.975);
+}
+
+/* Arrow / Icon animation inside buttons */
+.btn svg,
+.button svg {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.btn:hover svg,
+.button:hover svg {
+  transform: translateX(3px);
+}
+
+/* 1. Primary Emerald Button (HelloBonsai Signature) */
+.btn-primary,
+.button-primary {
+  background: #00B289;
+  color: #FFFFFF !important;
+  border-color: #00B289;
+}
+
+.btn-primary:hover,
+.button-primary:hover {
+  background: #009975;
+  border-color: #009975;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -4px rgba(0, 178, 137, 0.42), 0 3px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* 2. Dark Button (HelloBonsai Signature Black Pill Button) */
+.btn-secondary,
+.btn-dark,
+.button-dark {
+  background: #1B2533;
+  color: #FFFFFF !important;
+  border-color: #1B2533;
+}
+
+.btn-secondary:hover,
+.btn-dark:hover,
+.button-dark:hover {
+  background: #0F1722;
+  border-color: #0F1722;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -4px rgba(27, 37, 51, 0.32), 0 3px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* 3. Outlined Button (HelloBonsai Clean Pill) */
+.btn-outline,
+.button-outline {
+  background: transparent;
+  color: #1B2533 !important;
+  border: 1.5px solid #CBD5E1;
+}
+
+.btn-outline:hover,
+.button-outline:hover {
+  background: #1B2533;
+  color: #FFFFFF !important;
+  border-color: #1B2533;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -3px rgba(27, 37, 51, 0.2);
+}
+
+/* 4. Soft Emerald Tint Button */
+.btn-soft {
+  background: #E6F7F2;
+  color: #008C6B !important;
+  border-color: #A7F3D0;
+}
+
+.btn-soft:hover {
+  background: #00B289;
+  color: #FFFFFF !important;
+  border-color: #00B289;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -3px rgba(0, 178, 137, 0.3);
+}
+
+/* 5. Ghost / Flat Button */
+.btn-ghost {
+  background: transparent;
+  color: #4D5C6D;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.btn-ghost:hover {
+  background: #F1F5F9;
+  color: #1B2533;
+  transform: translateY(-1px);
+}
+
+/* Size Variants */
+.btn-sm {
+  padding: 7px 18px;
+  min-height: 38px;
+  font-size: 0.82rem;
+}
+
+.btn-lg {
+  padding: 15px 32px;
+  min-height: 54px;
+  font-size: 1.02rem;
+}
+
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  transition: var(--transition);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  background: var(--bg-card);
+  transition: var(--transition);
+}
+
+.form-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 178, 137, 0.15);
+}
+
+.form-input::placeholder {
+  color: var(--text-light);
+}
+
+.form-error {
+  font-size: 0.8rem;
+  color: var(--danger);
+  margin-top: 4px;
+}
+
+/* Skeleton loading */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   HALO LAB SAAS ANIMATIONS & SIGNATURE INTERACTIVE STYLES
+   ══════════════════════════════════════════════════════════════════ */
+@keyframes floatSlow {
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+}
+
+@keyframes floatReverse {
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(10px) rotate(-1deg);
+  }
+}
+
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marqueeScrollReverse {
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes radarSweep {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulseGlow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 15px rgba(0, 178, 137, 0.3), 0 0 30px rgba(0, 178, 137, 0.1);
+  }
+
+  50% {
+    box-shadow: 0 0 30px rgba(0, 178, 137, 0.6), 0 0 60px rgba(0, 178, 137, 0.25);
+  }
+}
+
+@keyframes borderGlowLoop {
+
+  0%,
+  100% {
+    border-color: rgba(0, 178, 137, 0.4);
+  }
+
+  50% {
+    border-color: rgba(0, 178, 137, 0.8);
+  }
+}
+
+@keyframes lightSheen {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 200%;
+  }
+}
+
+.halo-glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid #E5E7EB;
+  box-shadow: 0 10px 30px rgba(27, 37, 51, 0.05), 0 2px 8px rgba(0, 178, 137, 0.04);
+  border-radius: var(--radius-xl);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.halo-glass-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 20px 40px rgba(27, 37, 51, 0.08), 0 4px 14px rgba(0, 178, 137, 0.12);
+  border-color: #00B289;
+}
+
+.halo-floating-badge {
+  animation: floatSlow 5s ease-in-out infinite;
+  box-shadow: 0 8px 24px rgba(27, 37, 51, 0.08), 0 2px 6px rgba(0, 178, 137, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #E5E7EB;
+}
+
+.halo-floating-badge-reverse {
+  animation: floatReverse 6s ease-in-out infinite;
+  box-shadow: 0 8px 24px rgba(27, 37, 51, 0.08), 0 2px 6px rgba(0, 178, 137, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #E5E7EB;
+}
+
+.halo-marquee-container {
+  overflow: hidden;
+  user-select: none;
+  display: flex;
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+.halo-marquee-content {
+  display: flex;
+  gap: 20px;
+  flex-shrink: 0;
+  animation: marqueeScroll 28s linear infinite;
+}
+
+.halo-marquee-content-reverse {
+  display: flex;
+  gap: 20px;
+  flex-shrink: 0;
+  animation: marqueeScrollReverse 32s linear infinite;
+}
+
+.halo-marquee-container:hover .halo-marquee-content,
+.halo-marquee-container:hover .halo-marquee-content-reverse {
+  animation-play-state: paused;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f0e6dc 25%, #f8efe6 50%, #f0e6dc 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-text {
+  height: 14px;
+  margin-bottom: 8px;
+}
+
+.skeleton-title {
+  height: 22px;
+  width: 60%;
+  margin-bottom: 12px;
+}
+
+.skeleton-circle {
+  border-radius: 50%;
+}
+
+.skeleton-card {
+  height: 200px;
+  border-radius: var(--radius-md);
+}
+
+/* Grid layouts */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .container {
+    padding: 0 12px !important;
+  }
+
+  .page-wrapper {
+    padding: 16px 0 28px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ANDROID & MOBILE TOUCH OPTIMIZATION RULES (360px - 480px VIEWPORTS)
+   ══════════════════════════════════════════════════════════════════ */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent zoom on input focus in Android Chrome / WebViews */
+@media (max-width: 768px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+
+  /* Reserve bottom space for AndroidBottomNav */
+  .app {
+    padding-bottom: 74px !important;
+  }
+
+  .btn,
+  .button {
+    min-height: 44px;
+    padding: 10px 18px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn:active,
+  .button:active {
+    transform: scale(0.96) !important;
+  }
+}
+
+/* Horizontal swipeable pill strip for Android thumb interaction */
+.mobile-swipe-tabs,
+.touch-scroll-x {
+  display: flex !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  padding-bottom: 6px !important;
+  scroll-snap-type: x proximity;
+  gap: 8px;
+}
+
+.mobile-swipe-tabs::-webkit-scrollbar,
+.touch-scroll-x::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Mobile responsive utility classes */
+@media (max-width: 768px) {
+  .mobile-stack {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .mobile-full-width {
+    width: 100% !important;
+  }
+
+  .mobile-wrap {
+    flex-wrap: wrap !important;
+  }
+
+  .mobile-hide {
+    display: none !important;
+  }
+
+  .mobile-show {
+    display: block !important;
+  }
+
+  .mobile-text-center {
+    text-align: center !important;
+  }
+
+  /* Responsive card padding reduction */
+  .card {
+    padding: 18px 16px !important;
+    border-radius: 14px !important;
+  }
+
+  /* Responsive modal dialogs */
+  .mobile-dialog-window {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    max-height: 90vh !important;
+    border-radius: 16px !important;
+  }
+
+  /* Live Tracker & Recommendation Mobile Optimizations */
+  .app-showcase-actions,
+  .rec-card-actions {
+    align-items: stretch !important;
+    width: 100% !important;
+    text-align: left !important;
+  }
+
+  .app-showcase-actions > div,
+  .rec-card-actions > div {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .app-showcase-actions button,
+  .rec-card-actions button {
+    flex: 1 !important;
+  }
+
+  .app-footer {
+    padding: 36px 0 24px !important;
+    margin-top: 40px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  /* 2x2 Clean KPI Grid on mobile */
+  .app-kpi-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .app-kpi-grid .card {
+    padding: 14px 12px !important;
+  }
+
+  .app-kpi-grid .card div:first-child div {
+    font-size: 1.6rem !important;
+  }
+
+  .app-kpi-grid .card div:last-child {
+    display: none !important; /* Hide giant icons on small screens to save space */
+  }
+
+  .app-showcase-left,
+  .rec-card-left {
+    gap: 12px !important;
+  }
+
+  .auto-apply-form-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 15px 12px !important;
+    border-radius: 12px !important;
+  }
+
+  h1 {
+    font-size: 1.5rem !important;
+  }
+
+  h2 {
+    font-size: 1.25rem !important;
+  }
+
+  .section-title {
+    font-size: 1.3rem !important;
+  }
+}
+
+/* Halo Lab Mobile Video Card Animations */
+@keyframes touchPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: translate(-50%, -30%) scale(1.15);
+    opacity: 0.95;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.6;
+  }
+}
+
+@keyframes floatBadge {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
