@@ -9,9 +9,13 @@ const clientBuild = path.join(clientDir, 'build');
 const rootBuild = path.join(__dirname, 'build');
 
 try {
-  // 1. Install client dependencies
-  console.log('📦 Installing client dependencies in client/...');
-  execSync('npm install --include=dev', { cwd: clientDir, stdio: 'inherit' });
+  // 1. Install client dependencies if not already present
+  if (!fs.existsSync(path.join(clientDir, 'node_modules'))) {
+    console.log('📦 Installing client dependencies in client/...');
+    execSync('npm install --include=dev', { cwd: clientDir, stdio: 'inherit' });
+  } else {
+    console.log('📦 Client node_modules found, proceeding directly to build...');
+  }
 
   // 2. Build React client with CI=false to prevent CI servers treating warnings as errors
   console.log('⚡ Building React production bundle (CI=false)...');
@@ -23,16 +27,16 @@ try {
   };
   execSync('npm run build', { cwd: clientDir, stdio: 'inherit', env: buildEnv });
 
-  // 3. Sync to root /build so Cloudflare finds the output regardless of whether output dir is "build" or "client/build"
+  // 3. Sync to root /build so Cloudflare finds the output
   if (fs.existsSync(clientBuild)) {
-    console.log('📁 Syncing client/build to root ./build for Cloudflare Pages compatibility...');
+    console.log('📁 Syncing client/build to root ./build for Cloudflare compatibility...');
     fs.cpSync(clientBuild, rootBuild, { recursive: true });
-    
-    // Also ensure _redirects is present in root build
-    const redirectsFile = path.join(clientDir, 'public', '_redirects');
-    if (fs.existsSync(redirectsFile)) {
-      fs.copyFileSync(redirectsFile, path.join(rootBuild, '_redirects'));
-    }
+
+    // Clean up any legacy _redirects to avoid Cloudflare code 100324 loop error
+    const rootRedirects = path.join(rootBuild, '_redirects');
+    if (fs.existsSync(rootRedirects)) fs.unlinkSync(rootRedirects);
+    const clientRedirects = path.join(clientBuild, '_redirects');
+    if (fs.existsSync(clientRedirects)) fs.unlinkSync(clientRedirects);
   }
 
   console.log('🎉 [Cloudflare Build] All assets compiled and ready for deployment!');
