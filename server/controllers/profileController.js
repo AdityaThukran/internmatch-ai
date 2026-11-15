@@ -1,5 +1,6 @@
 const StudentProfile = require('../models/StudentProfile');
 const { extractResume } = require('../services/aiService');
+const { processUploadedResume } = require('../services/resumeExtractor');
 const { formatResponse } = require('../utils/helpers');
 
 /**
@@ -106,11 +107,22 @@ const uploadResume = async (req, res) => {
     // Save file path to profile
     let updateData = { resumeFile: filePath };
 
-    // Try to extract resume data using AI service
-    const extractedData = await extractResume(filePath);
+    // Try to extract resume data using in-process Node parser first, fallback to AI microservice
+    let extractedData = null;
+    try {
+      extractedData = await processUploadedResume(filePath);
+    } catch (parseErr) {
+      console.warn('[profileController] processUploadedResume failed, trying AI service:', parseErr.message);
+      extractedData = await extractResume(filePath);
+    }
 
     if (extractedData) {
       updateData.extractedProfile = extractedData;
+      if (extractedData.degree) updateData.degree = extractedData.degree;
+      if (extractedData.institution) updateData.institution = extractedData.institution;
+      if (extractedData.location) updateData.location = extractedData.location;
+      if (extractedData.github) updateData.github = extractedData.github;
+      if (extractedData.bio) updateData.bio = extractedData.bio;
 
       // If AI extracted skills or other data, optionally merge them
       if (extractedData.skills && Array.isArray(extractedData.skills)) {

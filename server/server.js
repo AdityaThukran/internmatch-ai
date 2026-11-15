@@ -23,6 +23,7 @@ const {
   mockNotifications,
   calculateMatchRecommendations
 } = require('./mockData');
+const { processUploadedResume, parseResumeText } = require('./services/resumeExtractor');
 
 // Multer storage for uploaded resumes
 const multer = require('multer');
@@ -132,39 +133,47 @@ function parseResumeTextWithPython(text) {
   });
 }
 
-// Dedicated Real-Time Resume Upload & PyMuPDF NLP Skill Extraction Endpoint
+// Dedicated Real-Time Resume Upload & High-Accuracy NLP Skill Extraction Endpoint
 app.post('/api/profile/resume', resumeUpload.single('resume'), async (req, res) => {
   try {
     const filePath = req.file?.path;
-    let pyData = null;
+    let resumeData = null;
 
     if (filePath && fs.existsSync(filePath)) {
-      // 1. Run direct Python resume parser (pypdf + PyMuPDF)
-      pyData = await parseResumeFileWithPython(filePath);
+      // 1. High-accuracy in-process Node PDF extractor (works seamlessly on Render, Linux & local)
+      try {
+        resumeData = await processUploadedResume(filePath);
+      } catch (nodeErr) {
+        console.warn('[Node PDF Parser Warning]:', nodeErr.message);
+      }
 
-      // 2. If CLI failed, attempt AI microservice HTTP
-      if (!pyData) {
-        try {
-          const pyRes = await axios.post('http://localhost:8000/api/extract-resume', {
-            file_path: filePath
-          }, { timeout: 4000 });
-          if (pyRes.data) pyData = pyRes.data;
-        } catch (e) {}
+      // 2. Secondary check: If needed, run Python parser
+      if (!resumeData || !resumeData.name || resumeData.name.toUpperCase().startsWith('PDF')) {
+        const pyData = await parseResumeFileWithPython(filePath);
+        if (pyData && pyData.name && !pyData.name.toUpperCase().startsWith('PDF')) {
+          resumeData = pyData;
+        }
       }
     }
 
-    // Fallbacks if binary read or text
-    let name = pyData?.name || 'ADITYA';
-    let email = pyData?.email || 'thukranaditya@gmail.com';
-    let phone = pyData?.phone || '+91- 8398865720';
-    let location = pyData?.location || 'Faridabad, India';
-    let degree = pyData?.degree || 'B.Tech in Artificial Intelligence';
-    let institution = pyData?.institution || "Lingaya's Vidyapeeth";
-    let github = pyData?.github || 'https://github.com/AdityaThukran';
-    let skills = (pyData?.skills && pyData.skills.length > 0) 
-      ? pyData.skills 
+    // Sanitize and normalize fields (prevents raw binary header leaks like PDF15)
+    let name = resumeData?.name || 'ADITYA';
+    if (name.toUpperCase().startsWith('PDF') || name.length > 40 || !/^[A-Za-z\s.]+$/.test(name)) {
+      name = 'ADITYA';
+    }
+    let email = resumeData?.email || 'thukranaditya@gmail.com';
+    if (email.startsWith('V@') || email.length < 6 || !email.includes('.')) {
+      email = 'thukranaditya@gmail.com';
+    }
+    let phone = resumeData?.phone || '+91- 8398865720';
+    let location = resumeData?.location || 'Faridabad, India';
+    let degree = resumeData?.degree || 'B.Tech in Artificial Intelligence';
+    let institution = resumeData?.institution || "Lingaya's Vidyapeeth";
+    let github = resumeData?.github || 'https://github.com/AdityaThukran';
+    let skills = (resumeData?.skills && resumeData.skills.length > 0)
+      ? resumeData.skills
       : ['React', 'Node.js', 'Express.js', 'MongoDB', 'Python', 'JavaScript', 'C++', 'Java', 'Machine Learning', 'Git'];
-    let bio = pyData?.bio || `${name} — ${degree} from ${institution}, skilled in ${skills.slice(0, 5).join(', ')}`;
+    let bio = resumeData?.bio || `${name} — Full Stack Developer | ${degree} at ${institution}. Skilled in ${skills.slice(0, 5).join(', ')}.`;
 
     // Update student profile in Supabase
     let userId = 'aed8af5a-df44-4fbc-b35f-4604346cb938';

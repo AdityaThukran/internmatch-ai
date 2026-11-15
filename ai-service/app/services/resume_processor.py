@@ -65,10 +65,13 @@ class ResumeProcessor:
             except Exception as e:
                 print(f"[pypdf error]: {e}")
 
-        # 3. Fallback: try raw read (for non-PDF or text)
+        # 3. Fallback: try raw read (ONLY for genuine non-PDF plain text/markdown files)
         try:
             with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
-                return f.read()
+                content = f.read()
+                # NEVER treat raw binary PDF content (%PDF-) as text
+                if content and not content.startswith("%PDF"):
+                    return content
         except Exception:
             pass
 

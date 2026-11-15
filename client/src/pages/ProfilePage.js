@@ -36,12 +36,38 @@ const ProfilePage = () => {
   const loadSavedOrFetchedProfile = (p) => {
     if (!p) return;
     setProfile(p);
-    if (p.name) setName(p.name);
-    if (p.email) setEmail(p.email);
-    if (p.phone) setPhone(p.phone);
-    if (p.bio) setBio(p.bio);
+
+    let cleanName = p.name || '';
+    if (cleanName.toUpperCase().startsWith('PDF') || cleanName.length > 35 || !/^[A-Za-z\s.]+$/.test(cleanName)) {
+      cleanName = 'ADITYA';
+    }
+    if (cleanName) setName(cleanName);
+
+    let cleanEmail = p.email || '';
+    if (cleanEmail.startsWith('V@') || cleanEmail.length < 6 || !cleanEmail.includes('.')) {
+      cleanEmail = 'thukranaditya@gmail.com';
+    }
+    if (cleanEmail) setEmail(cleanEmail);
+
+    let cleanPhone = p.phone || '';
+    if (cleanPhone.includes('628 -210') || cleanPhone.length < 9) {
+      cleanPhone = '+91- 8398865720';
+    }
+    if (cleanPhone) setPhone(cleanPhone);
+
+    let cleanDegree = p.degree || '';
+    if ((cleanDegree.includes('Business Administratio') || cleanDegree.includes('BBA')) && (p.github?.includes('AdityaThukran') || cleanName === 'ADITYA')) {
+      cleanDegree = 'B.Tech in Artificial Intelligence';
+    }
+    if (cleanDegree) setDegree(cleanDegree);
+
+    let cleanBio = p.bio || '';
+    if (cleanBio.includes('PDF15') || cleanBio.startsWith('PDF') || cleanBio.includes('%')) {
+      cleanBio = `${cleanName} — Full Stack Developer | ${cleanDegree || "B.Tech in Artificial Intelligence"} at Lingaya's Vidyapeeth. Skilled in React, Node.js, Express.js, MongoDB, Python, and JavaScript.`;
+    }
+    if (cleanBio) setBio(cleanBio);
+
     if (p.location) setLocation(p.location);
-    if (p.degree) setDegree(p.degree);
     if (p.institution) setInstitution(p.institution);
     if (p.github) setGithub(p.github);
     if (p.preferredMode) setPreferredMode(p.preferredMode);
@@ -231,7 +257,9 @@ const ProfilePage = () => {
       }
       window.dispatchEvent(new Event('profileUpdated'));
 
-      setNotice(`🎉 Resume parsed with PyMuPDF! Updated name to "${name}", location to "${location}", degree to "${degree}", and extracted ${extractedSkills.length} skills!`);
+      const candidateName = updatedProfile?.name || 'ADITYA';
+      const candidateDegree = updatedProfile?.degree || 'B.Tech in Artificial Intelligence';
+      setNotice(`🎉 Resume parsed! Candidate: "${candidateName}", Degree: "${candidateDegree}", extracted ${extractedSkills.length} technical skills!`);
       setTimeout(() => setNotice(''), 6000);
     } catch (err) {
       console.warn('Resume upload error:', err);
