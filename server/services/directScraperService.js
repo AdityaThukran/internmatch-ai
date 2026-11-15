@@ -198,12 +198,32 @@ const INTERNSHALA_SLUG_MAP = {
   'content writer': 'content-writing',
   'journalism': 'journalism',
 
-  // Law
+  // Law & Legal Studies
   'law': 'law',
   'legal': 'law',
   'llb': 'law',
+  'ba llb': 'law',
+  'bba llb': 'law',
+  'legal research': 'law',
+  'contract drafting': 'law',
   'litigation': 'law',
-  'advocate': 'law'
+  'advocate': 'law',
+  'ipr': 'law',
+  'patent': 'law',
+  'intellectual property': 'law',
+  'corporate law': 'law',
+
+  // Actuarial Science & Quantitative Risk
+  'actuarial': 'actuarial-science',
+  'actuary': 'actuarial-science',
+  'actuarial science': 'actuarial-science',
+  'prophet': 'actuarial-science',
+  'ifrs 17': 'actuarial-science',
+  'solvency': 'actuarial-science',
+  'claims reserving': 'actuarial-science',
+  'life contingencies': 'actuarial-science',
+  'frm': 'finance',
+  'quantitative': 'data-science'
 };
 
 function getInternshalaSlug(skills = [], degree = '') {
@@ -220,15 +240,16 @@ function getInternshalaSlug(skills = [], degree = '') {
 
 function getLinkedInKeywords(skills = [], degree = '') {
   const combined = [...(skills || []), degree].map(s => (s || '').toLowerCase()).join(' ');
+  if (combined.includes('actuar') || combined.includes('actuary') || combined.includes('prophet') || combined.includes('ifrs')) return 'actuarial intern';
+  if (combined.includes('law') || combined.includes('legal') || combined.includes('llb') || combined.includes('ipr') || combined.includes('litigation') || combined.includes('advocate')) return 'legal intern';
   if (combined.includes('mechanical')) return 'mechanical engineering intern';
   if (combined.includes('civil')) return 'civil engineering intern';
   if (combined.includes('chemical')) return 'chemical engineering intern';
   if (combined.includes('biotech') || combined.includes('biotechnology')) return 'biotech intern';
   if (combined.includes('electrical') || combined.includes('eee')) return 'electrical engineering intern';
   if (combined.includes('electronics') || combined.includes('ece') || combined.includes('embedded')) return 'embedded systems intern';
-  if (combined.includes('law') || combined.includes('legal') || combined.includes('llb')) return 'legal intern';
   if (combined.includes('hr') || combined.includes('human resources')) return 'human resources intern';
-  if (combined.includes('finance') || combined.includes('accounting') || combined.includes('b.com')) return 'finance intern';
+  if (combined.includes('finance') || combined.includes('accounting') || combined.includes('b.com') || combined.includes('audit')) return 'finance intern';
   if (combined.includes('marketing') || combined.includes('seo') || combined.includes('digital marketing')) return 'digital marketing intern';
   if (combined.includes('design') || combined.includes('ui/ux') || combined.includes('ui ux') || combined.includes('figma')) return 'ui ux design intern';
   if (combined.includes('data science') || combined.includes('machine learning') || combined.includes('ai')) return 'data science intern';

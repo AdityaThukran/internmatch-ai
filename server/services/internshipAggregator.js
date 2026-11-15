@@ -90,14 +90,46 @@ const SKILL_DOMAIN_MAP = {
   'java': 'software development', 'c++': 'software development',
   'c': 'software development', 'golang': 'software development', 'rust': 'software development',
   'scala': 'software development', 'php': 'web development',
-  // Design
-  'figma': 'ui ux design', 'ui ux': 'ui ux design', 'adobe xd': 'ui ux design',
-  'photoshop': 'graphic design', 'illustrator': 'graphic design',
+  // Design & Creative
+  'figma': 'ui ux design', 'ui ux': 'ui ux design', 'ui/ux': 'ui ux design', 'adobe xd': 'ui ux design',
+  'photoshop': 'graphic design', 'illustrator': 'graphic design', 'wireframing': 'ui ux design',
+  'design systems': 'ui ux design', 'prototyping': 'ui ux design',
+
+  // Actuarial Science, Risk Management & Quantitative Finance
+  'actuarial science': 'actuarial risk', 'actuarial modeling': 'actuarial risk', 'financial mathematics': 'actuarial risk',
+  'probability & statistics': 'actuarial risk', 'loss distributions': 'actuarial risk', 'claims reserving': 'actuarial risk',
+  'life contingencies': 'actuarial risk', 'ifrs 17': 'actuarial risk', 'solvency ii': 'actuarial risk',
+  'prophet': 'actuarial risk', 'moses': 'actuarial risk', 'frm': 'risk management', 'financial risk management': 'risk management',
+  'quantitative analysis': 'quantitative finance', 'alm': 'actuarial risk', 'econometrics': 'quantitative finance',
+  'advanced excel': 'financial analytics', 'vba': 'financial analytics',
+
+  // Law, Legal Studies & Compliance
+  'legal research': 'legal corporate law', 'legal drafting': 'legal corporate law', 'contract drafting': 'corporate law',
+  'contract review': 'corporate law', 'due diligence': 'corporate law', 'intellectual property': 'ipr law',
+  'ipr': 'ipr law', 'patent law': 'patent law', 'trademark filing': 'trademark law', 'corporate law': 'corporate law',
+  'commercial law': 'commercial contracts', 'commercial contracts': 'commercial contracts', 'm&a due diligence': 'corporate law',
+  'litigation': 'dispute resolution', 'arbitration': 'dispute resolution', 'dispute resolution': 'dispute resolution',
+  'legal compliance': 'regulatory compliance', 'scc online': 'legal research', 'manupatra': 'legal research',
+  'westlaw': 'legal research', 'tax law': 'tax law', 'cyber law': 'cyber law', 'ibc': 'insolvency law',
+
+  // Commerce, Accounting, CA & Banking
+  'auditing': 'auditing accounting', 'financial statements': 'accounting', 'gst compliance': 'taxation',
+  'income tax': 'taxation', 'tally prime': 'accounting', 'tally erp': 'accounting', 'sap fico': 'corporate finance',
+  'dcf valuation': 'equity research', 'equity research': 'equity research', 'investment banking': 'investment banking',
+  'portfolio management': 'finance', 'cost accounting': 'accounting',
+
   // Business / Commerce / Non-Tech
   'marketing': 'digital marketing', 'seo': 'digital marketing', 'content writing': 'content writing',
   'social media': 'social media marketing', 'excel': 'business analytics',
   'tally': 'accounting', 'accounting': 'accounting', 'finance': 'finance',
   'financial modeling': 'finance', 'ms office': 'business operations',
+  'human resources': 'hr operations', 'talent acquisition': 'recruitment', 'recruitment': 'recruitment',
+  'supply chain management': 'supply chain', 'logistics': 'logistics',
+
+  // Core Engineering: Civil & Mechanical
+  'autocad': 'engineering design', 'solidworks': 'mechanical engineering', 'catia': 'mechanical engineering',
+  'ansys': 'cae simulation', 'revit': 'civil architecture', 'staad pro': 'structural engineering',
+  'bim': 'civil architecture', 'construction management': 'civil engineering',
   // Science / Research
   'statistics': 'data science', 'mathematics': 'data science',
   'linear algebra': 'data science', 'calculus': 'quantitative finance',

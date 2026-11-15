@@ -96,6 +96,40 @@ const INITIAL_MOCK_APPLICANTS = [
     status: 'applied',
     notes: 'Application received. Pending initial resume review.',
     bio: 'Backend developer focused on microservices, high-throughput REST APIs, and database caching.'
+  },
+  {
+    id: 'app_rec_5',
+    candidateName: 'Kabir Mehta',
+    candidateEmail: 'kabir.actuary@gmail.com',
+    candidatePhone: '+91 98201 23456',
+    degree: 'B.Sc in Actuarial Science & Quantitative Risk',
+    institution: 'Institute of Actuaries of India (IAI) & Mumbai University',
+    location: 'Mumbai, India',
+    appliedRole: 'Actuarial Analyst & Financial Risk Modeling Intern',
+    organization: 'Swiss Re',
+    appliedAt: '2026-11-15T08:00:00.000Z',
+    matchScore: 96,
+    skills: ['Actuarial Science', 'Financial Mathematics', 'IFRS 17', 'Solvency II', 'Probability & Statistics', 'Python', 'Advanced Excel'],
+    status: 'under_review',
+    notes: 'Cleared CS1, CM1, and CB1 exams with distinction. Highly recommended for risk pricing track.',
+    bio: 'Actuarial Science student with cleared IAI/IFOA core papers. Passionate about Solvency II capital adequacy, claims reserving, and life contingencies.'
+  },
+  {
+    id: 'app_rec_6',
+    candidateName: 'Ananya Deshmukh',
+    candidateEmail: 'ananya.legal@gmail.com',
+    candidatePhone: '+91 98109 87654',
+    degree: 'BA LLB (Hons) - Corporate & Commercial Law',
+    institution: 'National Law University (NLU), Delhi',
+    location: 'Delhi NCR, India',
+    appliedRole: 'Corporate Law & M&A Due Diligence Legal Intern',
+    organization: 'Khaitan & Co',
+    appliedAt: '2026-11-14T11:20:00.000Z',
+    matchScore: 95,
+    skills: ['Corporate Law', 'Legal Research', 'Contract Drafting', 'Due Diligence', 'Intellectual Property', 'SCC Online', 'Manupatra'],
+    status: 'interviewing',
+    notes: 'Superb legal drafting score on take-home contract analysis. Interview with Senior Partner on Wednesday.',
+    bio: 'BA LLB student at NLU Delhi specializing in corporate transactions, commercial drafting, M&A due diligence, and regulatory compliance.'
   }
 ];
 
@@ -904,11 +938,11 @@ const RecruiterPage = () => {
 
                 <div style={{ marginBottom: '16px' }}>
                   <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#334155', marginBottom: '4px' }}>
-                    Eligibility Criteria
+                    Eligibility Criteria (All Indian Degrees &amp; Specializations Supported)
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. B.Tech CSE/ECE/AI, BCA, MCA 2024-2027 graduates"
+                    placeholder="e.g. B.Tech (All Streams), Actuarial Science, BA LLB / Law, B.Com, BBA, B.Des, BCA 2024-2028"
                     value={newJob.eligibility}
                     onChange={(e) => setNewJob({ ...newJob, eligibility: e.target.value })}
                     style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1.5px solid #CBD5E1', fontSize: '0.9rem', outline: 'none' }}

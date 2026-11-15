@@ -726,6 +726,341 @@ const REAL_INTERNSHIPS = [
     ],
     source: 'Wellfound (AngelList)',
     url: 'https://www.sarvam.ai/careers'
+  },
+
+  // ===================== ACTUARIAL SCIENCE & QUANTITATIVE RISK =====================
+  {
+    title: 'Actuarial Analyst & Financial Risk Modeling Intern',
+    organization: 'Swiss Re',
+    description: 'Swiss Re is one of the world’s leading providers of reinsurance and insurance-based risk transfer. Interns work directly with Fellow and Associate Actuaries on Solvency II capital modeling, IFRS 17 actuarial valuation, mortality and morbidity experience studies, and stochastic loss distributions using Python and R.',
+    location: 'Bangalore, India',
+    mode: 'hybrid',
+    stipend: '₹65,000 / month',
+    duration: '6 Months',
+    skills: ['Actuarial Science', 'Financial Mathematics', 'IFRS 17', 'Solvency II', 'Probability & Statistics', 'Python', 'Advanced Excel'],
+    requirements: [
+      'Pursuing B.Sc / M.Sc Actuarial Science, Statistics, Mathematics, Economics, or Cleared IAI / IFOA core papers (CS1, CM1, CB1).',
+      'Solid command over probability theory, compound distributions, and discounting cash flows.',
+      'Proficiency in Python, R, or advanced financial modeling in Excel.'
+    ],
+    source: 'LinkedIn',
+    url: 'https://careers.swissre.com/'
+  },
+  {
+    title: 'Actuarial Pricing & Reserving Intern',
+    organization: 'Munich Re',
+    description: 'Work with Munich Re’s Global Actuarial Services team in India. Assist senior actuaries in general and life insurance pricing, reserving calculations using Chain Ladder & Bornhuetter-Ferguson methods, and underwriting risk parameterization.',
+    location: 'Mumbai, India',
+    mode: 'hybrid',
+    stipend: '₹55,000 / month',
+    duration: '6 Months',
+    skills: ['Actuarial Modeling', 'Claims Reserving', 'Life Contingencies', 'Statistics', 'Advanced Excel', 'VBA'],
+    requirements: [
+      'Students of Actuarial Science, Mathematics, Quantitative Finance, or Statistics.',
+      'Understanding of loss triangles, reserving techniques, and life tables.',
+      'Analytical mindset with precision in quantitative calculations.'
+    ],
+    source: 'LinkedIn',
+    url: 'https://www.munichre.com/en/company/careers.html'
+  },
+  {
+    title: 'Actuarial Retirement & Pension Valuation Intern',
+    organization: 'Willis Towers Watson (WTW)',
+    description: 'WTW is a premier global advisory, broking, and solutions company. Interns participate in actuarial valuation of employee benefit schemes, pension liabilities, asset-liability modeling (ALM), and actuarial software execution (Prophet / MoSes).',
+    location: 'Gurugram / Delhi NCR, India',
+    mode: 'hybrid',
+    stipend: '₹50,000 / month',
+    duration: '3-6 Months',
+    skills: ['Actuarial Science', 'Prophet', 'Financial Modeling', 'Probability & Statistics', 'Excel VBA', 'ALM'],
+    requirements: [
+      'Students in B.Sc/M.Sc Actuarial Science, B.Com (Hons), or Mathematical Sciences.',
+      'Familiarity with financial mathematics, discounting, and annuity calculations.',
+      'Eager to learn actuarial modeling suites and employee benefit accounting.'
+    ],
+    source: 'LinkedIn',
+    url: 'https://careers.wtwco.com/'
+  },
+  {
+    title: 'Life Insurance Actuarial Product & Risk Intern',
+    organization: 'Max Life Insurance',
+    description: 'Max Life Insurance actuarial team offers hands-on internships in term and ULIP product pricing, experience analysis, IRDAI regulatory filings, and capital adequacy ratio modeling.',
+    location: 'Gurugram / Delhi NCR, India',
+    mode: 'onsite',
+    stipend: '₹45,000 / month',
+    duration: '6 Months',
+    skills: ['Actuarial Science', 'Financial Mathematics', 'Life Contingencies', 'Loss Distributions', 'Python', 'Excel VBA'],
+    requirements: [
+      'Undergraduate or postgraduate students in Actuarial Science, Statistics, or Math.',
+      'Cleared at least 1-2 actuarial exams from IAI or IFOA is preferred.',
+      'Strong quantitative rigor and attention to detail.'
+    ],
+    source: 'Internshala',
+    url: 'https://www.maxlifeinsurance.com/careers'
+  },
+
+  // ===================== LAW & LEGAL STUDIES (TOP FIRMS & CORPORATE) =====================
+  {
+    title: 'Corporate Law & M&A Due Diligence Legal Intern',
+    organization: 'Khaitan & Co',
+    description: 'Khaitan & Co is one of India’s oldest and most prestigious full-service law firms. Legal interns conduct in-depth statutory research, assist in corporate mergers & acquisitions (M&A) due diligence, draft legal opinions, and summarize commercial agreements under senior partners.',
+    location: 'New Delhi / Mumbai, India',
+    mode: 'onsite',
+    stipend: '₹35,000 / month',
+    duration: '2-4 Months',
+    skills: ['Corporate Law', 'Legal Research', 'Contract Drafting', 'Due Diligence', 'SCC Online', 'Manupatra', 'Commercial Law'],
+    requirements: [
+      'Students in 3rd/4th/5th year of 5-Year Integrated Law (BA LLB / BBA LLB) or 2nd/3rd year of 3-Year LLB / LLM.',
+      'Exceptional research capabilities using SCC Online, Manupatra, and MCA filings.',
+      'Crisp legal writing, proofreading, and citation skills.'
+    ],
+    source: 'LinkedIn',
+    url: 'https://www.khaitanco.com/careers'
+  },
+  {
+    title: 'Commercial Contracts & Regulatory Compliance Legal Intern',
+    organization: 'Trilegal',
+    description: 'Trilegal is a Tier-1 Indian law firm renowned for corporate governance and commercial transactions. Interns analyze vendor contracts, draft non-disclosure and service level agreements (NDAs/SLAs), and research RBI, SEBI, and FDI regulatory guidelines.',
+    location: 'Bangalore / Delhi NCR, India',
+    mode: 'hybrid',
+    stipend: '₹35,000 / month',
+    duration: '3 Months',
+    skills: ['Legal Drafting', 'Commercial Contracts', 'Contract Review', 'Legal Compliance', 'Due Diligence', 'Corporate Law'],
+    requirements: [
+      'Enrolled in BA LLB, BBA LLB, B.Com LLB, or LLB programs from recognized Law Universities / NLUs.',
+      'Familiarity with the Indian Contract Act, Companies Act 2013, and commercial regulations.',
+      'Meticulous eye for detail in reviewing multi-page corporate agreements.'
+    ],
+    source: 'LinkedIn',
+    url: 'https://trilegal.com/careers/'
+  },
+  {
+    title: 'Banking, Finance & Insolvency Law (IBC) Intern',
+    organization: 'Cyril Amarchand Mangaldas',
+    description: 'Join India’s premier financial regulatory law practice. Work on debt restructuring, Insolvency and Bankruptcy Code (IBC) proceedings before NCLT/NCLAT, and loan facility documentation for major domestic and international banks.',
+    location: 'Mumbai / New Delhi, India',
+    mode: 'onsite',
+    stipend: '₹40,000 / month',
+    duration: '3 Months',
+    skills: ['Corporate Law', 'Banking Law', 'Insolvency & Bankruptcy', 'IBC', 'Legal Research', 'Manupatra'],
+    requirements: [
+      'Law students (BA LLB, BBA LLB, LLB, LLM) with keen interest in banking, finance, and corporate litigation.',
+      'Prior moot court experience or published research in corporate/financial law is valued.',
+      'Strong ability to summarize statutory precedents and judicial orders.'
+    ],
+    source: 'LinkedIn',
+    url: 'https://www.cyrilshroff.com/careers/'
+  },
+  {
+    title: 'Intellectual Property Rights (IPR) & Patent Law Intern',
+    organization: 'Anand and Anand',
+    description: 'Anand and Anand is India’s foremost Intellectual Property law firm. Interns conduct prior art patent searches, assist in trademark opposition filings, draft copyright cease-and-desist notices, and analyze IP disputes for Fortune 500 tech innovators.',
+    location: 'New Delhi, India',
+    mode: 'onsite',
+    stipend: '₹30,000 / month',
+    duration: '2-4 Months',
+    skills: ['Intellectual Property', 'IPR', 'Patent Law', 'Trademark Filing', 'Copyright Law', 'Legal Drafting'],
+    requirements: [
+      'Law students (BA LLB / BBA LLB / LLB) or students with dual backgrounds in Science/Engineering + Law.',
+      'Enthusiasm for patents, design registrations, trademarks, and copyright jurisprudence.',
+      'Excellent verbal and written English communication.'
+    ],
+    source: 'Internshala',
+    url: 'https://www.anandandanand.com/careers/'
+  },
+  {
+    title: 'Commercial Dispute Resolution & Arbitration Legal Intern',
+    organization: 'AZB & Partners',
+    description: 'AZB & Partners is a premier Indian law firm advising multinational clients. Interns participate in domestic and international arbitration proceedings, draft writ petitions, prepare case briefs, and research landmark Supreme Court judgments.',
+    location: 'Delhi NCR / Mumbai, India',
+    mode: 'onsite',
+    stipend: '₹35,000 / month',
+    duration: '3 Months',
+    skills: ['Litigation', 'Arbitration', 'Dispute Resolution', 'Legal Drafting', 'Legal Research', 'SCC Online'],
+    requirements: [
+      'Penultimate or final-year law students (BA LLB / LLB / LLM).',
+      'Demonstrated interest in civil procedure, commercial courts, and arbitration.',
+      'High intellectual curiosity and ability to work in fast-paced litigation environments.'
+    ],
+    source: 'LinkedIn',
+    url: 'https://www.azbpartners.com/careers/'
+  },
+
+  // ===================== COMMERCE, AUDIT, TAXATION & FINANCE =====================
+  {
+    title: 'Audit & Financial Assurance Analyst Intern',
+    organization: 'Deloitte India',
+    description: 'Deloitte India’s Assurance & Advisory practice invites commerce and finance interns to verify financial statements, evaluate internal financial controls, test ledger balances, and perform analytical audit procedures for listed Indian corporates.',
+    location: 'Gurugram / Hyderabad, India',
+    mode: 'hybrid',
+    stipend: '₹40,000 / month',
+    duration: '6 Months',
+    skills: ['Auditing', 'Financial Statements', 'GST Compliance', 'Tally Prime', 'Financial Accounting', 'Advanced Excel'],
+    requirements: [
+      'Pursuing B.Com (Hons), M.Com, CA Inter (Articleship eligible), CMA, or BBA Finance.',
+      'Understanding of Ind AS / Indian GAAP, auditing standards, and financial reporting.',
+      'High proficiency in Excel formulas, pivot tables, and reconciliation.'
+    ],
+    source: 'LinkedIn',
+    url: 'https://www2.deloitte.com/in/en/careers/'
+  },
+  {
+    title: 'Direct & Indirect Tax Consulting Intern',
+    organization: 'EY (Ernst & Young)',
+    description: 'EY Tax practice delivers comprehensive tax advisory services. Work on corporate tax returns, GST compliance filings, advance tax computations, and transfer pricing benchmarking studies using SAP and specialized tax software.',
+    location: 'Bangalore / Mumbai, India',
+    mode: 'hybrid',
+    stipend: '₹38,000 / month',
+    duration: '6 Months',
+    skills: ['Taxation', 'GST Compliance', 'Income Tax', 'Financial Analysis', 'SAP FICO', 'Corporate Finance'],
+    requirements: [
+      'Commerce and business students (B.Com, BBA, CA Inter, CMA, MBA Finance).',
+      'Familiarity with Indian Income Tax Act 1961 and GST council notifications.',
+      'Analytical aptitude and high ethical standards.'
+    ],
+    source: 'LinkedIn',
+    url: 'https://www.ey.com/en_in/careers'
+  },
+  {
+    title: 'Equity Research & Investment Banking Analyst Intern',
+    organization: 'Morgan Stanley',
+    description: 'Morgan Stanley Institutional Securities division in India. Conduct quantitative DCF and trading multiples valuations, analyze company 10-K / annual reports, build financial statement forecast models, and draft industry research notes.',
+    location: 'Mumbai, India',
+    mode: 'hybrid',
+    stipend: '₹80,000 / month',
+    duration: '6 Months',
+    skills: ['Equity Research', 'DCF Valuation', 'Financial Modeling', 'Corporate Finance', 'Python', 'Advanced Excel'],
+    requirements: [
+      'Students in B.Com (Hons), Economics, Finance, Mathematics, or MBA/BBA.',
+      'Deep passion for capital markets, corporate valuations, and financial statement analysis.',
+      'Strong financial modeling abilities in Excel.'
+    ],
+    source: 'LinkedIn',
+    url: 'https://www.morganstanley.com/careers'
+  },
+
+  // ===================== MANAGEMENT, MARKETING & PEOPLE OPERATIONS =====================
+  {
+    title: 'Brand Strategy & Digital Marketing Intern',
+    organization: 'Hindustan Unilever (HUL)',
+    description: 'HUL is India’s largest FMCG company. Digital marketing interns work on nationwide consumer campaigns, social media performance tracking, SEO content architecture, influencer partnerships, and brand growth analytics.',
+    location: 'Mumbai, India',
+    mode: 'hybrid',
+    stipend: '₹60,000 / month',
+    duration: '3-6 Months',
+    skills: ['Digital Marketing', 'Market Research', 'Brand Strategy', 'SEO', 'Content Strategy', 'Social Media Marketing'],
+    requirements: [
+      'Undergraduate or graduate students in BBA, BMS, MBA, B.Com, or Mass Communication.',
+      'Creative mindset with deep insight into consumer trends across tier-1 and tier-2 Indian markets.',
+      'Proficiency in digital analytics tools and social media advertising.'
+    ],
+    source: 'LinkedIn',
+    url: 'https://www.hul.co.in/careers/'
+  },
+  {
+    title: 'People Operations & Talent Acquisition (HR) Intern',
+    organization: 'Swiggy',
+    description: 'Swiggy is India’s leading on-demand convenience platform. HR interns handle talent sourcing pipelines for engineering and corporate roles, coordinate candidate interview experiences, manage HRMS onboarding records, and analyze employee engagement metrics.',
+    location: 'Bangalore, India',
+    mode: 'hybrid',
+    stipend: '₹30,000 / month',
+    duration: '3-6 Months',
+    skills: ['Human Resources', 'HR Operations', 'Talent Acquisition', 'Recruitment', 'CRM', 'Advanced Excel'],
+    requirements: [
+      'Students in BBA (HR), MBA, B.Com, Psychology, or any graduate discipline with people management passion.',
+      'Warm and professional verbal and written communication.',
+      'Organized approach to tracking applicant pipelines and schedules.'
+    ],
+    source: 'Internshala',
+    url: 'https://careers.swiggy.com/'
+  },
+
+  // ===================== DESIGN, ARCHITECTURE & CREATIVE =====================
+  {
+    title: 'Product UI/UX & Design Systems Intern',
+    organization: 'CRED',
+    description: 'CRED is celebrated globally for world-class design craft and aesthetics. Interns collaborate directly with lead designers to create interactive Figma components, micro-animations, user journey wireframes, and design token architectures for iOS, Android, and web.',
+    location: 'Bangalore, India',
+    mode: 'onsite',
+    stipend: '₹50,000 / month',
+    duration: '6 Months',
+    skills: ['Figma', 'UI/UX Design', 'Design Systems', 'Wireframing', 'Prototyping', 'User Research'],
+    requirements: [
+      'Students of B.Des, M.Des, Visual Communication, Fine Arts, or self-taught UI/UX designers with a standout portfolio.',
+      'Mastery of Figma, auto-layout, component variants, and interactive prototyping.',
+      'Obsessive attention to typography, spacing, contrast, and visual rhythm.'
+    ],
+    source: 'LinkedIn',
+    url: 'https://cred.club/careers'
+  },
+  {
+    title: 'Architectural Drafting & BIM Modeling Intern',
+    organization: 'Architect Hafeez Contractor (AHC)',
+    description: 'AHC is India’s largest premier architectural firm. Interns work on residential high-rises, commercial office parks, and urban master plans using AutoCAD, Autodesk Revit BIM, SketchUp, and 3D architectural rendering tools.',
+    location: 'Mumbai, India',
+    mode: 'onsite',
+    stipend: '₹25,000 / month',
+    duration: '6 Months',
+    skills: ['AutoCAD', 'Revit', 'BIM', 'Architectural Drafting', '3D Modeling', 'SketchUp'],
+    requirements: [
+      'Students in 3rd/4th/5th year of B.Arch or M.Arch programs accredited by COA India.',
+      'Proficiency in drafting working drawings, floor plans, and municipal submission sheets.',
+      'Strong conceptual design and spatial planning abilities.'
+    ],
+    source: 'Internshala',
+    url: 'https://www.hafeezcontractor.com/careers'
+  },
+
+  // ===================== CORE ENGINEERING (ELECTRICAL, MECHANICAL, CIVIL) =====================
+  {
+    title: 'Electric Vehicle (EV) Powertrain & Battery Systems Intern',
+    organization: 'Tata Motors',
+    description: 'Tata Motors Passenger Electric Mobility is revolutionizing India’s EV ecosystem. Interns design battery management system (BMS) algorithms, test high-voltage traction inverter controls, and simulate DC-DC converters in MATLAB/Simulink and PSIM.',
+    location: 'Pune, India',
+    mode: 'onsite',
+    stipend: '₹35,000 / month',
+    duration: '6 Months',
+    skills: ['Power Electronics', 'Electrical Machines', 'MATLAB/Simulink', 'Control Systems', 'Circuit Design', 'IoT'],
+    requirements: [
+      'Students in B.Tech / M.Tech in Electrical Engineering (EE/EEE), Power Electronics, or Mechatronics.',
+      'Deep understanding of power electronic switches, battery chemistry models, and motor control.',
+      'Hands-on experience with MATLAB/Simulink, LTspice, or PSIM simulations.'
+    ],
+    source: 'LinkedIn',
+    url: 'https://www.tatamotors.com/careers/'
+  },
+  {
+    title: 'Structural Engineering & BIM Modeling Intern',
+    organization: 'Larsen & Toubro (L&T)',
+    description: 'L&T is India’s infrastructure titan. Civil engineering interns participate in reinforced concrete and steel structure design calculations, STAAD Pro 3D finite element modeling, foundation checks, and structural drawings for metro and airport projects.',
+    location: 'Chennai / Mumbai, India',
+    mode: 'onsite',
+    stipend: '₹30,000 / month',
+    duration: '6 Months',
+    skills: ['AutoCAD', 'STAAD Pro', 'Revit', 'Structural Analysis', 'BIM', 'Construction Management'],
+    requirements: [
+      'Students in B.Tech / M.Tech Civil Engineering, Structural Engineering, or Construction Technology.',
+      'Understanding of IS 456, IS 800, and structural load combinations (dead, live, seismic, wind).',
+      'Comfort with STAAD Pro, ETABS, or AutoCAD Civil.'
+    ],
+    source: 'LinkedIn',
+    url: 'https://www.larsentoubro.com/careers/'
+  },
+  {
+    title: 'Industrial Automation & PLC / SCADA Intern',
+    organization: 'Schneider Electric',
+    description: 'Schneider Electric leads the digital transformation of energy management and automation. Interns program industrial PLCs (Modicon), configure SCADA / HMI supervisory interfaces, and integrate Modbus/Profibus field telemetry for smart factories.',
+    location: 'Bangalore, India',
+    mode: 'onsite',
+    stipend: '₹32,000 / month',
+    duration: '6 Months',
+    skills: ['PLC', 'SCADA', 'Industrial Automation', 'Control Systems', 'Power Systems', 'Microcontrollers'],
+    requirements: [
+      'Students in B.Tech Electrical, Electronics & Instrumentation, or Automation Engineering.',
+      'Basic knowledge of Ladder Logic, Function Block Diagrams, and industrial communication protocols.',
+      'Passion for Industry 4.0, smart manufacturing, and energy efficiency.'
+    ],
+    source: 'LinkedIn',
+    url: 'https://www.se.com/in/en/about-us/careers/'
   }
 ];
 
@@ -777,4 +1112,8 @@ async function seed() {
   console.log(`\n🎉 Industry-Ready Seeding Complete: ${inserted} authentic real-world internships live in Supabase!`);
 }
 
-seed().catch(console.error);
+module.exports = { REAL_INTERNSHIPS, seed };
+
+if (require.main === module) {
+  seed().catch(console.error);
+}

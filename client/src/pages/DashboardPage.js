@@ -59,6 +59,14 @@ const DashboardPage = () => {
 
   useEffect(() => {
     loadDashboardData();
+    const handleProfileUpdate = () => {
+      try {
+        const cached = localStorage.getItem('student_profile');
+        if (cached) setProfile(JSON.parse(cached));
+      } catch (e) {}
+    };
+    window.addEventListener('profileUpdated', handleProfileUpdate);
+    return () => window.removeEventListener('profileUpdated', handleProfileUpdate);
   }, []);
 
   const handleTriggerAI = async () => {
@@ -162,7 +170,9 @@ const DashboardPage = () => {
             >
               <span>🎓</span>
               <span style={{ fontSize: '0.82rem', fontWeight: 700, letterSpacing: '0.3px' }}>
-                {user?.role === 'recruiter' ? 'Verified Corporate Recruiter' : 'Lingaya’s Vidyapeeth • B.Tech CSE (Artificial Intelligence)'}
+                {user?.role === 'recruiter' 
+                  ? 'Verified Corporate Recruiter' 
+                  : `${profile?.institution || "Lingaya’s Vidyapeeth"} • ${profile?.degree || 'B.Tech CSE (Artificial Intelligence)'}`}
               </span>
             </div>
             <h1 style={{ fontSize: '2.1rem', fontWeight: 800, color: '#1B2533', marginBottom: '8px', letterSpacing: '-0.5px' }}>

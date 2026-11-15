@@ -437,17 +437,35 @@ const InternshipsPage = () => {
       if (!hasSkill) return false;
     }
 
-    // Degree / Academic Background Filter (Supports B.Sc Math, BCA, B.Tech, Finance & Any Degree)
+    // Degree / Academic Background Filter (Supports Actuarial Science, Law, Commerce, B.Tech, Math, Design, Core Eng, etc.)
     if (selectedDegree) {
       const fullText = `${job.title} ${job.organization} ${job.description} ${(job.skills || []).join(' ')} ${(job.requirements || []).join(' ')}`.toLowerCase();
-      if (selectedDegree === 'math') {
+      if (selectedDegree === 'actuary') {
+        const actuaryKeywords = ['actuarial', 'actuary', 'ifrs', 'solvency', 'prophet', 'reserving', 'life contingencies', 'financial mathematics', 'loss distribution', 'stochastic', 'claims reserving', 'swiss re', 'munich re', 'wtw', 'max life'];
+        if (!actuaryKeywords.some(k => fullText.includes(k))) return false;
+      } else if (selectedDegree === 'law') {
+        const lawKeywords = ['law', 'legal', 'llb', 'llm', 'advocate', 'litigation', 'arbitration', 'contract drafting', 'due diligence', 'ipr', 'patent', 'trademark', 'corporate law', 'compliance', 'scc online', 'manupatra', 'moot court', 'dispute resolution', 'insolvency', 'ibc', 'khaitan', 'trilegal', 'cyril', 'azb', 'anand and anand'];
+        if (!lawKeywords.some(k => fullText.includes(k))) return false;
+      } else if (selectedDegree === 'commerce') {
+        const commKeywords = ['commerce', 'b.com', 'bcom', 'ca inter', 'chartered accountant', 'audit', 'taxation', 'gst', 'tally', 'accounting', 'financial statement', 'sap fico', 'cost accounting', 'deloitte', 'ey'];
+        if (!commKeywords.some(k => fullText.includes(k))) return false;
+      } else if (selectedDegree === 'management') {
+        const mgmtKeywords = ['bba', 'mba', 'pgdm', 'management', 'business development', 'marketing', 'hr', 'human resources', 'talent acquisition', 'operations', 'supply chain', 'brand strategy', 'brand management', 'hul', 'swiggy'];
+        if (!mgmtKeywords.some(k => fullText.includes(k))) return false;
+      } else if (selectedDegree === 'design') {
+        const designKeywords = ['design', 'b.des', 'm.des', 'ui/ux', 'ui ux', 'figma', 'wireframing', 'design systems', 'prototyping', 'product design', 'graphic design', 'architecture', 'b.arch', 'revit', 'autocad', 'cred'];
+        if (!designKeywords.some(k => fullText.includes(k))) return false;
+      } else if (selectedDegree === 'core_engineering') {
+        const coreEngKeywords = ['electrical', 'eee', 'power systems', 'power electronics', 'mechanical', 'solidworks', 'civil', 'structural', 'staad', 'autocad', 'robotics', 'plc', 'scada', 'embedded', 'vlsi', 'iot', 'tata motors', 'l&t', 'schneider'];
+        if (!coreEngKeywords.some(k => fullText.includes(k))) return false;
+      } else if (selectedDegree === 'math') {
         const mathKeywords = ['math', 'mathematics', 'statistic', 'quant', 'actuarial', 'modeling', 'data analyst', 'calculus', 'linear algebra', 'predictive', 'operations research'];
         if (!mathKeywords.some(k => fullText.includes(k))) return false;
       } else if (selectedDegree === 'bca') {
         const bcaKeywords = ['bca', 'mca', 'software', 'developer', 'web', 'full stack', 'computer application', 'javascript', 'frontend', 'backend'];
         if (!bcaKeywords.some(k => fullText.includes(k))) return false;
       } else if (selectedDegree === 'finance') {
-        const finKeywords = ['finance', 'fintech', 'accounting', 'economics', 'b.com', 'bba', 'business analyst', 'operations'];
+        const finKeywords = ['finance', 'fintech', 'accounting', 'economics', 'b.com', 'bba', 'business analyst', 'operations', 'equity research', 'investment banking', 'morgan stanley'];
         if (!finKeywords.some(k => fullText.includes(k))) return false;
       } else if (selectedDegree === 'btech') {
         const btechKeywords = ['b.tech', 'b.e', 'engineering', 'computer science', 'software', 'ai', 'cloud', 'devops'];
@@ -977,14 +995,20 @@ const InternshipsPage = () => {
               style={{ display: 'flex', alignItems: 'center', gap: '8px', overflowX: 'auto', whiteSpace: 'nowrap' }}
             >
               <span style={{ fontSize: '0.84rem', fontWeight: 700, color: '#334155', flexShrink: 0 }}>
-                Degree:
+                Course / Stream:
               </span>
               {[
-                { id: '', label: 'All Degrees' },
-                { id: 'btech', label: 'B.Tech / B.E' },
-                { id: 'bca', label: 'BCA / MCA' },
-                { id: 'math', label: 'B.Sc Math' },
-                { id: 'finance', label: 'Finance / BBA' }
+                { id: '', label: '🌐 All Streams' },
+                { id: 'actuary', label: '📊 Actuarial Science & Risk' },
+                { id: 'law', label: '⚖️ Law / Legal (BA LLB / LLM)' },
+                { id: 'btech', label: '💻 B.Tech / B.E (Tech & AI)' },
+                { id: 'commerce', label: '💼 Commerce & CA (B.Com)' },
+                { id: 'management', label: '📈 Management (BBA / MBA)' },
+                { id: 'design', label: '🎨 Design & UI/UX (B.Des)' },
+                { id: 'core_engineering', label: '⚡ Core Engineering (EE/Civil/Mech)' },
+                { id: 'math', label: '📐 B.Sc Math & Stats' },
+                { id: 'bca', label: '🖥️ BCA / MCA' },
+                { id: 'all_degrees', label: '✨ Any Degree / Skill-First' }
               ].map(deg => {
                 const isSelected = selectedDegree === deg.id;
                 return (
@@ -1000,9 +1024,9 @@ const InternshipsPage = () => {
                       cursor: 'pointer',
                       flexShrink: 0,
                       transition: 'all 0.15s',
-                      border: isSelected ? '1.5px solid #0284c7' : '1px solid #E2E8F0',
-                      backgroundColor: isSelected ? '#F0F9FF' : '#F8FAFC',
-                      color: isSelected ? '#0369a1' : '#475569'
+                      border: isSelected ? '1.5px solid #00B289' : '1px solid #E2E8F0',
+                      backgroundColor: isSelected ? '#E6F7F2' : '#F8FAFC',
+                      color: isSelected ? '#008C6B' : '#475569'
                     }}
                   >
                     {deg.label}

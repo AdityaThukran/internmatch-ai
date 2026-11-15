@@ -2,20 +2,54 @@ const fs = require('fs');
 const path = require('path');
 const { PDFParse } = require('pdf-parse');
 
-// Comprehensive technical, software, engineering, and electrical skills dictionary
+// Comprehensive technical, engineering, actuarial, legal, commerce, design, and management skills dictionary
 const SKILLS_DATABASE = [
   // Programming & Embedded Languages
   'C', 'C++', 'Python', 'Java', 'JavaScript', 'TypeScript', 'Embedded C', 'MATLAB', 'R', 'C#', 'Go', 'Golang', 'Rust', 'PHP', 'Ruby', 'Dart', 'Kotlin', 'Swift', 'SQL',
+
+  // Actuarial Science, Statistics, Mathematics & Quantitative Risk
+  'Actuarial Science', 'Actuarial Modeling', 'Financial Mathematics', 'Probability & Statistics', 'Statistics', 'Mathematics',
+  'Loss Distributions', 'Claims Reserving', 'Life Contingencies', 'Survival Analysis', 'IFRS 17', 'Solvency II',
+  'Prophet', 'MoSes', 'Financial Risk Management', 'FRM', 'Quantitative Analysis', 'ALM', 'Asset Liability Management',
+  'Econometrics', 'Time Series Analysis', 'Monte Carlo Simulation', 'Stochastic Modeling', 'VBA', 'Excel VBA', 'Advanced Excel',
+
+  // Law, Legal Studies & Compliance
+  'Legal Research', 'Legal Drafting', 'Contract Drafting', 'Contract Review', 'Due Diligence', 'Intellectual Property',
+  'IPR', 'Patent Law', 'Trademark Filing', 'Copyright Law', 'Corporate Law', 'Commercial Law', 'Commercial Contracts',
+  'M&A Due Diligence', 'Litigation', 'Arbitration', 'Dispute Resolution', 'Legal Compliance', 'Regulatory Affairs',
+  'SCC Online', 'Manupatra', 'Westlaw', 'Moot Court', 'Tax Law', 'Cyber Law', 'Competition Law', 'Insolvency & Bankruptcy', 'IBC',
+
+  // Commerce, Accounting, Finance & Banking
+  'Financial Accounting', 'Auditing', 'Financial Statements', 'GST Compliance', 'Income Tax', 'Direct Tax', 'Indirect Tax',
+  'Tally Prime', 'Tally ERP', 'SAP FICO', 'Financial Modeling', 'DCF Valuation', 'Equity Research', 'Investment Banking',
+  'Portfolio Management', 'Cost Accounting', 'Wealth Management', 'Risk Management', 'Corporate Finance',
+
+  // Business Administration, Management & Marketing
+  'Business Development', 'Market Research', 'Digital Marketing', 'Search Engine Optimization', 'SEO', 'SEM',
+  'Content Strategy', 'Social Media Marketing', 'Human Resources', 'HR Operations', 'Talent Acquisition', 'Recruitment',
+  'Supply Chain Management', 'Logistics', 'Operations Management', 'CRM', 'Salesforce', 'Product Management',
+
   // Electrical, Electronics & Hardware
   'Power Systems', 'Power Electronics', 'Electrical Machines', 'Control Systems', 'Analog & Digital Electronics', 'Signals & Systems',
   'Circuit Design', 'PCB Design', 'Microcontrollers', 'Sensors', 'Motor Drivers', 'Transformers', 'Substation', 'Substation Operations',
   'AutoCAD Electrical', 'AutoCAD', 'MATLAB/Simulink', 'Simulink', 'PSIM', 'LTspice', 'Proteus', 'ETAP', 'Arduino IDE', 'Arduino',
-  'ESP32', 'STM32', 'Raspberry Pi', 'PLC', 'SCADA', 'IoT', 'Robotics', 'Automation', 'Industrial Automation',
+  'ESP32', 'STM32', 'Raspberry Pi', 'PLC', 'SCADA', 'IoT', 'Robotics', 'Automation', 'Industrial Automation', 'VLSI', 'Verilog', 'VHDL',
+
+  // Mechanical, Civil & Core Engineering
+  'SolidWorks', 'CATIA', 'ANSYS', 'AutoCAD Civil', 'Revit', 'STAAD Pro', 'BIM', 'Thermodynamics', 'Fluid Mechanics',
+  'HVAC', 'Structural Analysis', 'Construction Management', 'Surveying', 'Manufacturing Processes',
+
+  // UI/UX Design & Creative Arts
+  'Figma', 'UI/UX Design', 'User Research', 'Wireframing', 'Prototyping', 'Design Systems', 'Adobe XD',
+  'Photoshop', 'Illustrator', 'Adobe After Effects', 'Premiere Pro', 'Blender', 'Interaction Design',
+
   // Web & Full Stack
   'React', 'React.js', 'Node.js', 'Express', 'Express.js', 'MongoDB', 'Next.js', 'Vue.js', 'Angular',
   'HTML', 'HTML5', 'CSS', 'CSS3', 'Tailwind CSS', 'Bootstrap', 'REST API', 'RESTful APIs', 'GraphQL', 'FastAPI', 'Flask', 'Django',
+
   // Databases & Cloud / DevOps
   'PostgreSQL', 'MySQL', 'SQLite', 'Redis', 'Firebase', 'Supabase', 'Docker', 'Kubernetes', 'AWS', 'Azure', 'GCP', 'Linux', 'Git', 'GitHub', 'VS Code',
+
   // AI, Data Science & CS Core
   'Machine Learning', 'Deep Learning', 'Artificial Intelligence', 'Natural Language Processing', 'NLP', 'Computer Vision',
   'PyTorch', 'TensorFlow', 'Data Analysis', 'Data Structures & Algorithms', 'DSA', 'OOP', 'DBMS', 'Operating Systems'
@@ -127,10 +161,10 @@ function parseResumeText(rawText) {
     linkedin = `https://linkedin.com/in/${liMatch[1]}`;
   }
 
-  // 5. Degree / Program (Capture full specialization if available)
+  // 5. Degree / Program (Capture full specialization if available across all Indian universities & streams)
   let degree = '';
-  const degMatch = rawText.match(/\b((?:B\.?Tech|Bachelor\s+of\s+Technology|M\.?Tech|Master\s+of\s+Technology|Bachelor\s+of\s+[A-Za-z]+|B\.?Sc|M\.?Sc|BCA|MCA|BBA|MBA)(?:\s+(?:in|of))?\s+[A-Za-z\s&]{3,40}?)(?=(?:\s*\d{4}|\s*\||\s*\(|\s*\[|\s*,|\s*\n|\s*\t|$))/i) ||
-                   rawText.match(/\b(B\.?Tech|M\.?Tech|BCA|MCA|B\.?Sc|M\.?Sc|BBA|MBA)\b/i);
+  const degMatch = rawText.match(/\b((?:B\.?Tech|Bachelor\s+of\s+Technology|M\.?Tech|Master\s+of\s+Technology|BA\s+LLB|BBA\s+LLB|B\.?Com\s+LLB|LLB|LLM|Bachelor\s+of\s+Laws?|Master\s+of\s+Laws?|B\.?Sc(?:\s+in)?\s+Actuarial\s+Science|M\.?Sc(?:\s+in)?\s+Actuarial\s+Science|Actuarial\s+Science|B\.?Sc(?:\s+in)?\s+Statistics|M\.?Sc(?:\s+in)?\s+Statistics|B\.?Stat|M\.?Stat|B\.?Com(?:\s+\(Hons\))?|M\.?Com|Chartered\s+Accountancy|Chartered\s+Accountant|CA\s+Inter(?:mediate)?|CMA|CS|BBA|BMS|MBA|PGDM|B\.?Des|M\.?Des|B\.?Arch|M\.?Arch|B\.?Pharm|M\.?Pharm|Pharm\.?D|Bachelor\s+of\s+[A-Za-z]+|B\.?Sc|M\.?Sc|BCA|MCA|BA|MA)(?:\s+(?:in|of))?\s+[A-Za-z\s&/]{2,45}?)(?=(?:\s*\d{4}|\s*\||\s*\(|\s*\[|\s*,|\s*\n|\s*\t|$))/i) ||
+                   rawText.match(/\b(BA\s+LLB|BBA\s+LLB|B\.?Com\s+LLB|LLB|LLM|B\.?Sc\s+Actuarial\s+Science|Actuarial\s+Science|B\.?Tech|M\.?Tech|BCA|MCA|B\.?Sc|M\.?Sc|B\.?Com|M\.?Com|BBA|BMS|MBA|B\.?Des|B\.?Arch|B\.?Pharm)\b/i);
   if (degMatch) {
     degree = degMatch[1].trim()
       .replace(/\|.*$/, '')
@@ -143,9 +177,13 @@ function parseResumeText(rawText) {
 
   // 6. College / Institution
   let institution = '';
-  const instMatch = rawText.match(/\b(Lingaya'?s\s+Vidyapeeth[A-Za-z\s,]*|Sample\s+Institute\s+of\s+Technology[A-Za-z\s,]*|Delhi\s+Technological\s+University|Indian\s+Institute\s+of\s+Technology[A-Za-z\s,]*|National\s+Institute\s+of\s+Technology[A-Za-z\s,]*|IP\s+University|Amity\s+University|[A-Z][a-zA-Z\s]+(?:Institute|University|College)\s*(?:of\s+[A-Za-z\s]+)?)\b/i);
-  if (instMatch) {
-    institution = instMatch[0].split(/[|,\n\t]/)[0].trim();
+  for (const l of lines) {
+    if (l === name || SECTION_HEADERS_REGEX.test(l)) continue;
+    const im = l.match(/\b(Lingaya'?s\s+Vidyapeeth[A-Za-z\s,]*|Sample\s+Institute\s+of\s+Technology[A-Za-z\s,]*|Institute\s+of\s+Actuaries\s+of\s+India|National\s+Law\s+University[A-Za-z\s,]*|NLU[A-Za-z\s,]*|Faculty\s+of\s+Mathematical\s+Sciences|Delhi\s+Technological\s+University|Indian\s+Institute\s+of\s+Technology[A-Za-z\s,]*|National\s+Institute\s+of\s+Technology[A-Za-z\s,]*|IP\s+University|Amity\s+University|Shri\s+Ram\s+College\s+of\s+Commerce|[A-Z][A-Za-z\s.'-]{2,40}?(?:Institute|University|College|Vidyapeeth|School\s+of\s+Law)\b[A-Za-z\s,]*)/i);
+    if (im) {
+      institution = im[0].split(/[|,\t]/)[0].trim();
+      break;
+    }
   }
   if (!institution) institution = 'University / Institute';
 

@@ -187,6 +187,58 @@ const ProfilePage = () => {
         skills: ['React', 'Node.js', 'Express.js', 'MongoDB', 'Python', 'JavaScript', 'C++', 'Java', 'Machine Learning', 'Git', 'GitHub', 'REST API', 'DSA', 'HTML5', 'CSS3'],
         preferredMode: 'remote'
       };
+    } else if (type === 'actuary') {
+      newP = {
+        name: 'Kabir Mehta',
+        email: 'kabir.actuary@gmail.com',
+        phone: '+91- 9820123456',
+        degree: 'B.Sc in Actuarial Science & Quantitative Risk',
+        institution: 'Institute of Actuaries of India (IAI) & Mumbai University',
+        location: 'Mumbai, India',
+        github: 'https://github.com/actuarial-risk-kabir',
+        bio: 'Actuarial Science student with cleared IAI/IFOA core papers (CS1, CM1, CB1). Passionate about life insurance pricing, reserving calculations, Solvency II, and stochastic loss modeling.',
+        skills: ['Actuarial Science', 'Financial Mathematics', 'IFRS 17', 'Solvency II', 'Probability & Statistics', 'Claims Reserving', 'Life Contingencies', 'Python', 'Advanced Excel', 'R'],
+        preferredMode: 'hybrid'
+      };
+    } else if (type === 'law') {
+      newP = {
+        name: 'Ananya Deshmukh',
+        email: 'ananya.legal@gmail.com',
+        phone: '+91- 9810987654',
+        degree: 'BA LLB (Hons) - Corporate & Commercial Law',
+        institution: 'National Law University (NLU), Delhi',
+        location: 'Delhi NCR, India',
+        github: 'https://linkedin.com/in/ananya-deshmukh-law',
+        bio: 'BA LLB (Hons) student at NLU Delhi specializing in corporate transactions, commercial drafting, M&A due diligence, and regulatory compliance with extensive SCC Online & Manupatra research experience.',
+        skills: ['Corporate Law', 'Legal Research', 'Contract Drafting', 'Due Diligence', 'Intellectual Property', 'SCC Online', 'Manupatra', 'Commercial Contracts', 'Litigation', 'Legal Compliance'],
+        preferredMode: 'onsite'
+      };
+    } else if (type === 'commerce') {
+      newP = {
+        name: 'Pooja Agarwal',
+        email: 'pooja.commerce@gmail.com',
+        phone: '+91- 9811223344',
+        degree: 'B.Com (Hons) & CA Inter (Audit & Finance)',
+        institution: 'Shri Ram College of Commerce (SRCC), Delhi',
+        location: 'Delhi NCR, India',
+        github: 'https://linkedin.com/in/pooja-agarwal-finance',
+        bio: 'B.Com (Hons) student at SRCC and CA Intermediate candidate. Skilled in statutory auditing, GST compliance, Ind AS financial reporting, and DCF valuation models.',
+        skills: ['Auditing', 'Financial Statements', 'GST Compliance', 'Income Tax', 'Tally Prime', 'SAP FICO', 'Financial Modeling', 'DCF Valuation', 'Advanced Excel'],
+        preferredMode: 'hybrid'
+      };
+    } else if (type === 'design') {
+      newP = {
+        name: 'Aarav Nair',
+        email: 'aarav.ux@gmail.com',
+        phone: '+91- 9871122334',
+        degree: 'B.Des in UI/UX & Product Design',
+        institution: 'National Institute of Design (NID), Ahmedabad',
+        location: 'Bangalore, India',
+        github: 'https://github.com/aaravnair-design',
+        bio: 'B.Des Product Designer passionate about crafting intuitive mobile and web experiences, scalable design systems, and delightful micro-interactions in Figma.',
+        skills: ['Figma', 'UI/UX Design', 'Design Systems', 'Wireframing', 'Prototyping', 'User Research', 'Adobe XD', 'Adobe Illustrator'],
+        preferredMode: 'remote'
+      };
     } else if (type === 'math') {
       newP = {
         name: 'Rohan Sharma',
@@ -417,6 +469,70 @@ const ProfilePage = () => {
             </button>
             <button
               type="button"
+              onClick={() => applyPresetProfile('actuary')}
+              style={{
+                padding: '4px 12px',
+                borderRadius: '200px',
+                fontSize: '0.78rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                border: '1px solid #00B289',
+                backgroundColor: '#E6F7F2',
+                color: '#008C6B'
+              }}
+            >
+              📊 B.Sc Actuarial Science (Risk &amp; Prophet)
+            </button>
+            <button
+              type="button"
+              onClick={() => applyPresetProfile('law')}
+              style={{
+                padding: '4px 12px',
+                borderRadius: '200px',
+                fontSize: '0.78rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                border: '1px solid #6366F1',
+                backgroundColor: '#EEF2FF',
+                color: '#4338CA'
+              }}
+            >
+              ⚖️ BA LLB (Corporate Law &amp; IPR)
+            </button>
+            <button
+              type="button"
+              onClick={() => applyPresetProfile('commerce')}
+              style={{
+                padding: '4px 12px',
+                borderRadius: '200px',
+                fontSize: '0.78rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                border: '1px solid #0EA5E9',
+                backgroundColor: '#F0F9FF',
+                color: '#0369A1'
+              }}
+            >
+              💼 B.Com / CA Inter (Audit &amp; Finance)
+            </button>
+            <button
+              type="button"
+              onClick={() => applyPresetProfile('design')}
+              style={{
+                padding: '4px 12px',
+                borderRadius: '200px',
+                fontSize: '0.78rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                border: '1px solid #EC4899',
+                backgroundColor: '#FDF2F8',
+                color: '#BE185D'
+              }}
+            >
+              🎨 B.Des (UI/UX Product Design)
+            </button>
+            <button
+              type="button"
               onClick={() => applyPresetProfile('math')}
               style={{
                 padding: '4px 12px',
@@ -429,7 +545,7 @@ const ProfilePage = () => {
                 color: '#334155'
               }}
             >
-              📐 B.Sc Mathematics &amp; Statistics
+              📐 B.Sc Math &amp; Stats
             </button>
             <button
               type="button"
@@ -548,22 +664,62 @@ const ProfilePage = () => {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '16px' }}>
               <div>
                 <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
-                  Degree / Program
+                  Degree / Program &amp; Specialization (All Indian Streams Supported)
                 </label>
                 <input
                   type="text"
+                  list="indian-degrees-list"
                   value={degree}
                   onChange={(e) => setDegree(e.target.value)}
-                  placeholder="e.g. B.Tech in Artificial Intelligence or B.Sc Mathematics"
+                  placeholder="Type or select degree (e.g. B.Sc Actuarial Science, BA LLB, B.Tech CSE, B.Com, B.Des)"
                   style={{
                     width: '100%',
                     padding: '10px 14px',
                     borderRadius: '10px',
                     border: '1.5px solid #CBD5E1',
                     fontSize: '0.9rem',
-                    outline: 'none'
+                    outline: 'none',
+                    fontWeight: 600
                   }}
                 />
+                <datalist id="indian-degrees-list">
+                  <option value="B.Sc in Actuarial Science & Quantitative Risk" />
+                  <option value="M.Sc in Actuarial Science & Financial Mathematics" />
+                  <option value="Actuarial Science (IAI / IFOA Exam Aspirant)" />
+                  <option value="BA LLB (Hons) - Corporate & Commercial Law" />
+                  <option value="BBA LLB (Hons) - Corporate Law & Compliance" />
+                  <option value="B.Com LLB (Hons) - Corporate Law & Taxation" />
+                  <option value="LLB (3-Year Bachelor of Laws)" />
+                  <option value="LLM (Master of Laws) - Intellectual Property / Corporate Law" />
+                  <option value="B.Com (Bachelor of Commerce - General & Hons)" />
+                  <option value="M.Com (Master of Commerce)" />
+                  <option value="Chartered Accountancy (CA Foundation / Inter / Articleship)" />
+                  <option value="CMA (Cost and Management Accountant)" />
+                  <option value="CS (Company Secretary)" />
+                  <option value="BBA (Bachelor of Business Administration)" />
+                  <option value="BMS (Bachelor of Management Studies)" />
+                  <option value="MBA in Finance & Investment Banking" />
+                  <option value="MBA in Marketing & Brand Management" />
+                  <option value="MBA in Human Resource Management (HR)" />
+                  <option value="MBA in Operations & Supply Chain" />
+                  <option value="B.Tech in Artificial Intelligence & Data Science" />
+                  <option value="B.Tech in Computer Science & Engineering (CSE)" />
+                  <option value="B.Tech in Electrical & Electronics Engineering (EEE)" />
+                  <option value="B.Tech in Electronics & Communication Engineering (ECE)" />
+                  <option value="B.Tech in Mechanical Engineering (Robotics / CAD)" />
+                  <option value="B.Tech in Civil Engineering (Structural & BIM)" />
+                  <option value="B.Tech in Chemical Engineering" />
+                  <option value="B.Tech in Biotechnology & Biomedical" />
+                  <option value="BCA (Bachelor of Computer Applications)" />
+                  <option value="MCA (Master of Computer Applications)" />
+                  <option value="B.Sc in Mathematics & Statistics" />
+                  <option value="M.Sc in Statistics & Applied Analytics" />
+                  <option value="B.Des in UI/UX & Product Design" />
+                  <option value="B.Arch (Bachelor of Architecture)" />
+                  <option value="B.Pharm (Bachelor of Pharmacy)" />
+                  <option value="B.A. in Economics & Econometrics" />
+                  <option value="B.A. in Journalism & Mass Communication (BJMC)" />
+                </datalist>
               </div>
 
               <div>
