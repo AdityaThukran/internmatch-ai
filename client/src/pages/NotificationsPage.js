@@ -25,6 +25,8 @@ import {
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
 const typeConfig = {
+  offer: { icon: <FiAward />, color: '#059669', bg: '#ECFDF5', border: '#6EE7B7', label: '🏆 Job Offer' },
+  interview: { icon: <FiCheckCircle />, color: '#D97706', bg: '#FEF3C7', border: '#FDE68A', label: '🎙️ Interview' },
   match: { icon: <FiCpu />, color: '#00B289', bg: '#E6F7F2', border: '#A7F3D0', label: 'AI Match' },
   application: { icon: <FiLayers />, color: '#7C3AED', bg: '#F5F3FF', border: '#DDD6FE', label: 'Application' },
   crawler: { icon: <FiGlobe />, color: '#0284C7', bg: '#F0F9FF', border: '#BAE6FD', label: 'Live Crawler' },
@@ -35,8 +37,10 @@ const typeConfig = {
 
 const getType = (item) => {
   const t = `${item.title || ''} ${item.type || ''} ${item.message || ''}`.toLowerCase();
+  if (t.includes('offer') || t.includes('congratulations') || t.includes('selection letter') || t.includes('extended')) return typeConfig.offer;
+  if (t.includes('interview') || t.includes('shortlist') || t.includes('technical round') || t.includes('scheduled')) return typeConfig.interview;
   if (t.includes('match') || t.includes('recommend') || t.includes('cosine')) return typeConfig.match;
-  if (t.includes('application') || t.includes('status') || t.includes('milestone') || t.includes('saved') || t.includes('interview')) return typeConfig.application;
+  if (t.includes('application') || t.includes('status') || t.includes('milestone') || t.includes('saved')) return typeConfig.application;
   if (t.includes('crawler') || t.includes('scraped') || t.includes('pruned') || t.includes('discovery') || t.includes('aggregated')) return typeConfig.crawler;
   if (t.includes('weekly') || t.includes('digest')) return typeConfig.weekly;
   if (t.includes('skill') || t.includes('resume') || t.includes('pymupdf')) return typeConfig.skill;

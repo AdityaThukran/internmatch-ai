@@ -74,4 +74,8 @@ export const getGeminiStatus = () => API.get('/settings/gemini-status');
 export const saveGeminiKey = (apiKey) => API.post('/settings/gemini-key', { apiKey });
 export const fetchLiveInternships = (data) => API.post('/internships/fetch-live', data);
 
+// Autonomous AI Career Agent Simulation
+export const runAutonomousAgent = (data) => API.post('/agent/simulate-lifecycle', data);
+export const getAutonomousAgentStatus = () => API.get('/agent/status');
+
 export default API;

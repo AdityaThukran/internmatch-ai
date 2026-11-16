@@ -376,6 +376,32 @@ const supabaseService = {
       .from('notifications')
       .update({ is_read: true })
       .eq('id', id);
+  },
+
+  async addNotification(userId, { title, message, type = 'application', internshipId = null }) {
+    if (!isSupabaseConfigured() || !userId) return null;
+    try {
+      const { data, error } = await supabase
+        .from('notifications')
+        .insert([{
+          user_id: userId,
+          title,
+          message,
+          type,
+          internship_id: internshipId,
+          is_read: false,
+          sent_at: new Date().toISOString()
+        }])
+        .select()
+        .single();
+      if (error) {
+        console.warn('addNotification error:', error.message);
+        return null;
+      }
+      return data;
+    } catch (e) {
+      return null;
+    }
   }
 };
 

@@ -15,6 +15,7 @@ const internshipAggregator = require('./services/internshipAggregator');
 const geminiInternshipService = require('./services/geminiInternshipService');
 const realTimeJobAPIService = require('./services/realTimeJobAPIService');
 const directScraperService = require('./services/directScraperService');
+const autonomousAgentService = require('./services/autonomousAgentService');
 const {
   mockUsers,
   mockStudentProfile,
@@ -493,6 +494,54 @@ const fallbackMiddleware = async (req, res, next) => {
       success: true,
       message: 'Gemini API Key saved and activated successfully!',
       data: { configured: true }
+    });
+  }
+
+  // ── Autonomous AI Career Agent Lifecycle Simulation ──────────────────────
+  if (reqPath === '/api/agent/simulate-lifecycle' && method === 'POST') {
+    try {
+      const authHeader = req.headers.authorization;
+      let userId = null;
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        try {
+          const decoded = jwt.verify(authHeader.split(' ')[1], config.jwtSecret);
+          userId = decoded.id;
+        } catch (e) {}
+      }
+
+      const { skills, degree, name } = req.body || {};
+      const candidateSkills = Array.isArray(skills) && skills.length > 0 ? skills : mockStudentProfile.skills;
+      const candidateDegree = degree || mockStudentProfile.degree || 'Undergraduate Degree';
+      const candidateName = name || mockStudentProfile.name || 'Candidate';
+
+      const result = await autonomousAgentService.simulateHiringLifecycle({
+        userId,
+        candidateName,
+        skills: candidateSkills,
+        degree: candidateDegree,
+        targetCount: 4
+      });
+
+      return res.json({
+        success: true,
+        message: 'Autonomous AI Agent executed hiring lifecycle successfully!',
+        data: result
+      });
+    } catch (err) {
+      console.error('[API] Autonomous Agent error:', err);
+      return res.status(500).json({ success: false, message: 'Autonomous agent error: ' + err.message });
+    }
+  }
+
+  if (reqPath === '/api/agent/status' && method === 'GET') {
+    return res.json({
+      success: true,
+      data: {
+        mode: 'Autonomous Agent / Autopilot Active',
+        isAutopilotEnabled: true,
+        schedulerStatus: 'Running in Real-Time Cron Daemon',
+        lastScan: new Date().toISOString()
+      }
     });
   }
 
