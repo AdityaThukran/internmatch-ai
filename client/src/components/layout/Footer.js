@@ -49,6 +49,7 @@ const Footer = () => {
               <li><Link to="/email-sync" style={{ color: '#4D5C6D', textDecoration: 'none' }}>Email Application Sync</Link></li>
               <li><Link to="/profile" style={{ color: '#4D5C6D', textDecoration: 'none' }}>PDF Resume Parser & Skills</Link></li>
               <li><Link to="/privacy" style={{ color: '#008C6B', fontWeight: 700, textDecoration: 'none' }}>🛡️ Privacy &amp; Data Security</Link></li>
+              <li><Link to="/data-protection" style={{ color: '#008C6B', fontWeight: 700, textDecoration: 'none' }}>🔒 How Data Is Protected</Link></li>
               <li><Link to="/help" style={{ color: '#008C6B', fontWeight: 700, textDecoration: 'none' }}>🌿 Help Center &amp; FAQs</Link></li>
             </ul>
           </div>
@@ -105,8 +106,9 @@ const Footer = () => {
           }}
         >
           <p>© 2026 InternMatch AI. Built by Aditya for Lingaya's Vidyapeeth. All rights reserved.</p>
-          <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-            <Link to="/privacy" style={{ color: '#008C6B', textDecoration: 'none', fontWeight: 600 }}>Privacy &amp; Candidate Security</Link>
+          <div style={{ display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap' }}>
+            <Link to="/privacy" style={{ color: '#008C6B', textDecoration: 'none', fontWeight: 600 }}>Privacy &amp; Security</Link>
+            <Link to="/data-protection" style={{ color: '#008C6B', textDecoration: 'none', fontWeight: 600 }}>Data Protection Architecture</Link>
             <Link to="/help" style={{ color: '#4D5C6D', textDecoration: 'none' }}>Student Support</Link>
           </div>
         </div>

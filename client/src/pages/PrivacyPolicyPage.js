@@ -257,6 +257,27 @@ const PrivacyPolicyPage = () => {
                 </button>
 
                 <Link
+                  to="/data-protection"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    backgroundColor: '#FFFFFF',
+                    color: '#1B2533',
+                    border: '1.5px solid #CBD5E1',
+                    padding: '11px 22px',
+                    borderRadius: '12px',
+                    textDecoration: 'none',
+                    fontWeight: 700,
+                    fontSize: '0.94rem',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.03)'
+                  }}
+                >
+                  <FiLock size={16} color="#00B289" />
+                  <span>How Data Is Protected (7 Steps)</span>
+                </Link>
+
+                <Link
                   to="/applications"
                   style={{
                     display: 'inline-flex',

@@ -313,9 +313,17 @@ const Navbar = () => {
               <FiBell size={17} color="#00B289" />
               <span>Notifications & Alerts</span>
             </Link>
+            <Link to="/privacy" className="bonsai-mobile-link" onClick={() => setMobileOpen(false)}>
+              <FiShield size={17} color="#00B289" />
+              <span>Privacy &amp; Tracking</span>
+            </Link>
+            <Link to="/data-protection" className="bonsai-mobile-link" onClick={() => setMobileOpen(false)}>
+              <FiLock size={17} color="#00B289" />
+              <span>Data Protection Transparency</span>
+            </Link>
             <Link to="/help" className="bonsai-mobile-link" onClick={() => setMobileOpen(false)}>
               <FiHelpCircle size={17} color="#00B289" />
-              <span>Help & Student Guides</span>
+              <span>Help &amp; Student Guides</span>
             </Link>
 
             {isAuthenticated ? (
