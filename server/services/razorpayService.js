@@ -9,7 +9,13 @@
  * 4. Cold-boot persistence to server/data/user_subscriptions.json & Supabase
  */
 
-const Razorpay = require('razorpay');
+let Razorpay = null;
+try {
+  Razorpay = require('razorpay');
+} catch (e) {
+  console.warn('[Razorpay] Optional dependency warning:', e.message);
+}
+
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
@@ -19,13 +25,15 @@ const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID || 'rzp_test_internmatch2026
 const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET || 'secret_lingayas_internmatch_2026';
 
 let razorpayInstance = null;
-try {
-  razorpayInstance = new Razorpay({
-    key_id: RAZORPAY_KEY_ID,
-    key_secret: RAZORPAY_KEY_SECRET
-  });
-} catch (e) {
-  console.warn('[Razorpay] Initialization note:', e.message);
+if (Razorpay) {
+  try {
+    razorpayInstance = new Razorpay({
+      key_id: RAZORPAY_KEY_ID,
+      key_secret: RAZORPAY_KEY_SECRET
+    });
+  } catch (e) {
+    console.warn('[Razorpay] Initialization note:', e.message);
+  }
 }
 
 // Subscription Plans Specification

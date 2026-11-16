@@ -5,9 +5,10 @@
   "private": true,
   "scripts": {
     "build": "node build.js",
-    "start": "npm --prefix client start",
+    "start": "node server/server.js",
+    "server": "npm --prefix server start",
     "client": "npm --prefix client start",
-    "server": "npm --prefix server start"
+    "postinstall": "npm --prefix server install"
   },
   "keywords": [
     "internship",
