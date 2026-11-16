@@ -22,14 +22,16 @@
 }
 
 .bonsai-navbar-container {
-  max-width: 1320px;
+  max-width: 1440px;
+  width: 100%;
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 24px;
   height: 72px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 16px;
+  box-sizing: border-box;
 }
 
 /* Brand Logo Link - Locked to vertical center line */
@@ -38,14 +40,18 @@
   align-items: center;
   text-decoration: none;
   line-height: 1;
+  flex-shrink: 0;
 }
 
 /* ── Center Desktop Nav Links (Perfect Single-Line Alignment & Generous Spacing) ── */
 .bonsai-nav-desktop {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 18px;
   height: 100%;
+  flex: 1;
+  justify-content: center;
+  min-width: 0;
 }
 
 .bonsai-nav-item-dropdown {
@@ -344,7 +350,8 @@
 .bonsai-actions-desktop {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 14px;
+  flex-shrink: 0;
 }
 
 .bonsai-auth-buttons {
@@ -419,23 +426,27 @@
 .bonsai-user-wrap {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
 .bonsai-user-menu {
   position: relative;
+  flex-shrink: 0;
 }
 
 .bonsai-user-trigger {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   background: #F8F9FA;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 30px;
   padding: 4px 12px 4px 4px;
   cursor: pointer;
   transition: all 0.2s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .bonsai-user-trigger:hover {
@@ -454,12 +465,19 @@
   justify-content: center;
   font-weight: 800;
   font-size: 0.8rem;
+  flex-shrink: 0;
 }
 
 .bonsai-user-name {
   font-size: 0.88rem;
   font-weight: 600;
   color: #2D3748;
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .bonsai-user-dropdown-panel {
@@ -574,7 +592,38 @@
   display: none;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1360px) {
+  .bonsai-navbar-container {
+    padding: 0 16px;
+    gap: 12px;
+  }
+
+  .bonsai-nav-desktop {
+    gap: 13px;
+  }
+
+  .bonsai-nav-link {
+    font-size: 0.86rem;
+    padding: 0 2px;
+    gap: 5px;
+  }
+
+  .bonsai-nav-link svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .bonsai-crawler-indicator {
+    padding: 0 8px;
+    font-size: 0.74rem;
+  }
+
+  .bonsai-user-name {
+    max-width: 75px;
+  }
+}
+
+@media (max-width: 1220px) {
   .bonsai-mega-dropdown-panel {
     width: 920px;
     padding: 24px 28px;
@@ -583,11 +632,38 @@
   .bonsai-dropdown-mega-grid {
     gap: 20px;
   }
+
+  .bonsai-nav-desktop {
+    gap: 10px;
+  }
+
+  .bonsai-nav-link {
+    font-size: 0.82rem;
+    gap: 4px;
+  }
+
+  .bonsai-crawler-label {
+    display: none;
+  }
+
+  .bonsai-crawler-indicator {
+    padding: 0 7px;
+    height: 28px;
+  }
+
+  .bonsai-user-name {
+    display: none;
+  }
+
+  .bonsai-user-trigger {
+    padding: 3px 6px 3px 3px;
+    gap: 4px;
+  }
 }
 
-@media (max-width: 980px) {
+@media (max-width: 1080px) {
   .bonsai-nav-desktop {
-    display: none;
+    display: none !important;
   }
 
   .bonsai-navbar-container {
@@ -596,7 +672,7 @@
   }
 
   .bonsai-mobile-toggle {
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
     width: 40px;
