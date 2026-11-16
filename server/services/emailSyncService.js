@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const imapSimple = require('imap-simple');
 const { simpleParser } = require('mailparser');
 const supabaseService = require('./supabaseService');
@@ -12,6 +14,7 @@ const { mockApplications, mockInternships, mockNotifications } = require('../moc
  * 3. Inspects and filters every email for authenticity & fraud (AI Legitimacy Shield).
  * 4. Automatically updates candidate's Live Tracking pipeline for verified emails.
  * 5. Dispatches real-time in-app notifications and security alerts.
+ * 6. Cold-Boot Recovery: Persists mailbox connection states & parsed history to disk & DB.
  */
 
 // In-memory store for connected email configurations
@@ -19,6 +22,78 @@ const connectedMailboxes = new Map();
 
 // Saved parsed emails per user
 const userParsedEmails = new Map();
+
+// Persistent Database & Disk Paths for Cold-Boot Recovery
+const DATA_DIR = path.join(__dirname, '..', 'data');
+const MAILBOXES_FILE = path.join(DATA_DIR, 'connected_mailboxes.json');
+const PARSED_EMAILS_FILE = path.join(DATA_DIR, 'user_parsed_emails.json');
+
+function ensureDataDir() {
+  if (!fs.existsSync(DATA_DIR)) {
+    try { fs.mkdirSync(DATA_DIR, { recursive: true }); } catch (e) {}
+  }
+}
+
+function saveMailboxesToDisk() {
+  ensureDataDir();
+  try {
+    const obj = {};
+    for (const [k, v] of connectedMailboxes.entries()) {
+      obj[k] = v;
+    }
+    fs.writeFileSync(MAILBOXES_FILE, JSON.stringify(obj, null, 2), 'utf-8');
+  } catch (err) {
+    console.warn('[EmailSync] Error saving mailboxes to disk:', err.message);
+  }
+}
+
+function loadMailboxesFromDisk() {
+  ensureDataDir();
+  if (fs.existsSync(MAILBOXES_FILE)) {
+    try {
+      const content = fs.readFileSync(MAILBOXES_FILE, 'utf-8');
+      const obj = JSON.parse(content);
+      for (const [k, v] of Object.entries(obj)) {
+        connectedMailboxes.set(k, v);
+      }
+      console.log(`[EmailSync] 💾 Cold-Boot Recovery: Restored ${connectedMailboxes.size} active connected mailboxes from persistent disk storage.`);
+    } catch (err) {
+      console.warn('[EmailSync] Error loading mailboxes from disk:', err.message);
+    }
+  }
+}
+
+function saveParsedEmailsToDisk() {
+  ensureDataDir();
+  try {
+    const obj = {};
+    for (const [k, v] of userParsedEmails.entries()) {
+      obj[k] = v;
+    }
+    fs.writeFileSync(PARSED_EMAILS_FILE, JSON.stringify(obj, null, 2), 'utf-8');
+  } catch (err) {
+    console.warn('[EmailSync] Error saving parsed emails to disk:', err.message);
+  }
+}
+
+function loadParsedEmailsFromDisk() {
+  ensureDataDir();
+  if (fs.existsSync(PARSED_EMAILS_FILE)) {
+    try {
+      const content = fs.readFileSync(PARSED_EMAILS_FILE, 'utf-8');
+      const obj = JSON.parse(content);
+      for (const [k, v] of Object.entries(obj)) {
+        userParsedEmails.set(k, v);
+      }
+    } catch (err) {
+      console.warn('[EmailSync] Error loading parsed emails from disk:', err.message);
+    }
+  }
+}
+
+// Initialize persistence on module load
+loadMailboxesFromDisk();
+loadParsedEmailsFromDisk();
 
 // 8-Hour Scheduler State
 const schedulerState = {
@@ -691,6 +766,21 @@ const emailSyncService = {
     };
 
     connectedMailboxes.set(userId || 'default', mailboxData);
+    saveMailboxesToDisk();
+
+    // Persist to Supabase if configured
+    if (supabaseService.isConfigured() && userId) {
+      try {
+        await supabaseService.saveUserMailboxSettings(userId, {
+          email: mailboxData.email,
+          provider: mailboxData.provider,
+          host: mailboxData.host,
+          port: mailboxData.port,
+          connectedAt: mailboxData.connectedAt
+        });
+      } catch (err) {}
+    }
+
     return {
       success: true,
       email: mailboxData.email,
@@ -729,7 +819,15 @@ const emailSyncService = {
    */
   disconnectMailbox: (userId) => {
     connectedMailboxes.delete(userId || 'default');
-    return { success: true, message: 'Mailbox disconnected and credentials cleared from session.' };
+    saveMailboxesToDisk();
+
+    if (supabaseService.isConfigured() && userId) {
+      try {
+        supabaseService.clearUserMailboxSettings(userId);
+      } catch (e) {}
+    }
+
+    return { success: true, message: 'Mailbox disconnected and credentials cleared from session and persistent storage.' };
   },
 
   /**
@@ -763,6 +861,11 @@ const emailSyncService = {
     }
 
     userParsedEmails.set(userId || 'default', rawEmails);
+    saveParsedEmailsToDisk();
+    if (mailbox) {
+      mailbox.lastChecked = new Date().toISOString();
+      saveMailboxesToDisk();
+    }
 
     // Sync legitimate emails with Live Application Tracker & Bell Notifications
     const syncedApps = [];

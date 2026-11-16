@@ -381,13 +381,23 @@ const supabaseService = {
   async addNotification(userId, { title, message, type = 'application', internshipId = null }) {
     if (!isSupabaseConfigured() || !userId) return null;
     try {
+      // Map arbitrary types to valid Supabase enum constraint ('match', 'weekly', 'application', 'skill', 'system')
+      let dbType = 'application';
+      if (['match', 'weekly', 'application', 'skill', 'system'].includes(type)) {
+        dbType = type;
+      } else if (type === 'security') {
+        dbType = 'system';
+      } else {
+        dbType = 'application';
+      }
+
       const { data, error } = await supabase
         .from('notifications')
         .insert([{
           user_id: userId,
           title,
           message,
-          type,
+          type: dbType,
           internship_id: internshipId,
           is_read: false,
           sent_at: new Date().toISOString()
@@ -401,6 +411,46 @@ const supabaseService = {
       return data;
     } catch (e) {
       return null;
+    }
+  },
+
+  // 7. Mailbox Settings Persistence (Cold-Boot Recovery)
+  async saveUserMailboxSettings(userId, mailboxData) {
+    if (!isSupabaseConfigured() || !userId) return false;
+    try {
+      const { data: user, error: fetchErr } = await supabase.from('users').select('preferences').eq('id', userId).single();
+      if (fetchErr) return false;
+      const updatedPrefs = { ...(user?.preferences || {}), mailbox: mailboxData };
+      const { error } = await supabase.from('users').update({ preferences: updatedPrefs }).eq('id', userId);
+      return !error;
+    } catch (e) {
+      console.warn('saveUserMailboxSettings warning:', e.message);
+      return false;
+    }
+  },
+
+  async getUserMailboxSettings(userId) {
+    if (!isSupabaseConfigured() || !userId) return null;
+    try {
+      const { data: user, error } = await supabase.from('users').select('preferences').eq('id', userId).single();
+      if (error || !user) return null;
+      return user.preferences?.mailbox || null;
+    } catch (e) {
+      return null;
+    }
+  },
+
+  async clearUserMailboxSettings(userId) {
+    if (!isSupabaseConfigured() || !userId) return false;
+    try {
+      const { data: user, error: fetchErr } = await supabase.from('users').select('preferences').eq('id', userId).single();
+      if (fetchErr) return false;
+      const updatedPrefs = { ...(user?.preferences || {}) };
+      delete updatedPrefs.mailbox;
+      const { error } = await supabase.from('users').update({ preferences: updatedPrefs }).eq('id', userId);
+      return !error;
+    } catch (e) {
+      return false;
     }
   }
 };
