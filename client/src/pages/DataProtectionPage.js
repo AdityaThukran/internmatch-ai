@@ -16,7 +16,8 @@ import {
   FiExternalLink,
   FiCheck,
   FiDatabase,
-  FiLayers
+  FiLayers,
+  FiHelpCircle
 } from 'react-icons/fi';
 
 const PROTECTION_STEPS = [
