@@ -84,5 +84,7 @@ export const getEmailMailboxStatus = () => API.get('/email/status');
 export const disconnectEmailMailbox = () => API.post('/email/disconnect');
 export const scanEmailInbox = (data) => API.post('/email/scan', data);
 export const getParsedEmails = () => API.get('/email/parsed');
+export const getEmailScheduleStatus = () => API.get('/email/schedule');
+export const triggerImmediateEmailSync = () => API.post('/email/sync-now');
 
 export default API;

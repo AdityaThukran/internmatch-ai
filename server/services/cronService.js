@@ -8,6 +8,7 @@ const { matchStudentWithInternships } = require('./matchingService');
 const { sendInternshipAlert } = require('./emailService');
 const internshipAggregator = require('./internshipAggregator');
 const supabaseService = require('./supabaseService');
+const emailSyncService = require('./emailSyncService');
 
 /**
  * Initialize all cron jobs.
@@ -59,7 +60,26 @@ const initCronJobs = () => {
     }
   });
 
+  // ─── 8-HOUR AUTOMATED MAILBOX SYNC & AI LEGITIMACY SCANNER ───────────────
+  // Every 8 hours (00:00, 08:00, 16:00): inspect inboxes, filter fraud, and sync Live Tracker
+  cron.schedule('0 */8 * * *', async () => {
+    console.log('[CRON] 📬 8-Hour Career Mailbox Sync & AI Legitimacy Scan starting...');
+    try {
+      await emailSyncService.run8HourSyncCycle();
+    } catch (err) {
+      console.error('[CRON] 8-Hour Mailbox Sync error:', err.message);
+    }
+  });
+
+  // Start in-memory 8-hour scheduler daemon
+  try {
+    emailSyncService.start8HourScheduler();
+  } catch (schedErr) {
+    console.warn('[EmailSync] Scheduler warning:', schedErr.message);
+  }
+
   console.log('[CRON] Cron jobs initialized:');
+  console.log('  → 8-Hour Mailbox Sync: Every 8 hours (00:00, 08:00, 16:00)');
   console.log('  → Weekly monitoring: Sunday 8:00 AM');
   console.log('  → Daily internship refresh: Every day 6:00 AM');
   console.log('  → Midday expiry check: Every day 12:00 PM');

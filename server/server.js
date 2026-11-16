@@ -626,6 +626,33 @@ const fallbackMiddleware = async (req, res, next) => {
     return res.json({ success: true, data: emails });
   }
 
+  if (reqPath === '/api/email/schedule' && method === 'GET') {
+    const schedule = emailSyncService.getScheduleStatus();
+    return res.json({ success: true, data: schedule });
+  }
+
+  if (reqPath === '/api/email/sync-now' && method === 'POST') {
+    try {
+      const authHeader = req.headers.authorization;
+      let userId = null;
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        try {
+          const decoded = jwt.verify(authHeader.split(' ')[1], config.jwtSecret);
+          userId = decoded.id;
+        } catch (e) {}
+      }
+      const syncResult = await emailSyncService.run8HourSyncCycle();
+      return res.json({
+        success: true,
+        message: '8-Hour automated sync cycle triggered successfully!',
+        data: syncResult
+      });
+    } catch (err) {
+      console.error('[API] Sync now error:', err);
+      return res.status(500).json({ success: false, message: 'Sync error: ' + err.message });
+    }
+  }
+
   if (reqPath === '/api/internships/fetch-live' && method === 'POST') {
     try {
       const { skills, degree, location, limit } = req.body || {};

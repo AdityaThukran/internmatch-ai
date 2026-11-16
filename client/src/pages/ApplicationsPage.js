@@ -1142,7 +1142,74 @@ const ApplicationsPage = () => {
                           >
                             {sourceBadge.label}
                           </span>
+
+                          {/* 8-Hour AI Mailbox Sync Badge */}
+                          {((app.notes && app.notes.includes('AI Mailbox Sync')) || app.autoSynced) && (
+                            <span
+                              style={{
+                                fontSize: '0.74rem',
+                                fontWeight: 700,
+                                padding: '4px 10px',
+                                borderRadius: '8px',
+                                backgroundColor: '#E6F7F2',
+                                color: '#008C6B',
+                                border: '1px solid #A7F3D0',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '5px'
+                              }}
+                            >
+                              <FiMail size={12} />
+                              <span>⚡ Auto-Synced via 8-Hour Sync</span>
+                            </span>
+                          )}
+
+                          {/* Verified Stipend Badge */}
+                          {app.stipend && (
+                            <span
+                              style={{
+                                fontSize: '0.74rem',
+                                fontWeight: 800,
+                                padding: '4px 10px',
+                                borderRadius: '8px',
+                                backgroundColor: '#ECFDF5',
+                                color: '#065F46',
+                                border: '1px solid #A7F3D0'
+                              }}
+                            >
+                              🏆 {app.stipend}
+                            </span>
+                          )}
                         </div>
+
+                        {/* Meeting Link Notification Bar if Interview Scheduled */}
+                        {app.interviewDetails?.meetingLink && (
+                          <div style={{ marginTop: '10px', marginBottom: '8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', flexWrap: 'wrap', backgroundColor: '#EFF6FF', border: '1px solid #BFDBFE', padding: '10px 14px', borderRadius: '10px' }}>
+                            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#1E40AF' }}>
+                              🎙️ {app.interviewDetails.platform || 'Interview'} Scheduled: {app.interviewDetails.suggestedDate}
+                            </span>
+                            <a
+                              href={app.interviewDetails.meetingLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '5px',
+                                backgroundColor: '#2563EB',
+                                color: '#FFFFFF',
+                                padding: '5px 12px',
+                                borderRadius: '6px',
+                                fontSize: '0.78rem',
+                                fontWeight: 700,
+                                textDecoration: 'none'
+                              }}
+                            >
+                              <span>Join Meeting</span>
+                              <FiExternalLink size={12} />
+                            </a>
+                          </div>
+                        )}
 
                         {/* Company & Location Line */}
                         <p style={{ fontSize: '1.02rem', fontWeight: 700, color: 'var(--primary)', marginTop: '8px', marginBottom: '8px' }}>

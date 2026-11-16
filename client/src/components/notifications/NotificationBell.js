@@ -10,7 +10,10 @@ import {
   FiTrash2,
   FiArrowRight,
   FiGlobe,
-  FiLayers
+  FiLayers,
+  FiShield,
+  FiMail,
+  FiAlertTriangle
 } from 'react-icons/fi';
 import {
   getNotifications,
@@ -60,6 +63,34 @@ const typeConfig = {
     border: '#FDE68A',
     label: 'Skill Insight'
   },
+  offer: {
+    icon: <FiAward size={15} />,
+    color: '#059669',
+    bg: '#ECFDF5',
+    border: '#A7F3D0',
+    label: 'Offer Letter'
+  },
+  interview: {
+    icon: <FiCalendar size={15} />,
+    color: '#2563EB',
+    bg: '#EFF6FF',
+    border: '#BFDBFE',
+    label: 'Interview Round'
+  },
+  security: {
+    icon: <FiShield size={15} />,
+    color: '#DC2626',
+    bg: '#FEF2F2',
+    border: '#FECACA',
+    label: 'Scam Blocked'
+  },
+  email: {
+    icon: <FiMail size={15} />,
+    color: '#00B289',
+    bg: '#E6F7F2',
+    border: '#A7F3D0',
+    label: 'Email Sync'
+  },
   default: {
     icon: <FiBell size={15} />,
     color: '#475569',
@@ -71,8 +102,12 @@ const typeConfig = {
 
 const getTypeConfig = (item) => {
   const t = `${item.title || ''} ${item.type || ''} ${item.message || ''}`.toLowerCase();
+  if (t.includes('scam') || t.includes('fraud') || t.includes('blocked') || t.includes('security') || item.type === 'security') return typeConfig.security;
+  if (t.includes('offer letter') || t.includes('offer extended') || item.type === 'offer') return typeConfig.offer;
+  if (t.includes('interview') || item.type === 'interview') return typeConfig.interview;
+  if (t.includes('sync') || t.includes('mailbox') || item.type === 'email') return typeConfig.email;
   if (t.includes('match') || t.includes('recommend') || t.includes('cosine')) return typeConfig.match;
-  if (t.includes('application') || t.includes('status') || t.includes('milestone') || t.includes('saved') || t.includes('interview')) return typeConfig.application;
+  if (t.includes('application') || t.includes('status') || t.includes('milestone') || t.includes('saved')) return typeConfig.application;
   if (t.includes('crawler') || t.includes('scraped') || t.includes('pruned') || t.includes('discovery') || t.includes('aggregated')) return typeConfig.crawler;
   if (t.includes('weekly') || t.includes('digest') || t.includes('weekend')) return typeConfig.weekly;
   if (t.includes('skill') || t.includes('pymupdf') || t.includes('resume')) return typeConfig.skill;
