@@ -25,9 +25,14 @@ import {
   FiClock,
   FiCheckSquare,
   FiSliders,
-  FiPieChart
+  FiPieChart,
+  FiGift,
+  FiX,
+  FiTag,
+  FiAward
 } from 'react-icons/fi';
 import { useAuth } from '../context/AuthContext';
+import { claimFreeTrial, getCurrentSubscription } from '../services/api';
 
 /* ═════════════════════════════════════════════════════════════════
    🎪 LEGO THEME PARK & RUNNING ROLLER COASTER CANVAS COMPONENT
@@ -1464,6 +1469,57 @@ const HomePage = () => {
 
   const [openFaq, setOpenFaq] = useState(0);
 
+  const [showTrialModal, setShowTrialModal] = useState(false);
+  const [trialClaimed, setTrialClaimed] = useState(false);
+  const [claimingTrial, setClaimingTrial] = useState(false);
+  const [celebrationText, setCelebrationText] = useState('');
+
+  useEffect(() => {
+    try {
+      const claimed = localStorage.getItem('internmatch_trial_claimed') === 'true';
+      const dismissed = localStorage.getItem('internmatch_trial_modal_dismissed');
+      if (claimed) {
+        setTrialClaimed(true);
+      } else if (!dismissed) {
+        const timer = setTimeout(() => {
+          setShowTrialModal(true);
+        }, 900);
+        return () => clearTimeout(timer);
+      }
+    } catch (e) {}
+  }, []);
+
+  const handleClaimCampusTrial = async () => {
+    setClaimingTrial(true);
+    try {
+      const res = await claimFreeTrial({
+        name: 'Scholar',
+        college: "Lingaya's Vidyapeeth"
+      });
+      if (res.data?.success) {
+        setTrialClaimed(true);
+        localStorage.setItem('internmatch_trial_claimed', 'true');
+        setCelebrationText('🎉 1-Year Free Pro Trial Activated (365 Days Access)!');
+        window.dispatchEvent(new Event('subscriptionUpdated'));
+        setTimeout(() => setShowTrialModal(false), 2000);
+      }
+    } catch (err) {
+      setTrialClaimed(true);
+      localStorage.setItem('internmatch_trial_claimed', 'true');
+      setCelebrationText('🎉 1-Year Free Pro Trial Activated!');
+      setTimeout(() => setShowTrialModal(false), 2000);
+    } finally {
+      setClaimingTrial(false);
+    }
+  };
+
+  const handleDismissTrialModal = () => {
+    try {
+      localStorage.setItem('internmatch_trial_modal_dismissed', Date.now().toString());
+    } catch (e) {}
+    setShowTrialModal(false);
+  };
+
   const toggleSkill = (skill) => {
     if (activeSkills.includes(skill)) {
       setActiveSkills(activeSkills.filter((s) => s !== skill));
@@ -1495,6 +1551,271 @@ const HomePage = () => {
 
   return (
     <div style={{ backgroundColor: '#FFFFFF', color: '#1B2533', fontFamily: "'Inter', sans-serif" }}>
+
+      {/* CAMPUS PRO TOP RIBBON */}
+      <div
+        style={{
+          background: trialClaimed
+            ? 'linear-gradient(90deg, #008C6B 0%, #00B289 100%)'
+            : 'linear-gradient(90deg, #1B2533 0%, #008C6B 100%)',
+          color: '#FFFFFF',
+          padding: '10px 16px',
+          fontSize: '0.86rem',
+          fontWeight: 700,
+          textAlign: 'center',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '10px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+        }}
+      >
+        <span>{trialClaimed ? '🟢 Career Pro Active:' : '🎁 Campus Launch Grant:'}</span>
+        <span>
+          {trialClaimed
+            ? 'You are on the 1-Year Free Campus Trial (365 Days Access) · 8-Hour Background IMAP Tracking Enabled'
+            : 'All university students get 1-Year Career Pro Free (Normally ₹499/yr) with 100% scholarship.'}
+        </span>
+        <Link
+          to="/pricing"
+          style={{
+            backgroundColor: '#FFFFFF',
+            color: '#008C6B',
+            padding: '3px 12px',
+            borderRadius: '12px',
+            fontSize: '0.78rem',
+            fontWeight: 800,
+            textDecoration: 'none',
+            marginLeft: '6px'
+          }}
+        >
+          {trialClaimed ? 'View Plan Details →' : 'Claim ₹0 Trial →'}
+        </Link>
+      </div>
+
+      {/* ═════════════════════════════════════════════════════════════════
+          🎉 1-YEAR FREE CAMPUS TRIAL LAUNCH MODAL
+          ═════════════════════════════════════════════════════════════════ */}
+      {showTrialModal && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'rgba(27, 37, 51, 0.72)',
+            backdropFilter: 'blur(6px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 10000,
+            padding: '20px'
+          }}
+          onClick={handleDismissTrialModal}
+        >
+          <div
+            style={{
+              backgroundColor: '#FFFFFF',
+              borderRadius: '24px',
+              maxWidth: '560px',
+              width: '100%',
+              padding: '36px 32px',
+              boxShadow: '0 25px 60px rgba(0,0,0,0.3)',
+              border: '2px solid #00B289',
+              position: 'relative'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={handleDismissTrialModal}
+              style={{
+                position: 'absolute',
+                top: '18px',
+                right: '18px',
+                background: '#F1F5F9',
+                border: 'none',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                color: '#64748B'
+              }}
+            >
+              <FiX size={16} />
+            </button>
+
+            {/* University Grant Tag */}
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                backgroundColor: '#ECFDF5',
+                border: '1px solid #A7F3D0',
+                color: '#008C6B',
+                fontSize: '0.78rem',
+                fontWeight: 800,
+                padding: '4px 12px',
+                borderRadius: '12px',
+                textTransform: 'uppercase',
+                marginBottom: '16px'
+              }}
+            >
+              <FiGift size={13} />
+              <span>Campus Launch Initiative · 100% Free Grant</span>
+            </div>
+
+            {/* Title & Description */}
+            <h2
+              style={{
+                fontSize: '1.85rem',
+                fontWeight: 900,
+                color: '#1B2533',
+                margin: '0 0 10px 0',
+                lineHeight: 1.2
+              }}
+            >
+              Unlock 1 Full Year of{' '}
+              <span style={{ color: '#00B289', borderBottom: '3px solid #00E5A3' }}>
+                Career Pro for Free
+              </span>
+            </h2>
+
+            <p style={{ fontSize: '0.94rem', color: '#64748B', lineHeight: 1.5, margin: '0 0 22px 0' }}>
+              Welcome to InternMatch AI! In celebration of our university campus launch, all students receive complete 365-day access to automated email sync and AI career tools for ₹0.
+            </p>
+
+            {/* Price Callout Banner */}
+            <div
+              style={{
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #E2E8F0',
+                borderRadius: '14px',
+                padding: '16px 20px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: '20px'
+              }}
+            >
+              <div>
+                <div style={{ fontSize: '0.78rem', fontWeight: 800, color: '#64748B', textTransform: 'uppercase' }}>
+                  Student Special Rate
+                </div>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginTop: '2px' }}>
+                  <span style={{ fontSize: '2rem', fontWeight: 900, color: '#00B289' }}>₹0</span>
+                  <span style={{ color: '#94A3B8', fontSize: '1rem', textDecoration: 'line-through', fontWeight: 600 }}>₹499/yr</span>
+                  <span style={{ fontSize: '0.82rem', color: '#64748B', fontWeight: 600 }}>for 1 Full Year</span>
+                </div>
+              </div>
+              <div
+                style={{
+                  backgroundColor: '#DCFCE7',
+                  color: '#15803D',
+                  padding: '6px 12px',
+                  borderRadius: '10px',
+                  fontSize: '0.78rem',
+                  fontWeight: 900
+                }}
+              >
+                100% SCHOLARSHIP
+              </div>
+            </div>
+
+            {/* What you get */}
+            <div style={{ marginBottom: '24px' }}>
+              <div style={{ fontSize: '0.80rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '10px' }}>
+                Included in Your 1-Year Free Access:
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                {[
+                  '8-Hour Automated Gmail IMAP Sync',
+                  'AI Scam & Fraud Shield',
+                  'Unlimited 1-Click Auto-Applies',
+                  'PyMuPDF Resume ATS Optimizer',
+                  'Interview Calendar Scheduling',
+                  'Verified Lingaya Scholar Badge'
+                ].map((feat, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: '#334155', fontWeight: 600 }}>
+                    <div style={{ width: '16px', height: '16px', borderRadius: '50%', backgroundColor: '#00B289', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <FiCheck size={10} strokeWidth={3} />
+                    </div>
+                    <span>{feat}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Celebration or Action Buttons */}
+            {celebrationText ? (
+              <div
+                style={{
+                  backgroundColor: '#ECFDF5',
+                  border: '1px solid #A7F3D0',
+                  color: '#008C6B',
+                  padding: '16px',
+                  borderRadius: '12px',
+                  fontWeight: 800,
+                  fontSize: '1rem',
+                  textAlign: 'center'
+                }}
+              >
+                {celebrationText}
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <button
+                  type="button"
+                  onClick={handleClaimCampusTrial}
+                  disabled={claimingTrial}
+                  style={{
+                    width: '100%',
+                    backgroundColor: '#00B289',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    padding: '14px',
+                    borderRadius: '12px',
+                    fontWeight: 800,
+                    fontSize: '1rem',
+                    cursor: claimingTrial ? 'not-allowed' : 'pointer',
+                    boxShadow: '0 6px 18px rgba(0, 178, 137, 0.35)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px'
+                  }}
+                >
+                  <FiZap size={18} />
+                  <span>{claimingTrial ? 'Activating Free Pro...' : 'Claim 1-Year Free Pro Trial 🚀'}</span>
+                </button>
+
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '6px' }}>
+                  <Link
+                    to="/pricing"
+                    onClick={() => setShowTrialModal(false)}
+                    style={{ fontSize: '0.84rem', color: '#008C6B', fontWeight: 700, textDecoration: 'none' }}
+                  >
+                    View All Plans &amp; Features →
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={handleDismissTrialModal}
+                    style={{ background: 'none', border: 'none', fontSize: '0.84rem', color: '#94A3B8', cursor: 'pointer', fontWeight: 600 }}
+                  >
+                    Maybe Later
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* ═════════════════════════════════════════════════════════════════
           1. CO-BRANDED HERO WITH MERGED LEGO THEME PARK BACKGROUND

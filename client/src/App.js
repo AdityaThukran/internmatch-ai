@@ -22,6 +22,7 @@ import RecruiterPage from './pages/RecruiterPage';
 import EmailSyncPage from './pages/EmailSyncPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import DataProtectionPage from './pages/DataProtectionPage';
+import SubscriptionsPage from './pages/SubscriptionsPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
 function App() {
@@ -116,6 +117,8 @@ function App() {
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
             <Route path="/data-protection" element={<DataProtectionPage />} />
             <Route path="/transparency" element={<DataProtectionPage />} />
+            <Route path="/pricing" element={<SubscriptionsPage />} />
+            <Route path="/subscriptions" element={<SubscriptionsPage />} />
           </Routes>
           <Footer />
           <AndroidBottomNav />

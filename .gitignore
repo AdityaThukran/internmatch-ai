@@ -35,6 +35,8 @@ ai-service/__pycache__/
 server/uploads/*
 !server/uploads/.gitkeep
 uploads/*
+server/data/*
+!server/data/.gitkeep
 
 # Temporary logs & Scratch files
 *.log

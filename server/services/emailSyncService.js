@@ -411,6 +411,78 @@ function classifyCareerEmail(subject = '', from = '', textBody = '', date = new 
 }
 
 /**
+ * Test and verify IMAP credentials directly with the mail server
+ */
+async function verifyIMAPCredentials({ email, password, host, port = 993, tls = true }) {
+  let resolvedHost = host;
+  if (!resolvedHost) {
+    if (email.endsWith('@gmail.com') || email.includes('googlemail')) {
+      resolvedHost = 'imap.gmail.com';
+    } else if (email.endsWith('@outlook.com') || email.endsWith('@hotmail.com')) {
+      resolvedHost = 'outlook.office365.com';
+    } else if (email.endsWith('@yahoo.com')) {
+      resolvedHost = 'imap.mail.yahoo.com';
+    } else {
+      resolvedHost = 'imap.gmail.com';
+    }
+  }
+
+  const cleanPass = (password || '').trim().replace(/\s+/g, '');
+  if (cleanPass.length < 8) {
+    throw new Error('Invalid App Password length. Google App Passwords are 16 characters long (e.g., abcd efgh ijkl mnop). Please check your credentials.');
+  }
+
+  const config = {
+    imap: {
+      user: email.trim(),
+      password: cleanPass,
+      host: resolvedHost,
+      port: Number(port) || 993,
+      tls: tls !== false,
+      tlsOptions: { rejectUnauthorized: false },
+      authTimeout: 12000
+    }
+  };
+
+  let connection = null;
+  try {
+    console.log(`[EmailSync] Verifying IMAP credentials for ${email} on ${resolvedHost}:${port}...`);
+    connection = await imapSimple.connect(config);
+    await connection.openBox('INBOX');
+    await connection.end();
+    console.log(`[EmailSync] ✅ IMAP credentials verified successfully for ${email}`);
+    return true;
+  } catch (err) {
+    if (connection) {
+      try { connection.end(); } catch (e) {}
+    }
+    const msg = (err.message || '').toString();
+    console.error(`[EmailSync] IMAP Verification error for ${email}:`, msg);
+
+    if (
+      msg.includes('AUTHENTICATIONFAILED') ||
+      msg.includes('Invalid credentials') ||
+      msg.includes('Username and Password not accepted') ||
+      msg.includes('login failed') ||
+      msg.includes('BadCredentials') ||
+      msg.includes('Application-specific password required')
+    ) {
+      throw new Error(
+        `Authentication failed: Google rejected the App Password for "${email}".\n\n` +
+        `Please ensure you enter a valid 16-character Google App Password (not your personal Google account password):\n` +
+        `1. Enable 2-Step Verification in your Google Account.\n` +
+        `2. Go to: Google Account > Security > 2-Step Verification > App passwords.\n` +
+        `3. App name: "InternMatch" > Generate > Copy the 16-letter code.`
+      );
+    } else if (msg.includes('ETIMEDOUT') || msg.includes('ECONNREFUSED') || msg.includes('ENOTFOUND')) {
+      throw new Error(`Unable to reach mail server at ${resolvedHost}:${port}. Please verify your network connection or server host settings.`);
+    } else {
+      throw new Error(`IMAP authentication failed for "${email}": ${msg}. Please ensure 2-Step Verification is enabled and enter a valid 16-character App Password.`);
+    }
+  }
+}
+
+/**
  * Connect to real IMAP Server (e.g. Gmail with App Password)
  */
 async function connectAndFetchIMAP({ email, password, host, port = 993, tls = true, maxEmails = 15 }) {
@@ -427,15 +499,16 @@ async function connectAndFetchIMAP({ email, password, host, port = 993, tls = tr
     }
   }
 
+  const cleanPass = (password || '').trim().replace(/\s+/g, '');
   const config = {
     imap: {
-      user: email,
-      password: password,
+      user: email.trim(),
+      password: cleanPass,
       host: resolvedHost,
       port: Number(port) || 993,
       tls: tls,
       tlsOptions: { rejectUnauthorized: false },
-      authTimeout: 10000
+      authTimeout: 12000
     }
   };
 
@@ -742,27 +815,42 @@ Summary: ${emailItem.summary}`;
  */
 const emailSyncService = {
   /**
-   * Connect and configure secondary email
+   * Connect and configure secondary email (Strictly verifies IMAP credentials before saving)
    */
   connectMailbox: async (userId, { email, password, provider, host, port, tls }) => {
     if (!email || !password) {
-      throw new Error('Email address and password/app-token are required.');
+      throw new Error('Email address and 16-character App Password are required.');
     }
 
-    const masked = password.slice(0, 2) + '••••••••' + password.slice(-2);
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanPassword = password.trim().replace(/\s+/g, '');
+
+    const resolvedHost = host || (cleanEmail.includes('gmail') ? 'imap.gmail.com' : 'outlook.office365.com');
+    const resolvedPort = Number(port) || 993;
+
+    // 1. Strictly verify credentials with the IMAP server first!
+    await verifyIMAPCredentials({
+      email: cleanEmail,
+      password: cleanPassword,
+      host: resolvedHost,
+      port: resolvedPort,
+      tls: tls !== false
+    });
+
+    const masked = cleanPassword.slice(0, 2) + '••••••••' + cleanPassword.slice(-2);
 
     const mailboxData = {
       userId,
-      email: email.trim().toLowerCase(),
+      email: cleanEmail,
       maskedPassword: masked,
       provider: provider || 'gmail',
-      host: host || (email.includes('gmail') ? 'imap.gmail.com' : 'outlook.office365.com'),
-      port: port || 993,
+      host: resolvedHost,
+      port: resolvedPort,
       tls: tls !== false,
       connectedAt: new Date().toISOString(),
       lastChecked: null,
       status: 'connected',
-      rawPassword: password
+      rawPassword: cleanPassword
     };
 
     connectedMailboxes.set(userId || 'default', mailboxData);
@@ -799,12 +887,15 @@ const emailSyncService = {
       return {
         connected: false,
         email: null,
+        status: 'disconnected',
         lastChecked: null,
         scheduler: emailSyncService.getScheduleStatus()
       };
     }
     return {
-      connected: true,
+      connected: data.status === 'connected',
+      status: data.status || 'connected',
+      lastError: data.lastError || null,
       email: data.email,
       provider: data.provider,
       host: data.host,
@@ -831,33 +922,43 @@ const emailSyncService = {
   },
 
   /**
-   * Scan inbox (Real IMAP or Simulated Fallback) with AI Legitimacy Shield & Live Tracker Sync
+   * Scan inbox (Strictly Live IMAP for connected users; Simulated for sandbox demo only)
    */
-  scanInbox: async (userId, candidateName = 'Scholar') => {
+  scanInbox: async (userId, candidateName = 'Scholar', isDemo = false) => {
     const mailbox = connectedMailboxes.get(userId || 'default');
     let rawEmails = [];
     let isRealImap = false;
 
-    if (mailbox && mailbox.rawPassword) {
+    if (isDemo || (!mailbox && (userId === 'sandbox' || userId === 'demo'))) {
+      // Explicit sandbox demo mode ONLY
+      const simulated = getSimulatedRecruiterEmails(candidateName);
+      rawEmails = simulated.map(s => classifyCareerEmail(s.subject, s.from, s.body, s.date));
+    } else if (mailbox && mailbox.rawPassword) {
       try {
         console.log(`[EmailSync] Connecting via IMAP to ${mailbox.host} for ${mailbox.email}...`);
         rawEmails = await connectAndFetchIMAP({
           email: mailbox.email,
-          password: mailbox.rawPassword,
+          password: mailbox.rawPassword.replace(/\s+/g, ''),
           host: mailbox.host,
           port: mailbox.port,
           tls: mailbox.tls
         });
         isRealImap = true;
+        mailbox.status = 'connected';
+        mailbox.lastError = null;
         mailbox.lastChecked = new Date().toISOString();
+        saveMailboxesToDisk();
       } catch (err) {
-        console.warn(`[EmailSync] IMAP connection failed: ${err.message}. Falling back to smart simulated recruiter inbox.`);
-        const simulated = getSimulatedRecruiterEmails(candidateName);
-        rawEmails = simulated.map(s => classifyCareerEmail(s.subject, s.from, s.body, s.date));
+        console.error(`[EmailSync] Live IMAP connection failed for ${mailbox.email}: ${err.message}`);
+        mailbox.status = 'auth_error';
+        mailbox.lastError = err.message;
+        saveMailboxesToDisk();
+        // NEVER show fake simulated recruiter emails when live credentials fail!
+        throw new Error(`IMAP fetch failed for ${mailbox.email}: ${err.message}. Please check your App Password or re-connect your mailbox.`);
       }
     } else {
-      const simulated = getSimulatedRecruiterEmails(candidateName);
-      rawEmails = simulated.map(s => classifyCareerEmail(s.subject, s.from, s.body, s.date));
+      // No mailbox connected and not in demo mode
+      throw new Error('No secondary career mailbox is currently connected. Please connect your email using a 16-character Google App Password or click "Test with Simulated Recruiter Mailbox" to explore the sandbox.');
     }
 
     userParsedEmails.set(userId || 'default', rawEmails);

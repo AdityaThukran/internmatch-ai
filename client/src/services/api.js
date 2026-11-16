@@ -87,4 +87,11 @@ export const getParsedEmails = () => API.get('/email/parsed');
 export const getEmailScheduleStatus = () => API.get('/email/schedule');
 export const triggerImmediateEmailSync = () => API.post('/email/sync-now');
 
+// Subscription, Revenue Model & Razorpay
+export const getSubscriptionPlans = () => API.get('/subscription/plans');
+export const getCurrentSubscription = () => API.get('/subscription/current');
+export const claimFreeTrial = (data) => API.post('/subscription/claim-trial', data);
+export const createRazorpayOrder = (data) => API.post('/subscription/create-order', data);
+export const verifyRazorpayPayment = (data) => API.post('/subscription/verify-payment', data);
+
 export default API;

@@ -13,7 +13,8 @@ import {
   FiLayers,
   FiBell,
   FiHelpCircle,
-  FiMail
+  FiMail,
+  FiTag
 } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
 import NotificationBell from '../notifications/NotificationBell';
@@ -155,6 +156,29 @@ const Navbar = () => {
           >
             <FiShield size={15} />
             <span>Privacy &amp; Tracking</span>
+          </Link>
+
+          {/* 5. Subscriptions & Pricing with 1-Yr Free Campus Grant Pill */}
+          <Link
+            to="/pricing"
+            className={`bonsai-nav-link ${isActive('/pricing') ? 'bonsai-nav-link-active' : ''}`}
+          >
+            <FiTag size={15} />
+            <span>Pricing</span>
+            <span
+              className="bonsai-pill-tag"
+              style={{
+                backgroundColor: '#ECFDF5',
+                color: '#008C6B',
+                border: '1px solid #A7F3D0',
+                fontSize: '0.68rem',
+                fontWeight: 800,
+                padding: '2px 6px',
+                borderRadius: '8px'
+              }}
+            >
+              1-Yr Free
+            </span>
           </Link>
 
           {/* 5. Recruiter Portal & ATS */}
@@ -324,6 +348,11 @@ const Navbar = () => {
             <Link to="/help" className="bonsai-mobile-link" onClick={() => setMobileOpen(false)}>
               <FiHelpCircle size={17} color="#00B289" />
               <span>Help &amp; Student Guides</span>
+            </Link>
+            <Link to="/pricing" className="bonsai-mobile-link" onClick={() => setMobileOpen(false)}>
+              <FiTag size={17} color="#00B289" />
+              <span>Subscriptions &amp; Pricing</span>
+              <span className="bonsai-pill-tag" style={{ marginLeft: 'auto', backgroundColor: '#ECFDF5', color: '#008C6B', border: '1px solid #A7F3D0' }}>1-Yr Free</span>
             </Link>
 
             {isAuthenticated ? (

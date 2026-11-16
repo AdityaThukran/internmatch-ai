@@ -452,6 +452,32 @@ const supabaseService = {
     } catch (e) {
       return false;
     }
+  },
+
+  // 8. Subscription Persistence
+  async saveUserSubscription(userId, subscriptionData) {
+    if (!isSupabaseConfigured() || !userId) return false;
+    try {
+      const { data: user, error: fetchErr } = await supabase.from('users').select('preferences').eq('id', userId).single();
+      if (fetchErr) return false;
+      const updatedPrefs = { ...(user?.preferences || {}), subscription: subscriptionData };
+      const { error } = await supabase.from('users').update({ preferences: updatedPrefs }).eq('id', userId);
+      return !error;
+    } catch (e) {
+      console.warn('saveUserSubscription warning:', e.message);
+      return false;
+    }
+  },
+
+  async getUserSubscription(userId) {
+    if (!isSupabaseConfigured() || !userId) return null;
+    try {
+      const { data: user, error } = await supabase.from('users').select('preferences').eq('id', userId).single();
+      if (error || !user) return null;
+      return user.preferences?.subscription || null;
+    } catch (e) {
+      return null;
+    }
   }
 };
 

@@ -17,6 +17,7 @@ const realTimeJobAPIService = require('./services/realTimeJobAPIService');
 const directScraperService = require('./services/directScraperService');
 const autonomousAgentService = require('./services/autonomousAgentService');
 const emailSyncService = require('./services/emailSyncService');
+const razorpayService = require('./services/razorpayService');
 const {
   mockUsers,
   mockStudentProfile,
@@ -604,8 +605,8 @@ const fallbackMiddleware = async (req, res, next) => {
         } catch (e) {}
       }
 
-      const { candidateName } = req.body || {};
-      const scanResult = await emailSyncService.scanInbox(userId, candidateName || 'Scholar');
+      const { candidateName, isDemo } = req.body || {};
+      const scanResult = await emailSyncService.scanInbox(userId, candidateName || 'Scholar', Boolean(isDemo));
       return res.json(scanResult);
     } catch (err) {
       console.error('[API] Email scan error:', err);
@@ -650,6 +651,90 @@ const fallbackMiddleware = async (req, res, next) => {
     } catch (err) {
       console.error('[API] Sync now error:', err);
       return res.status(500).json({ success: false, message: 'Sync error: ' + err.message });
+    }
+  }
+
+  // ═════════════════════════════════════════════════════════════════
+  // 💳 REVENUE MODEL & RAZORPAY SUBSCRIPTION ENDPOINTS
+  // ═════════════════════════════════════════════════════════════════
+  if (reqPath === '/api/subscription/plans' && method === 'GET') {
+    const plans = razorpayService.getPlans();
+    return res.json({ success: true, data: plans });
+  }
+
+  if (reqPath === '/api/subscription/current' && method === 'GET') {
+    const authHeader = req.headers.authorization;
+    let userId = 'default';
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      try {
+        const decoded = jwt.verify(authHeader.split(' ')[1], config.jwtSecret);
+        userId = decoded.id || 'default';
+      } catch (e) {}
+    }
+    const currentSub = razorpayService.getUserSubscription(userId);
+    return res.json({ success: true, data: currentSub });
+  }
+
+  if (reqPath === '/api/subscription/claim-trial' && method === 'POST') {
+    try {
+      const authHeader = req.headers.authorization;
+      let userId = 'default';
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        try {
+          const decoded = jwt.verify(authHeader.split(' ')[1], config.jwtSecret);
+          userId = decoded.id || 'default';
+        } catch (e) {}
+      }
+      const { name, email, college } = req.body || {};
+      const result = await razorpayService.claimFreeTrial(userId, { name, email, college });
+      return res.json(result);
+    } catch (err) {
+      console.error('[API] Claim trial error:', err);
+      return res.status(400).json({ success: false, message: err.message });
+    }
+  }
+
+  if (reqPath === '/api/subscription/create-order' && method === 'POST') {
+    try {
+      const authHeader = req.headers.authorization;
+      let userId = 'default';
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        try {
+          const decoded = jwt.verify(authHeader.split(' ')[1], config.jwtSecret);
+          userId = decoded.id || 'default';
+        } catch (e) {}
+      }
+      const { planId, amount, currency, notes } = req.body || {};
+      const order = await razorpayService.createOrder({ planId, amount, currency, notes, userId });
+      return res.json(order);
+    } catch (err) {
+      console.error('[API] Razorpay create order error:', err);
+      return res.status(400).json({ success: false, message: err.message });
+    }
+  }
+
+  if (reqPath === '/api/subscription/verify-payment' && method === 'POST') {
+    try {
+      const authHeader = req.headers.authorization;
+      let userId = 'default';
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        try {
+          const decoded = jwt.verify(authHeader.split(' ')[1], config.jwtSecret);
+          userId = decoded.id || 'default';
+        } catch (e) {}
+      }
+      const { razorpay_order_id, razorpay_payment_id, razorpay_signature, planId } = req.body || {};
+      const verification = await razorpayService.verifyPayment({
+        razorpay_order_id,
+        razorpay_payment_id,
+        razorpay_signature,
+        planId,
+        userId
+      });
+      return res.json(verification);
+    } catch (err) {
+      console.error('[API] Razorpay verification error:', err);
+      return res.status(400).json({ success: false, message: err.message });
     }
   }
 

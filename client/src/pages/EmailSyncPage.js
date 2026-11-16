@@ -31,6 +31,7 @@ const EmailSyncPage = () => {
   const [status, setStatus] = useState({ connected: false, email: null, lastChecked: null });
   const [parsedEmails, setParsedEmails] = useState([]);
   const [notice, setNotice] = useState('');
+  const [authError, setAuthError] = useState(null);
   const [provider, setProvider] = useState('gmail');
   const [formData, setFormData] = useState({
     email: '',
@@ -77,8 +78,9 @@ const EmailSyncPage = () => {
 
   const handleConnect = async (e) => {
     e.preventDefault();
+    setAuthError(null);
     if (!formData.email.trim() || !formData.password.trim()) {
-      alert('Please provide both your secondary career email and App Password.');
+      setAuthError('Please provide both your secondary career email and 16-character App Password.');
       return;
     }
 
@@ -103,10 +105,12 @@ const EmailSyncPage = () => {
         });
         setNotice('✅ Secondary career mailbox connected! Starting initial AI scan...');
         // Auto-run first scan
-        await handleScan();
+        await handleScan(false);
       }
     } catch (err) {
-      alert('Connection error: ' + (err.response?.data?.message || err.message));
+      const errorMsg = err.response?.data?.message || err.message;
+      setAuthError(errorMsg);
+      setNotice('❌ IMAP Authentication failed. Please check your App Password.');
     } finally {
       setSyncing(false);
     }
@@ -138,7 +142,7 @@ const EmailSyncPage = () => {
     })();
 
     try {
-      const res = await scanEmailInbox({ candidateName });
+      const res = await scanEmailInbox({ candidateName, isDemo });
       if (res.data?.success) {
         setParsedEmails(res.data.emails || []);
         setStatus(prev => ({ ...prev, lastChecked: res.data.lastChecked }));
@@ -149,7 +153,8 @@ const EmailSyncPage = () => {
       }
     } catch (err) {
       console.error('Scan error:', err);
-      setNotice('Inbox scan completed.');
+      const errMsg = err.response?.data?.message || err.message;
+      setNotice(errMsg.includes('IMAP') ? `⚠️ ${errMsg}` : 'Inbox scan completed.');
     } finally {
       setSyncing(false);
     }
@@ -404,6 +409,45 @@ const EmailSyncPage = () => {
                     Generated in Google Account → Security → 2-Step Verification → App Passwords.
                   </small>
                 </div>
+
+                {authError && (
+                  <div
+                    style={{
+                      backgroundColor: '#FEF2F2',
+                      border: '1px solid #FECACA',
+                      borderRadius: '10px',
+                      padding: '14px 16px',
+                      marginBottom: '16px',
+                      color: '#991B1B',
+                      fontSize: '0.86rem',
+                      lineHeight: 1.5
+                    }}
+                  >
+                    <div style={{ fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+                      <FiAlertTriangle size={16} color="#DC2626" />
+                      <span>Google App Password Error</span>
+                    </div>
+                    <div style={{ whiteSpace: 'pre-line', marginBottom: '10px', color: '#7F1D1D' }}>
+                      {authError}
+                    </div>
+                    <a
+                      href="https://myaccount.google.com/apppasswords"
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        color: '#DC2626',
+                        fontWeight: 700,
+                        fontSize: '0.82rem',
+                        textDecoration: 'underline'
+                      }}
+                    >
+                      Open Google Account App Passwords ↗
+                    </a>
+                  </div>
+                )}
 
                 <button
                   type="submit"

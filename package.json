@@ -18,5 +18,8 @@
     "nlp"
   ],
   "author": "Aditya",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "razorpay": "^2.9.8"
+  }
 }

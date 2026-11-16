@@ -49,6 +49,7 @@ const Footer = () => {
               <li><Link to="/email-sync" style={{ color: '#4D5C6D', textDecoration: 'none' }}>Email Application Sync</Link></li>
               <li><Link to="/profile" style={{ color: '#4D5C6D', textDecoration: 'none' }}>PDF Resume Parser & Skills</Link></li>
               <li><Link to="/privacy" style={{ color: '#008C6B', fontWeight: 700, textDecoration: 'none' }}>🛡️ Privacy &amp; Data Security</Link></li>
+              <li><Link to="/pricing" style={{ color: '#008C6B', fontWeight: 700, textDecoration: 'none' }}>💳 Subscriptions &amp; Pricing (1-Yr Free)</Link></li>
               <li><Link to="/data-protection" style={{ color: '#008C6B', fontWeight: 700, textDecoration: 'none' }}>🔒 How Data Is Protected</Link></li>
               <li><Link to="/help" style={{ color: '#008C6B', fontWeight: 700, textDecoration: 'none' }}>🌿 Help Center &amp; FAQs</Link></li>
             </ul>
