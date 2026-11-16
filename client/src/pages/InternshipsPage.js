@@ -102,7 +102,7 @@ const InternshipsPage = () => {
           
           if (json.data.lastDiscovered && json.data.lastDiscovered.title) {
             const pRes = await getInternships({ limit: 100 });
-            const listData = pRes.data?.data?.results || pRes.data?.data || pRes.data?.results || pRes.data || [];
+            const listData = pRes.data?.data?.internships || pRes.data?.data?.results || pRes.data?.internships || (Array.isArray(pRes.data?.data) ? pRes.data.data : (Array.isArray(pRes.data) ? pRes.data : []));
             if (Array.isArray(listData) && listData.length > previousCountRef.current && previousCountRef.current > 0) {
               setInternships(listData);
               setNewDiscoveredAlert(json.data.lastDiscovered);
@@ -183,7 +183,7 @@ const InternshipsPage = () => {
       params.limit = 100;
 
       const res = await getInternships(params);
-      const listData = res.data?.data?.results || res.data?.data || res.data?.results || res.data || [];
+      const listData = res.data?.data?.internships || res.data?.data?.results || res.data?.internships || (Array.isArray(res.data?.data) ? res.data.data : (Array.isArray(res.data) ? res.data : []));
       const safeList = Array.isArray(listData) ? listData : [];
       setInternships(safeList);
       if (previousCountRef.current === 0) {

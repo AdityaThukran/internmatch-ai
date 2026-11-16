@@ -37,7 +37,7 @@ const AdminPage = () => {
     setLoading(true);
     try {
       const res = await getInternships({ limit: 10 });
-      const list = res.data?.data?.results || res.data?.data || res.data?.results || res.data || [];
+      const list = res.data?.data?.internships || res.data?.data?.results || res.data?.internships || (Array.isArray(res.data?.data) ? res.data.data : (Array.isArray(res.data) ? res.data : []));
       setInternships(Array.isArray(list) ? list : []);
     } catch (err) {
       console.warn('Error loading admin data:', err);

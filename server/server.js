@@ -1475,6 +1475,21 @@ const startServer = async () => {
   try {
     await connectDB();
     console.log('MongoDB connection initialized successfully.');
+    // Check if internships collection is empty and auto-seed verified real internships
+    try {
+      const Internship = require('./models/Internship');
+      const count = await Internship.countDocuments();
+      if (count === 0) {
+        console.log('Database empty. Auto-seeding verified real corporate internships...');
+        const realInternships = require('./realInternshipsData');
+        await Internship.insertMany(realInternships);
+        console.log(`✓ Auto-seeded ${realInternships.length} verified listings into MongoDB.`);
+      } else {
+        console.log(`✓ Database already has ${count} verified internships.`);
+      }
+    } catch (seedErr) {
+      console.warn('Auto-seed check notice:', seedErr.message);
+    }
   } catch (err) {
     console.log('Running in self-contained In-Memory Data mode (MongoDB offline). All features fully functional!');
   }

@@ -59,7 +59,7 @@ const getInternships = async (req, res) => {
     }
 
     // Execute query with pagination
-    const [internships, total] = await Promise.all([
+    let [internships, total] = await Promise.all([
       search
         ? Internship.find(filter, { score: { $meta: 'textScore' } })
             .sort(sort)
@@ -71,6 +71,34 @@ const getInternships = async (req, res) => {
             .limit(limitNum),
       Internship.countDocuments(filter),
     ]);
+
+    // Fallback: If database is empty or unseeded, serve verified real listings from memory
+    if (total === 0) {
+      try {
+        const realData = require('../realInternshipsData') || [];
+        let filtered = [...realData];
+        if (search) {
+          const q = search.toLowerCase();
+          filtered = filtered.filter(
+            (item) =>
+              (item.title && item.title.toLowerCase().includes(q)) ||
+              (item.organization && item.organization.toLowerCase().includes(q)) ||
+              (item.description && item.description.toLowerCase().includes(q))
+          );
+        }
+        if (mode && ['remote', 'onsite', 'hybrid'].includes(mode)) {
+          filtered = filtered.filter((item) => item.mode === mode);
+        }
+        if (location) {
+          const loc = location.toLowerCase();
+          filtered = filtered.filter((item) => item.location && item.location.toLowerCase().includes(loc));
+        }
+        total = filtered.length;
+        internships = filtered.slice(skip, skip + limitNum);
+      } catch (memErr) {
+        // use original empty set
+      }
+    }
 
     return res.status(200).json(
       formatResponse(true, 'Internships retrieved successfully', {

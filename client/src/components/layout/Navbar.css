@@ -25,12 +25,12 @@
   max-width: 1440px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 20px;
   height: 72px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
   box-sizing: border-box;
 }
 
@@ -47,7 +47,7 @@
 .bonsai-nav-desktop {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 14px;
   height: 100%;
   flex: 1;
   justify-content: center;
@@ -350,8 +350,9 @@
 .bonsai-actions-desktop {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   flex-shrink: 0;
+  margin-left: auto;
 }
 
 .bonsai-auth-buttons {
@@ -472,7 +473,7 @@
   font-size: 0.88rem;
   font-weight: 600;
   color: #2D3748;
-  max-width: 90px;
+  max-width: 70px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -592,18 +593,19 @@
   display: none;
 }
 
-@media (max-width: 1360px) {
+/* ── Responsive Viewport Adaptive Scaling (Guarantees zero profile cutoff) ── */
+@media (max-width: 1400px) {
   .bonsai-navbar-container {
     padding: 0 16px;
     gap: 12px;
   }
 
   .bonsai-nav-desktop {
-    gap: 13px;
+    gap: 12px;
   }
 
   .bonsai-nav-link {
-    font-size: 0.86rem;
+    font-size: 0.88rem;
     padding: 0 2px;
     gap: 5px;
   }
@@ -613,13 +615,24 @@
     height: 14px;
   }
 
-  .bonsai-crawler-indicator {
-    padding: 0 8px;
-    font-size: 0.74rem;
+  /* Compact crawler pill with pulsing dot to preserve central alignment */
+  .bonsai-crawler-label {
+    display: none;
   }
 
+  .bonsai-crawler-indicator {
+    padding: 0 8px;
+    height: 30px;
+  }
+
+  /* Compact user avatar + dropdown chevron (Linear / Slack style) - completely eliminates profile clipping */
   .bonsai-user-name {
-    max-width: 75px;
+    display: none;
+  }
+
+  .bonsai-user-trigger {
+    padding: 3px 8px 3px 3px;
+    gap: 5px;
   }
 }
 
@@ -633,26 +646,30 @@
     gap: 20px;
   }
 
+  .bonsai-navbar-container {
+    padding: 0 14px;
+    gap: 8px;
+  }
+
   .bonsai-nav-desktop {
-    gap: 10px;
+    gap: 8px;
   }
 
   .bonsai-nav-link {
-    font-size: 0.82rem;
+    font-size: 0.83rem;
     gap: 4px;
+    padding: 0 1px;
   }
 
-  .bonsai-crawler-label {
-    display: none;
+  .bonsai-pill-tag {
+    font-size: 0.62rem;
+    padding: 0 5px;
+    height: 16px;
   }
 
   .bonsai-crawler-indicator {
-    padding: 0 7px;
+    padding: 0 6px;
     height: 28px;
-  }
-
-  .bonsai-user-name {
-    display: none;
   }
 
   .bonsai-user-trigger {
