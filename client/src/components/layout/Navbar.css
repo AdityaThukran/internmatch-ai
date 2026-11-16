@@ -22,13 +22,14 @@
 }
 
 .bonsai-navbar-container {
-  max-width: 1240px;
+  max-width: 1320px;
   margin: 0 auto;
-  padding: 0 28px;
+  padding: 0 32px;
   height: 76px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 24px;
 }
 
 /* Brand Logo Link */
@@ -43,11 +44,11 @@
   transform: translateY(-1px);
 }
 
-/* ── Center Desktop Nav Links ── */
+/* ── Center Desktop Nav Links (Spacious & Clean) ── */
 .bonsai-nav-desktop {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 36px;
 }
 
 .bonsai-nav-item-dropdown {
@@ -57,23 +58,24 @@
 .bonsai-nav-link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   background: none;
   border: none;
   color: #333333;
-  font-size: 0.94rem;
-  font-weight: 500;
+  font-size: 0.95rem;
+  font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  padding: 8px 4px;
-  transition: color 0.2s ease;
+  padding: 8px 12px;
+  transition: all 0.2s ease;
   font-family: inherit;
+  border-radius: 8px;
 }
 
 .bonsai-nav-link:hover,
 .bonsai-nav-link-active {
   color: #00B289;
-  /* HelloBonsai Signature Emerald Green */
+  background-color: #F0FDF4;
 }
 
 .bonsai-chevron {

@@ -20,6 +20,7 @@ import AdminPage from './pages/AdminPage';
 import HelpPage from './pages/HelpPage';
 import RecruiterPage from './pages/RecruiterPage';
 import EmailSyncPage from './pages/EmailSyncPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
 function App() {
@@ -111,6 +112,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route path="/privacy" element={<PrivacyPolicyPage />} />
           </Routes>
           <Footer />
           <AndroidBottomNav />

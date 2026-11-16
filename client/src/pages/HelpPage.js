@@ -19,7 +19,8 @@ import {
   FiLayers,
   FiBell,
   FiAward,
-  FiCheck
+  FiCheck,
+  FiShield
 } from 'react-icons/fi';
 
 const FAQ_DATA = [
@@ -78,6 +79,14 @@ const FAQ_DATA = [
     question: 'Is InternMatch AI free for university students?',
     answer:
       'Yes, 100% free! InternMatch AI was developed as a Capstone Engineering Project at Lingaya\'s Vidyapeeth to provide students with transparent, automated internship discovery without subscription paywalls or hidden charges.'
+  },
+  {
+    id: 8,
+    category: 'privacy',
+    icon: <FiShield />,
+    question: 'How does InternMatch AI protect my privacy and personal email?',
+    answer:
+      'Candidate confidentiality and data flexibility are our top priorities. You are never forced to link an email account; the platform operates 100% autonomously via our AI Hiring Simulator. If you choose external email tracking, we strictly recommend using a dedicated secondary career email with a disposable 16-character App Password. You can disconnect your mailbox or purge your resume data at any time with one click. Visit our dedicated Privacy & Security page (/privacy) for complete details.'
   }
 ];
 
@@ -86,6 +95,7 @@ const CATEGORIES = [
   { id: 'ai-matching', label: '🤖 AI Matching' },
   { id: 'resume', label: '📄 Resume Parser' },
   { id: 'applying', label: '⚡ Auto-Apply' },
+  { id: 'privacy', label: '🛡️ Privacy & Security' },
   { id: 'crawlers', label: '🌐 Live Crawlers' },
   { id: 'notifications', label: '🔔 Notifications' }
 ];

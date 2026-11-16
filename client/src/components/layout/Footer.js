@@ -46,8 +46,9 @@ const Footer = () => {
               <li><Link to="/recommendations" style={{ color: '#4D5C6D', textDecoration: 'none' }}>Sentence Transformers Matching</Link></li>
               <li><Link to="/internships" style={{ color: '#4D5C6D', textDecoration: 'none' }}>Verified Opportunity Directory</Link></li>
               <li><Link to="/applications" style={{ color: '#4D5C6D', textDecoration: 'none' }}>4-Stage Application Pipeline</Link></li>
+              <li><Link to="/email-sync" style={{ color: '#4D5C6D', textDecoration: 'none' }}>Email Application Sync</Link></li>
               <li><Link to="/profile" style={{ color: '#4D5C6D', textDecoration: 'none' }}>PDF Resume Parser & Skills</Link></li>
-              <li><Link to="/notifications" style={{ color: '#4D5C6D', textDecoration: 'none' }}>Weekly Cron Alert Digests</Link></li>
+              <li><Link to="/privacy" style={{ color: '#008C6B', fontWeight: 700, textDecoration: 'none' }}>🛡️ Privacy &amp; Data Security</Link></li>
               <li><Link to="/help" style={{ color: '#008C6B', fontWeight: 700, textDecoration: 'none' }}>🌿 Help Center &amp; FAQs</Link></li>
             </ul>
           </div>
@@ -99,11 +100,15 @@ const Footer = () => {
             justifyContent: 'space-between',
             alignItems: 'center',
             fontSize: '0.82rem',
-            color: '#8E98A4'
+            color: '#8E98A4',
+            gap: '12px'
           }}
         >
           <p>© 2026 InternMatch AI. Built by Aditya for Lingaya's Vidyapeeth. All rights reserved.</p>
-          <p>Lingaya’s Vidyapeeth • Faculty of Engineering & Technology, Faridabad</p>
+          <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+            <Link to="/privacy" style={{ color: '#008C6B', textDecoration: 'none', fontWeight: 600 }}>Privacy &amp; Candidate Security</Link>
+            <Link to="/help" style={{ color: '#4D5C6D', textDecoration: 'none' }}>Student Support</Link>
+          </div>
         </div>
       </div>
     </footer>
