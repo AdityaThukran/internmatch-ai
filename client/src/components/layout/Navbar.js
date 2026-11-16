@@ -12,7 +12,8 @@ import {
   FiShield,
   FiLayers,
   FiBell,
-  FiHelpCircle
+  FiHelpCircle,
+  FiMail
 } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
 import NotificationBell from '../notifications/NotificationBell';
@@ -138,7 +139,7 @@ const Navbar = () => {
             <span className="bonsai-pill-tag">AI</span>
           </Link>
 
-          {/* 3. Live Application Tracker */}
+          {/* 4. Live Application Tracker */}
           <Link
             to="/applications"
             className={`bonsai-nav-link ${isActive('/applications') ? 'bonsai-nav-link-active' : ''}`}
@@ -147,7 +148,16 @@ const Navbar = () => {
             <span>Live Tracker</span>
           </Link>
 
-          {/* 4. Help & Student Support */}
+          {/* 5. Email Application Tracker */}
+          <Link
+            to="/email-sync"
+            className={`bonsai-nav-link ${isActive('/email-sync') ? 'bonsai-nav-link-active' : ''}`}
+          >
+            <FiMail size={15} />
+            <span>Email Sync</span>
+          </Link>
+
+          {/* 6. Help & Student Support */}
           <Link
             to="/help"
             className={`bonsai-nav-link ${isActive('/help') ? 'bonsai-nav-link-active' : ''}`}
@@ -231,6 +241,9 @@ const Navbar = () => {
                     </Link>
                     <Link to="/applications" className="bonsai-dropdown-link" onClick={() => setUserDropdownOpen(false)}>
                       <FiLayers /> My Applied Pipeline
+                    </Link>
+                    <Link to="/email-sync" className="bonsai-dropdown-link" onClick={() => setUserDropdownOpen(false)}>
+                      <FiMail /> Email Tracking Portal
                     </Link>
                     <Link to="/notifications" className="bonsai-dropdown-link" onClick={() => setUserDropdownOpen(false)}>
                       <FiBell /> Notification Center

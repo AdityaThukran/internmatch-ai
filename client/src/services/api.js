@@ -78,4 +78,11 @@ export const fetchLiveInternships = (data) => API.post('/internships/fetch-live'
 export const runAutonomousAgent = (data) => API.post('/agent/simulate-lifecycle', data);
 export const getAutonomousAgentStatus = () => API.get('/agent/status');
 
+// Email Career Sync & Tracking
+export const connectEmailMailbox = (data) => API.post('/email/connect', data);
+export const getEmailMailboxStatus = () => API.get('/email/status');
+export const disconnectEmailMailbox = () => API.post('/email/disconnect');
+export const scanEmailInbox = (data) => API.post('/email/scan', data);
+export const getParsedEmails = () => API.get('/email/parsed');
+
 export default API;

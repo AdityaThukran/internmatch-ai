@@ -16,6 +16,7 @@ const geminiInternshipService = require('./services/geminiInternshipService');
 const realTimeJobAPIService = require('./services/realTimeJobAPIService');
 const directScraperService = require('./services/directScraperService');
 const autonomousAgentService = require('./services/autonomousAgentService');
+const emailSyncService = require('./services/emailSyncService');
 const {
   mockUsers,
   mockStudentProfile,
@@ -543,6 +544,86 @@ const fallbackMiddleware = async (req, res, next) => {
         lastScan: new Date().toISOString()
       }
     });
+  }
+
+  // ── Email Sync & Tracking Routes ────────────────────────────────────────
+  if (reqPath === '/api/email/connect' && method === 'POST') {
+    try {
+      const authHeader = req.headers.authorization;
+      let userId = null;
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        try {
+          const decoded = jwt.verify(authHeader.split(' ')[1], config.jwtSecret);
+          userId = decoded.id;
+        } catch (e) {}
+      }
+
+      const { email, password, provider, host, port, tls } = req.body || {};
+      const result = await emailSyncService.connectMailbox(userId, { email, password, provider, host, port, tls });
+      return res.json({ success: true, message: 'Career mailbox connected successfully!', data: result });
+    } catch (err) {
+      console.error('[API] Email connect error:', err);
+      return res.status(400).json({ success: false, message: err.message });
+    }
+  }
+
+  if (reqPath === '/api/email/status' && method === 'GET') {
+    const authHeader = req.headers.authorization;
+    let userId = null;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      try {
+        const decoded = jwt.verify(authHeader.split(' ')[1], config.jwtSecret);
+        userId = decoded.id;
+      } catch (e) {}
+    }
+    const status = emailSyncService.getMailboxStatus(userId);
+    return res.json({ success: true, data: status });
+  }
+
+  if (reqPath === '/api/email/disconnect' && method === 'POST') {
+    const authHeader = req.headers.authorization;
+    let userId = null;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      try {
+        const decoded = jwt.verify(authHeader.split(' ')[1], config.jwtSecret);
+        userId = decoded.id;
+      } catch (e) {}
+    }
+    const result = emailSyncService.disconnectMailbox(userId);
+    return res.json(result);
+  }
+
+  if (reqPath === '/api/email/scan' && method === 'POST') {
+    try {
+      const authHeader = req.headers.authorization;
+      let userId = null;
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        try {
+          const decoded = jwt.verify(authHeader.split(' ')[1], config.jwtSecret);
+          userId = decoded.id;
+        } catch (e) {}
+      }
+
+      const { candidateName } = req.body || {};
+      const scanResult = await emailSyncService.scanInbox(userId, candidateName || 'Scholar');
+      return res.json(scanResult);
+    } catch (err) {
+      console.error('[API] Email scan error:', err);
+      return res.status(500).json({ success: false, message: 'Email scan error: ' + err.message });
+    }
+  }
+
+  if (reqPath === '/api/email/parsed' && method === 'GET') {
+    const authHeader = req.headers.authorization;
+    let userId = null;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      try {
+        const decoded = jwt.verify(authHeader.split(' ')[1], config.jwtSecret);
+        userId = decoded.id;
+      } catch (e) {}
+    }
+    const emails = emailSyncService.getParsedEmails(userId);
+    return res.json({ success: true, data: emails });
   }
 
   if (reqPath === '/api/internships/fetch-live' && method === 'POST') {

@@ -25,7 +25,8 @@ import {
   FiChevronDown,
   FiChevronUp,
   FiCopy,
-  FiFileText
+  FiFileText,
+  FiMail
 } from 'react-icons/fi';
 import { getApplications, updateApplication, deleteApplication, createApplication, runAutonomousAgent } from '../services/api';
 import MatchScoreCircle from '../components/common/MatchScoreCircle';
@@ -482,6 +483,26 @@ const ApplicationsPage = () => {
                 <FiPlus size={17} />
                 <span>+ Track Custom Role</span>
               </button>
+
+              <Link
+                to="/email-sync"
+                className="btn btn-outline"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '12px 20px',
+                  borderRadius: '10px',
+                  fontWeight: 700,
+                  fontSize: '0.92rem',
+                  textDecoration: 'none',
+                  color: '#008C6B',
+                  border: '1.5px solid #00B289'
+                }}
+              >
+                <FiMail size={16} />
+                <span>📬 Email Tracker</span>
+              </Link>
 
               <button
                 type="button"
