@@ -148,13 +148,13 @@ const Navbar = () => {
             <span>Live Tracker</span>
           </Link>
 
-          {/* 4. Help & Student Support */}
+          {/* 4. Privacy, Data Security & Email Tracking (Replaces Help on Navbar) */}
           <Link
-            to="/help"
-            className={`bonsai-nav-link ${isActive('/help') ? 'bonsai-nav-link-active' : ''}`}
+            to="/privacy"
+            className={`bonsai-nav-link ${isActive('/privacy') ? 'bonsai-nav-link-active' : ''}`}
           >
-            <FiHelpCircle size={15} />
-            <span>Help</span>
+            <FiShield size={15} />
+            <span>Privacy &amp; Tracking</span>
           </Link>
 
           {/* 5. Recruiter Portal & ATS */}
@@ -233,17 +233,14 @@ const Navbar = () => {
                     <Link to="/applications" className="bonsai-dropdown-link" onClick={() => setUserDropdownOpen(false)}>
                       <FiLayers /> My Applied Pipeline
                     </Link>
-                    <Link to="/email-sync" className="bonsai-dropdown-link" onClick={() => setUserDropdownOpen(false)}>
-                      <FiMail /> Email Tracking Portal
+                    <Link to="/privacy" className="bonsai-dropdown-link" onClick={() => setUserDropdownOpen(false)}>
+                      <FiShield /> Privacy &amp; Email Tracking
                     </Link>
                     <Link to="/notifications" className="bonsai-dropdown-link" onClick={() => setUserDropdownOpen(false)}>
                       <FiBell /> Notification Center
                     </Link>
                     <Link to="/help" className="bonsai-dropdown-link" onClick={() => setUserDropdownOpen(false)}>
-                      <FiHelpCircle /> Help & FAQs
-                    </Link>
-                    <Link to="/privacy" className="bonsai-dropdown-link" onClick={() => setUserDropdownOpen(false)}>
-                      <FiShield /> Privacy & Data Security
+                      <FiHelpCircle /> Help &amp; FAQs
                     </Link>
 
                     {user?.role === 'admin' && (

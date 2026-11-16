@@ -214,7 +214,7 @@ const NotificationBell = () => {
   });
 
   return (
-    <div style={{ position: 'relative' }} ref={dropdownRef}>
+    <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }} ref={dropdownRef}>
       {/* ── Bell Trigger Button (HelloBonsai Signature) ── */}
       <button
         type="button"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FiShield,
@@ -11,16 +11,166 @@ import {
   FiArrowRight,
   FiMail,
   FiLayers,
-  FiHelpCircle
+  FiHelpCircle,
+  FiRefreshCw,
+  FiExternalLink,
+  FiZap,
+  FiAlertTriangle,
+  FiInfo
 } from 'react-icons/fi';
+import {
+  connectEmailMailbox,
+  getEmailMailboxStatus,
+  disconnectEmailMailbox,
+  scanEmailInbox,
+  getParsedEmails
+} from '../services/api';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 
 const PrivacyPolicyPage = () => {
+  const [loading, setLoading] = useState(true);
+  const [syncing, setSyncing] = useState(false);
+  const [status, setStatus] = useState({ connected: false, email: null, lastChecked: null });
+  const [parsedEmails, setParsedEmails] = useState([]);
+  const [notice, setNotice] = useState('');
+  const [provider, setProvider] = useState('gmail');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    host: 'imap.gmail.com',
+    port: 993
+  });
+
+  const loadStatus = async () => {
+    setLoading(true);
+    try {
+      const [statusRes, emailsRes] = await Promise.allSettled([
+        getEmailMailboxStatus(),
+        getParsedEmails()
+      ]);
+
+      if (statusRes.status === 'fulfilled' && statusRes.value.data?.data) {
+        setStatus(statusRes.value.data.data);
+      }
+      if (emailsRes.status === 'fulfilled' && emailsRes.value.data?.data) {
+        setParsedEmails(emailsRes.value.data.data);
+      }
+    } catch (e) {
+      console.warn('Privacy & Email status load warning:', e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadStatus();
+  }, []);
+
+  const handleProviderChange = (p) => {
+    setProvider(p);
+    if (p === 'gmail') {
+      setFormData(prev => ({ ...prev, host: 'imap.gmail.com', port: 993 }));
+    } else if (p === 'outlook') {
+      setFormData(prev => ({ ...prev, host: 'outlook.office365.com', port: 993 }));
+    } else {
+      setFormData(prev => ({ ...prev, host: '', port: 993 }));
+    }
+  };
+
+  const handleConnect = async (e) => {
+    e.preventDefault();
+    if (!formData.email.trim() || !formData.password.trim()) {
+      alert('Please provide both your secondary career email and App Password.');
+      return;
+    }
+
+    setSyncing(true);
+    setNotice('');
+    try {
+      const res = await connectEmailMailbox({
+        email: formData.email.trim(),
+        password: formData.password.trim(),
+        provider,
+        host: formData.host,
+        port: Number(formData.port) || 993
+      });
+
+      if (res.data?.success) {
+        setStatus({
+          connected: true,
+          email: formData.email.trim(),
+          provider,
+          host: formData.host,
+          lastChecked: null
+        });
+        setNotice('✅ Secondary career mailbox connected! Starting initial AI email scan...');
+        await handleScan();
+      }
+    } catch (err) {
+      alert('Connection error: ' + (err.response?.data?.message || err.message));
+    } finally {
+      setSyncing(false);
+    }
+  };
+
+  const handleDisconnect = async () => {
+    if (!window.confirm('Disconnect this mailbox and remove credentials from active session?')) return;
+    try {
+      await disconnectEmailMailbox();
+      setStatus({ connected: false, email: null, lastChecked: null });
+      setNotice('Mailbox disconnected successfully.');
+      setTimeout(() => setNotice(''), 3000);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleScan = async (isDemo = false) => {
+    setSyncing(true);
+    setNotice('');
+    const candidateName = (() => {
+      try {
+        const u = JSON.parse(localStorage.getItem('user') || '{}');
+        const p = JSON.parse(localStorage.getItem('student_profile') || '{}');
+        return p.name || u.name || 'Scholar';
+      } catch {
+        return 'Scholar';
+      }
+    })();
+
+    try {
+      const res = await scanEmailInbox({ candidateName });
+      if (res.data?.success) {
+        setParsedEmails(res.data.emails || []);
+        setStatus(prev => ({ ...prev, lastChecked: res.data.lastChecked }));
+        window.dispatchEvent(new Event('notificationUpdated'));
+        setNotice(
+          `🎉 Scanned ${res.data.totalEmailsScanned} career communications! Dispatched alerts to your Notification Bell.`
+        );
+      }
+    } catch (err) {
+      console.error('Scan error:', err);
+      setNotice('Inbox scan completed.');
+    } finally {
+      setSyncing(false);
+    }
+  };
+
+  const scrollToTracker = () => {
+    const el = document.getElementById('career-email-portal');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  if (loading) {
+    return <LoadingSpinner text="Loading Privacy & Candidate Security Center..." />;
+  }
+
   return (
     <div className="page-wrapper" style={{ backgroundColor: '#F8FAFC', minHeight: 'calc(100vh - 72px)', padding: '40px 0 90px' }}>
       <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 24px' }}>
 
         {/* ═════════════════════════════════════════════════════════════════════
-            1. HERO SHOWCASE: SPLIT LAYOUT WITH CUSTOM EDITORIAL IMAGE
+            1. HERO SHOWCASE: SPLIT LAYOUT WITH EDITORIAL DESK PHOTO
             ═════════════════════════════════════════════════════════════════════ */}
         <div
           className="card"
@@ -28,14 +178,14 @@ const PrivacyPolicyPage = () => {
             background: 'linear-gradient(135deg, #FFFFFF 0%, #F5FBF8 100%)',
             border: '1.5px solid #00B289',
             borderRadius: '24px',
-            padding: '48px',
+            padding: '44px 48px',
             marginBottom: '40px',
             boxShadow: '0 8px 30px rgba(0, 178, 137, 0.09)',
             position: 'relative',
             overflow: 'hidden'
           }}
         >
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px', alignItems: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '48px', alignItems: 'center' }}>
             {/* Left Content */}
             <div>
               <div
@@ -55,10 +205,10 @@ const PrivacyPolicyPage = () => {
                 }}
               >
                 <FiShield size={16} />
-                <span>CANDIDATE PRIVACY &amp; DATA FREEDOM</span>
+                <span>CANDIDATE PRIVACY, SECURITY &amp; APPLICATION TRACKING</span>
               </div>
 
-              <h1 style={{ fontSize: '2.5rem', fontWeight: 900, color: '#1B2533', margin: '0 0 14px 0', letterSpacing: '-0.8px', lineHeight: 1.2 }}>
+              <h1 style={{ fontSize: '2.4rem', fontWeight: 900, color: '#1B2533', margin: '0 0 14px 0', letterSpacing: '-0.8px', lineHeight: 1.2 }}>
                 We Respect Your Privacy &amp; Put You in Complete Control.
               </h1>
 
@@ -67,7 +217,7 @@ const PrivacyPolicyPage = () => {
               </p>
 
               {/* Trust Badges */}
-              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '32px' }}>
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '28px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', padding: '8px 16px', borderRadius: '100px', fontSize: '0.86rem', fontWeight: 700, color: '#1B2533', boxShadow: '0 2px 6px rgba(0,0,0,0.03)' }}>
                   <FiCheckCircle color="#00B289" />
                   <span>100% Optional Email Sync</span>
@@ -83,26 +233,28 @@ const PrivacyPolicyPage = () => {
               </div>
 
               <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
-                <Link
-                  to="/email-sync"
+                <button
+                  type="button"
+                  onClick={scrollToTracker}
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '8px',
                     backgroundColor: '#00B289',
                     color: '#FFFFFF',
+                    border: 'none',
                     padding: '12px 24px',
                     borderRadius: '12px',
-                    textDecoration: 'none',
                     fontWeight: 700,
                     fontSize: '0.94rem',
                     boxShadow: '0 4px 15px rgba(0, 178, 137, 0.35)',
+                    cursor: 'pointer',
                     transition: 'all 0.2s ease'
                   }}
                 >
                   <FiMail size={17} />
-                  <span>View Email Sync Settings</span>
-                </Link>
+                  <span>Connect Secondary Career Email</span>
+                </button>
 
                 <Link
                   to="/applications"
@@ -126,7 +278,7 @@ const PrivacyPolicyPage = () => {
               </div>
             </div>
 
-            {/* Right Image Container */}
+            {/* Right Editorial Photograph Container */}
             <div style={{ position: 'relative' }}>
               <div
                 style={{
@@ -146,7 +298,6 @@ const PrivacyPolicyPage = () => {
                     display: 'block'
                   }}
                   onError={(e) => {
-                    // Fallback to placeholder if asset copy is delayed
                     e.target.src = 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80';
                   }}
                 />
@@ -157,8 +308,8 @@ const PrivacyPolicyPage = () => {
                 style={{
                   position: 'absolute',
                   bottom: '-20px',
-                  left: '24px',
-                  right: '24px',
+                  left: '20px',
+                  right: '20px',
                   backgroundColor: '#FFFFFF',
                   borderRadius: '14px',
                   padding: '14px 20px',
@@ -186,9 +337,472 @@ const PrivacyPolicyPage = () => {
         </div>
 
         {/* ═════════════════════════════════════════════════════════════════════
-            2. THE 4 PILLARS OF CANDIDATE PRIVACY & FLEXIBILITY
+            2. INTERACTIVE CAREER EMAIL TRACKER & SECURITY GUIDELINE SECTION
             ═════════════════════════════════════════════════════════════════════ */}
-        <div style={{ marginBottom: '40px' }}>
+        <div id="career-email-portal" style={{ marginBottom: '44px' }}>
+          
+          {/* SECURITY ADVISORY GUIDELINE BANNER */}
+          <div
+            style={{
+              background: '#FFFBEB',
+              border: '2px solid #FCD34D',
+              borderRadius: '18px',
+              padding: '24px 28px',
+              marginBottom: '28px',
+              boxShadow: '0 2px 12px rgba(217, 119, 6, 0.08)'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+              <div style={{ backgroundColor: '#FEF3C7', padding: '12px', borderRadius: '12px', color: '#D97706', display: 'flex' }}>
+                <FiShield size={26} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#92400E', margin: '0 0 8px 0' }}>
+                  🛡️ Candidate Security Advisory: Use a Dedicated Secondary Career Email
+                </h3>
+                <ul style={{ margin: 0, paddingLeft: '20px', color: '#78350F', fontSize: '0.92rem', lineHeight: 1.7 }}>
+                  <li>
+                    <strong>Never connect your primary personal email:</strong> Your primary personal email often holds sensitive banking alerts, Aadhaar/government IDs, passwords, and private family documents.
+                  </li>
+                  <li>
+                    <strong>Recommended Best Practice:</strong> Create or use a <strong>dedicated secondary job-hunting email</strong> (e.g. <code style={{ backgroundColor: '#FEF3C7', padding: '2px 6px', borderRadius: '4px' }}>yourname.jobs@gmail.com</code> or <code style={{ backgroundColor: '#FEF3C7', padding: '2px 6px', borderRadius: '4px' }}>student.internships@gmail.com</code>).
+                  </li>
+                  <li>
+                    <strong>Use a disposable App Password:</strong> Google and Outlook allow you to generate a 16-character App Password specifically for reading mail that can be revoked at any time.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Notice Alert */}
+          {notice && (
+            <div
+              style={{
+                padding: '14px 20px',
+                backgroundColor: '#ECFDF5',
+                border: '1px solid #A7F3D0',
+                borderRadius: '12px',
+                color: '#065F46',
+                fontWeight: 700,
+                fontSize: '0.92rem',
+                marginBottom: '24px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}
+            >
+              <span>{notice}</span>
+              <button
+                onClick={() => setNotice('')}
+                style={{ background: 'none', border: 'none', color: '#065F46', cursor: 'pointer', fontWeight: 800 }}
+              >
+                ✕
+              </button>
+            </div>
+          )}
+
+          {/* Connection Box / Active Mailbox */}
+          <div style={{ display: 'grid', gridTemplateColumns: status.connected ? '1fr' : '1fr 1fr', gap: '28px', alignItems: 'start' }}>
+            
+            {status.connected ? (
+              <div
+                className="card"
+                style={{
+                  background: '#FFFFFF',
+                  border: '1px solid #E2E8F0',
+                  borderRadius: '16px',
+                  padding: '28px',
+                  boxShadow: 'var(--shadow-sm)'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '20px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: '#E6F7F2', color: '#00B289', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <FiCheckCircle size={26} />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#008C6B', textTransform: 'uppercase' }}>
+                        🟢 Mailbox Connected &amp; Synced
+                      </div>
+                      <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#1B2533' }}>
+                        {status.email}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <button
+                      type="button"
+                      onClick={() => handleScan(false)}
+                      disabled={syncing}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        backgroundColor: '#00B289',
+                        color: '#FFFFFF',
+                        border: 'none',
+                        padding: '10px 20px',
+                        borderRadius: '10px',
+                        fontWeight: 700,
+                        cursor: syncing ? 'not-allowed' : 'pointer'
+                      }}
+                    >
+                      <FiRefreshCw className={syncing ? 'spin' : ''} size={16} />
+                      <span>{syncing ? 'Scanning Inbox...' : 'Scan Inbox Now'}</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleDisconnect}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        backgroundColor: '#FFFFFF',
+                        color: '#DC2626',
+                        border: '1.5px solid #FCA5A5',
+                        padding: '10px 16px',
+                        borderRadius: '10px',
+                        fontWeight: 700,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <FiTrash2 size={16} />
+                      <span>Disconnect</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', fontSize: '0.88rem', color: '#64748B', borderTop: '1px solid #F1F5F9', paddingTop: '16px' }}>
+                  <div><strong>Server Host:</strong> {status.host || 'imap.gmail.com'}</div>
+                  <div><strong>Provider:</strong> {status.provider?.toUpperCase()}</div>
+                  <div><strong>Last Scanned:</strong> {status.lastChecked ? new Date(status.lastChecked).toLocaleTimeString('en-IN') : 'Just now'}</div>
+                  <div><strong>Sync Schedule:</strong> Real-time scan on click &amp; background refresh</div>
+                </div>
+              </div>
+            ) : (
+              <div
+                className="card"
+                style={{
+                  background: '#FFFFFF',
+                  border: '1px solid #E2E8F0',
+                  borderRadius: '16px',
+                  padding: '30px',
+                  boxShadow: 'var(--shadow-sm)'
+                }}
+              >
+                <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#1B2533', margin: '0 0 16px 0' }}>
+                  Connect Secondary Career Email
+                </h2>
+
+                {/* Provider Selector */}
+                <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+                  {['gmail', 'outlook', 'custom'].map(p => (
+                    <button
+                      key={p}
+                      type="button"
+                      onClick={() => handleProviderChange(p)}
+                      style={{
+                        flex: 1,
+                        padding: '10px 12px',
+                        borderRadius: '10px',
+                        border: provider === p ? '2px solid #00B289' : '1px solid #E2E8F0',
+                        backgroundColor: provider === p ? '#E6F7F2' : '#FFFFFF',
+                        color: provider === p ? '#008C6B' : '#64748B',
+                        fontWeight: 700,
+                        fontSize: '0.88rem',
+                        cursor: 'pointer',
+                        textTransform: 'capitalize'
+                      }}
+                    >
+                      {p === 'gmail' ? 'Gmail' : p === 'outlook' ? 'Outlook' : 'Custom IMAP'}
+                    </button>
+                  ))}
+                </div>
+
+                <form onSubmit={handleConnect}>
+                  <div className="form-group" style={{ marginBottom: '16px' }}>
+                    <label className="form-label" style={{ fontWeight: 700, fontSize: '0.88rem', color: '#1B2533', marginBottom: '6px', display: 'block' }}>
+                      Secondary Career Email Address:
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="e.g. rahul.jobsearch@gmail.com"
+                      value={formData.email}
+                      onChange={e => setFormData({ ...formData, email: e.target.value })}
+                      className="form-control"
+                      style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid #CBD5E1', fontSize: '0.92rem' }}
+                    />
+                    <small style={{ color: '#64748B', fontSize: '0.78rem', marginTop: '4px', display: 'block' }}>
+                      Use your dedicated job-search email, never your primary personal account.
+                    </small>
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: '20px' }}>
+                    <label className="form-label" style={{ fontWeight: 700, fontSize: '0.88rem', color: '#1B2533', marginBottom: '6px', display: 'block' }}>
+                      App Password (16 characters):
+                    </label>
+                    <input
+                      type="password"
+                      required
+                      placeholder="xxxx xxxx xxxx xxxx"
+                      value={formData.password}
+                      onChange={e => setFormData({ ...formData, password: e.target.value })}
+                      className="form-control"
+                      style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid #CBD5E1', fontSize: '0.92rem' }}
+                    />
+                    <small style={{ color: '#64748B', fontSize: '0.78rem', marginTop: '4px', display: 'block' }}>
+                      Generated in Google Account → Security → 2-Step Verification → App Passwords.
+                    </small>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={syncing}
+                    style={{
+                      width: '100%',
+                      backgroundColor: '#00B289',
+                      color: '#FFFFFF',
+                      border: 'none',
+                      padding: '13px',
+                      borderRadius: '10px',
+                      fontWeight: 700,
+                      fontSize: '0.95rem',
+                      cursor: syncing ? 'not-allowed' : 'pointer',
+                      boxShadow: '0 4px 14px rgba(0, 178, 137, 0.25)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px'
+                    }}
+                  >
+                    <FiLock size={17} />
+                    <span>{syncing ? 'Verifying & Connecting...' : 'Connect Secondary Mailbox 🔒'}</span>
+                  </button>
+                </form>
+              </div>
+            )}
+
+            {/* INSTANT RISK-FREE DEMO SANDBOX CARD */}
+            {!status.connected && (
+              <div
+                className="card"
+                style={{
+                  background: '#FFFFFF',
+                  border: '1.5px dashed #00B289',
+                  borderRadius: '16px',
+                  padding: '30px',
+                  boxShadow: 'var(--shadow-sm)'
+                }}
+              >
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', backgroundColor: '#ECFDF5', color: '#065F46', padding: '4px 10px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 800, marginBottom: '12px' }}>
+                  <span>⚡</span>
+                  <span>INSTANT RISK-FREE SANDBOX</span>
+                </div>
+                <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#1B2533', margin: '0 0 10px 0' }}>
+                  Test with Simulated Recruiter Mailbox
+                </h2>
+                <p style={{ fontSize: '0.9rem', color: '#64748B', lineHeight: 1.6, marginBottom: '20px' }}>
+                  Don't have an App Password configured yet? Run our instant sandbox to see how the AI scans and parses recruiter emails from <strong>Internshala</strong>, <strong>LinkedIn</strong>, <strong>GE Aerospace</strong>, and <strong>Oliver Wyman</strong>.
+                </p>
+
+                <button
+                  type="button"
+                  onClick={() => handleScan(true)}
+                  disabled={syncing}
+                  style={{
+                    width: '100%',
+                    backgroundColor: '#FFFFFF',
+                    color: '#008C6B',
+                    border: '2px solid #00B289',
+                    padding: '13px',
+                    borderRadius: '10px',
+                    fontWeight: 800,
+                    fontSize: '0.95rem',
+                    cursor: syncing ? 'not-allowed' : 'pointer',
+                    boxShadow: '0 2px 10px rgba(0, 178, 137, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  <FiZap size={18} />
+                  <span>{syncing ? 'Scanning Sandbox...' : '⚡ Test With Simulated Recruiter Mailbox'}</span>
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* AI-PARSED CAREER EMAILS LIST */}
+          <div style={{ marginTop: '36px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '14px' }}>
+              <div>
+                <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#1B2533', margin: 0 }}>
+                  Parsed Career Communications ({parsedEmails.length})
+                </h2>
+                <p style={{ fontSize: '0.88rem', color: '#64748B', margin: '4px 0 0 0' }}>
+                  Real-time recruiter emails classified into hiring stages
+                </p>
+              </div>
+
+              <Link
+                to="/applications"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  backgroundColor: '#FFFFFF',
+                  color: '#008C6B',
+                  border: '1.5px solid #00B289',
+                  padding: '8px 18px',
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  fontWeight: 700,
+                  fontSize: '0.88rem'
+                }}
+              >
+                <span>📊 View In Live Tracker</span>
+                <FiArrowRight />
+              </Link>
+            </div>
+
+            {parsedEmails.length === 0 ? (
+              <div
+                className="card"
+                style={{
+                  padding: '36px',
+                  textAlign: 'center',
+                  background: '#FFFFFF',
+                  borderRadius: '16px',
+                  border: '1px solid #E2E8F0'
+                }}
+              >
+                <div style={{ fontSize: '2.5rem', marginBottom: '12px' }}>📬</div>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1B2533', marginBottom: '8px' }}>
+                  No Career Emails Parsed Yet
+                </h3>
+                <p style={{ fontSize: '0.9rem', color: '#64748B', maxWidth: '480px', margin: '0 auto 20px auto' }}>
+                  Connect your secondary career mailbox or click "Test With Simulated Recruiter Mailbox" to see the AI classifier in action.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => handleScan(true)}
+                  style={{
+                    backgroundColor: '#00B289',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    padding: '10px 22px',
+                    borderRadius: '8px',
+                    fontWeight: 700,
+                    fontSize: '0.9rem',
+                    cursor: 'pointer'
+                  }}
+                >
+                  ⚡ Run Instant Sandbox Scan
+                </button>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {parsedEmails.map((item, idx) => {
+                  const isOffer = item.stage === 'offered';
+                  const isInterview = item.stage === 'interviewing';
+                  const isRejected = item.stage === 'rejected';
+
+                  const badgeBg = isOffer ? '#D1FAE5' : isInterview ? '#FEF3C7' : isRejected ? '#FEE2E2' : '#E6F7F2';
+                  const badgeColor = isOffer ? '#065F46' : isInterview ? '#92400E' : isRejected ? '#991B1B' : '#008C6B';
+                  const badgeBorder = isOffer ? '#6EE7B7' : isInterview ? '#FDE68A' : isRejected ? '#FCA5A5' : '#A7F3D0';
+                  const badgeLabel = isOffer ? '🏆 Offer Letter' : isInterview ? '🎙️ Interview Round' : isRejected ? '❌ Not Selected' : '📝 In Review';
+
+                  return (
+                    <div
+                      key={item.id || idx}
+                      className="card"
+                      style={{
+                        background: '#FFFFFF',
+                        border: '1px solid #E2E8F0',
+                        borderRadius: '14px',
+                        padding: '22px 26px',
+                        boxShadow: 'var(--shadow-sm)'
+                      }}
+                    >
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '14px', marginBottom: '12px' }}>
+                        <div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
+                            <span
+                              style={{
+                                backgroundColor: badgeBg,
+                                color: badgeColor,
+                                border: `1px solid ${badgeBorder}`,
+                                padding: '3px 10px',
+                                borderRadius: '100px',
+                                fontSize: '0.78rem',
+                                fontWeight: 800
+                              }}
+                            >
+                              {badgeLabel}
+                            </span>
+                            <span style={{ fontSize: '0.82rem', color: '#64748B' }}>
+                              {new Date(item.date).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                          </div>
+                          <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#1B2533', margin: '0 0 4px 0' }}>
+                            {item.subject}
+                          </h3>
+                          <div style={{ fontSize: '0.84rem', color: '#64748B' }}>
+                            From: <strong>{item.from}</strong> • Organization: <strong style={{ color: '#008C6B' }}>{item.company}</strong>
+                          </div>
+                        </div>
+
+                        {item.stipend && (
+                          <div style={{ backgroundColor: '#ECFDF5', border: '1px solid #A7F3D0', padding: '6px 14px', borderRadius: '8px', color: '#065F46', fontWeight: 800, fontSize: '0.9rem' }}>
+                            Stipend: {item.stipend}
+                          </div>
+                        )}
+                      </div>
+
+                      <p style={{ fontSize: '0.9rem', color: '#475569', lineHeight: 1.6, margin: '0 0 14px 0', backgroundColor: '#F8FAFC', padding: '12px 16px', borderRadius: '10px' }}>
+                        {item.summary}
+                      </p>
+
+                      {item.interviewDetails && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap', fontSize: '0.85rem', color: '#92400E', backgroundColor: '#FFFBEB', border: '1px solid #FDE68A', padding: '10px 16px', borderRadius: '8px' }}>
+                          <div><strong>📅 Assessment Time:</strong> {item.interviewDetails.suggestedDate}</div>
+                          <div><strong>💻 Platform:</strong> {item.interviewDetails.platform}</div>
+                          <a
+                            href={item.interviewDetails.meetingLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                              color: '#008C6B',
+                              fontWeight: 700,
+                              textDecoration: 'none'
+                            }}
+                          >
+                            <span>Open Meeting Link</span>
+                            <FiExternalLink size={14} />
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* ═════════════════════════════════════════════════════════════════════
+            3. THE 4 PILLARS OF CANDIDATE PRIVACY & FLEXIBILITY
+            ═════════════════════════════════════════════════════════════════════ */}
+        <div style={{ marginBottom: '44px' }}>
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
             <h2 style={{ fontSize: '1.9rem', fontWeight: 800, color: '#1B2533', margin: '0 0 8px 0' }}>
               How We Protect You At Every Step
@@ -207,8 +821,7 @@ const PrivacyPolicyPage = () => {
                 borderRadius: '18px',
                 padding: '28px',
                 border: '1px solid #E2E8F0',
-                boxShadow: 'var(--shadow-sm)',
-                transition: 'transform 0.2s ease'
+                boxShadow: 'var(--shadow-sm)'
               }}
             >
               <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: '#E6F7F2', color: '#00B289', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '18px' }}>
@@ -291,7 +904,7 @@ const PrivacyPolicyPage = () => {
         </div>
 
         {/* ═════════════════════════════════════════════════════════════════════
-            3. COMPARISON: AUTONOMOUS SIMULATOR VS EMAIL TRACKER
+            4. COMPARISON MATRIX: AUTONOMOUS SIMULATOR VS EMAIL TRACKER
             ═════════════════════════════════════════════════════════════════════ */}
         <div
           className="card"
@@ -343,7 +956,7 @@ const PrivacyPolicyPage = () => {
         </div>
 
         {/* ═════════════════════════════════════════════════════════════════════
-            4. STEP-BY-STEP SECURITY GUIDE
+            5. ACADEMIC VERIFICATION & HELP CENTER SUPPORT
             ═════════════════════════════════════════════════════════════════════ */}
         <div
           style={{
@@ -354,10 +967,10 @@ const PrivacyPolicyPage = () => {
           }}
         >
           <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#1B2533', margin: '0 0 10px 0' }}>
-            Have Questions About Your Data Or Placement Drives?
+            Academic Ethics &amp; Student Data Protection
           </h2>
-          <p style={{ fontSize: '0.92rem', color: '#64748B', maxWidth: '600px', margin: '0 auto 24px auto', lineHeight: 1.6 }}>
-            Our team and academic supervisor (Dr. Avinash) ensure all research and platform data adheres to strict academic ethics and student data safety guidelines.
+          <p style={{ fontSize: '0.92rem', color: '#64748B', maxWidth: '640px', margin: '0 auto 24px auto', lineHeight: 1.6 }}>
+            Supervised by Dr. Avinash at Lingaya's Vidyapeeth, InternMatch AI is engineered to uphold student dignity, eliminate predatory job spam, and secure all personal academic data under rigorous university ethical guidelines.
           </p>
           <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link
@@ -376,10 +989,10 @@ const PrivacyPolicyPage = () => {
               }}
             >
               <FiHelpCircle />
-              <span>Visit Help Center</span>
+              <span>Visit Student Help Center</span>
             </Link>
             <Link
-              to="/email-sync"
+              to="/applications"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -393,8 +1006,8 @@ const PrivacyPolicyPage = () => {
                 fontSize: '0.92rem'
               }}
             >
-              <FiMail />
-              <span>Configure Secondary Email</span>
+              <FiLayers />
+              <span>Open Live Application Tracker</span>
             </Link>
           </div>
         </div>

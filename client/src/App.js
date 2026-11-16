@@ -108,7 +108,7 @@ function App() {
               path="/email-sync"
               element={
                 <ProtectedRoute>
-                  <EmailSyncPage />
+                  <PrivacyPolicyPage />
                 </ProtectedRoute>
               }
             />
