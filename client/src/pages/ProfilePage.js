@@ -351,7 +351,7 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="page-wrapper" style={{ backgroundColor: '#F8FAFC', minHeight: '100vh', padding: '36px 0' }}>
+    <div className="page-wrapper profile-layout-mobile" style={{ backgroundColor: '#F8FAFC', minHeight: '100vh', padding: '36px 0 100px' }}>
       <div className="container" style={{ maxWidth: '920px' }}>
         {/* Header */}
         <div style={{ marginBottom: '24px' }}>

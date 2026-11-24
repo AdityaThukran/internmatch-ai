@@ -381,7 +381,7 @@ const ApplicationsPage = () => {
   };
 
   return (
-    <div className="page-wrapper" style={{ backgroundColor: '#F8FAFC', minHeight: 'calc(100vh - 72px)', padding: '36px 0 90px' }}>
+    <div className="page-wrapper" style={{ backgroundColor: '#F8FAFC', minHeight: 'calc(100vh - 72px)', padding: '36px 0 100px' }}>
       <div className="container" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 24px' }}>
 
         {/* ═════════════════════════════════════════════════════════════════════
