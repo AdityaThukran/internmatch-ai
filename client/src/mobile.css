@@ -33,19 +33,19 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   NAVBAR — Mobile Specific
+   NAVBAR — Mobile Specific (iPhone & Android 360px - 430px)
    ══════════════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
   .bonsai-navbar-container {
-    height: 60px !important;
-    padding: 0 16px !important;
+    height: 54px !important;
+    padding: 0 10px !important;
+    gap: 6px !important;
   }
 
   /* Ensure brand logo scales nicely */
-  .bonsai-brand-link svg,
-  .bonsai-brand-link img {
-    width: 28px !important;
-    height: 28px !important;
+  .brand-logo-icon {
+    width: 26px !important;
+    height: 26px !important;
   }
 }
 
@@ -996,8 +996,9 @@ body {
    ══════════════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
   .bonsai-navbar-container {
-    height: 56px !important;
-    padding: 0 12px !important;
+    height: 54px !important;
+    padding: 0 10px !important;
+    gap: 6px !important;
   }
 
   .bonsai-nav-desktop {
@@ -1020,22 +1021,50 @@ body {
   }
 
   .bonsai-user-avatar {
-    width: 34px !important;
-    height: 34px !important;
-    font-size: 0.80rem !important;
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 0.76rem !important;
   }
 
-  .bonsai-try-free-btn {
+  .bonsai-bell-btn {
+    width: 34px !important;
     height: 34px !important;
-    padding: 0 12px !important;
+    border-radius: 8px !important;
+  }
+
+  .bonsai-auth-buttons .bonsai-try-free-btn {
+    display: none !important;
+  }
+
+  .bonsai-login-link {
     font-size: 0.80rem !important;
+    padding: 5px 12px !important;
+    border: 1.5px solid #00B289 !important;
+    color: #008C6B !important;
     border-radius: 200px !important;
+    background: #E6F7F2 !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
   }
 
   .bonsai-mobile-toggle {
-    width: 36px !important;
-    height: 36px !important;
+    width: 34px !important;
+    height: 34px !important;
     border-radius: 8px !important;
+    margin-left: 2px !important;
+    padding: 0 !important;
+  }
+
+  /* Notification Dropdown Panel Mobile Fitting */
+  .notification-dropdown-panel {
+    position: fixed !important;
+    top: 58px !important;
+    left: 8px !important;
+    right: 8px !important;
+    width: auto !important;
+    max-width: calc(100vw - 16px) !important;
+    max-height: 80vh !important;
+    border-radius: 14px !important;
   }
 }
 

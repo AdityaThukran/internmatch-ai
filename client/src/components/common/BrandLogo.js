@@ -2,7 +2,7 @@ import React from 'react';
 
 const BrandLogo = ({ size = 32, showText = true, variant = 'light' }) => {
   return (
-    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', userSelect: 'none' }}>
+    <div className="brand-logo-container" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', userSelect: 'none', flexShrink: 0 }}>
       {/* Modern Emerald & Mint Geometric Logo with AI Spark */}
       <svg
         width={size}
@@ -10,6 +10,7 @@ const BrandLogo = ({ size = 32, showText = true, variant = 'light' }) => {
         viewBox="0 0 40 40"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        className="brand-logo-icon"
         style={{ flexShrink: 0 }}
       >
         <defs>
@@ -39,8 +40,9 @@ const BrandLogo = ({ size = 32, showText = true, variant = 'light' }) => {
       </svg>
 
       {showText && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
           <span
+            className="brand-logo-text"
             style={{
               fontSize: '1.35rem',
               fontWeight: 800,
@@ -52,6 +54,7 @@ const BrandLogo = ({ size = 32, showText = true, variant = 'light' }) => {
             internmatch
           </span>
           <span
+            className="brand-logo-badge"
             style={{
               background: '#E6F7F2',
               color: '#008C6B',

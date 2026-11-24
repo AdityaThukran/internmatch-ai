@@ -255,6 +255,7 @@ const NotificationBell = () => {
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Notifications"
+        className="bonsai-bell-btn"
         style={{
           position: 'relative',
           backgroundColor: isOpen ? '#E6F7F2' : (unreadCount > 0 ? '#F0FDF4' : '#FFFFFF'),

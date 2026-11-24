@@ -822,9 +822,49 @@
 }
 
 @media (max-width: 768px) {
+  .bonsai-navbar {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    overflow-x: clip !important;
+  }
+
   .bonsai-navbar-container {
-    height: 56px;
-    padding: 0 12px;
+    height: 54px !important;
+    padding: 0 10px !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+    gap: 6px !important;
+  }
+
+  /* Responsive Brand Logo on iPhone */
+  .brand-logo-container {
+    gap: 6px !important;
+  }
+
+  .brand-logo-icon {
+    width: 26px !important;
+    height: 26px !important;
+  }
+
+  .brand-logo-text {
+    font-size: 1.05rem !important;
+    letter-spacing: -0.3px !important;
+  }
+
+  .brand-logo-badge {
+    font-size: 0.60rem !important;
+    padding: 1px 5px !important;
+  }
+
+  /* Actions container */
+  .bonsai-actions-desktop {
+    gap: 6px !important;
+    margin-left: auto !important;
+  }
+
+  .bonsai-user-wrap {
+    gap: 5px !important;
   }
 
   .bonsai-user-name {
@@ -842,21 +882,65 @@
   }
 
   .bonsai-user-avatar {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 0.76rem !important;
+  }
+
+  .bonsai-bell-btn {
     width: 34px !important;
     height: 34px !important;
+    border-radius: 8px !important;
+  }
+
+  .bonsai-bell-btn svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .bonsai-mobile-toggle {
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 8px !important;
+    margin-left: 2px !important;
+    padding: 0 !important;
+  }
+
+  .bonsai-mobile-toggle svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  /* Non-authenticated user on mobile: hide the 140px Explore Openings button! */
+  .bonsai-auth-buttons .bonsai-try-free-btn {
+    display: none !important;
+  }
+
+  .bonsai-login-link {
     font-size: 0.80rem !important;
+    padding: 5px 12px !important;
+    border: 1.5px solid #00B289 !important;
+    color: #008C6B !important;
+    border-radius: 200px !important;
+    background: #E6F7F2 !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
   }
+}
 
-  .bonsai-user-wrap {
-    gap: 6px;
+/* Specific micro-optimization for small iPhones (<= 380px: iPhone SE, iPhone 12/13 mini) */
+@media (max-width: 380px) {
+  .brand-logo-text {
+    font-size: 0.98rem !important;
   }
-
-  .bonsai-try-free-btn {
-    padding: 6px 12px;
-    font-size: 0.80rem;
-    height: 34px;
-    display: inline-flex;
-    align-items: center;
-    border-radius: 200px;
+  .brand-logo-badge {
+    display: none !important;
+  }
+  .bonsai-navbar-container {
+    padding: 0 8px !important;
+    gap: 4px !important;
+  }
+  .bonsai-actions-desktop {
+    gap: 4px !important;
   }
 }
