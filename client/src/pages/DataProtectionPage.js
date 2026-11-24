@@ -502,7 +502,7 @@ const DataProtectionPage = () => {
             Academic Research Ethics &amp; Verification
           </h2>
           <p style={{ fontSize: '0.92rem', color: '#64748B', maxWidth: '640px', margin: '0 auto 24px auto', lineHeight: 1.6 }}>
-            InternMatch AI was designed under the academic supervision of <strong>Dr. Avinash</strong> at Lingaya's Vidyapeeth as a verified B.Tech Capstone Project. It strictly follows academic data integrity, student autonomy, and non-commercial research ethics.
+            InternMatch AI was designed under the academic supervision of <strong>Dr. Avinash Kumar Namdeo</strong> at Lingaya's Vidyapeeth as a verified B.Tech Capstone Project. It strictly follows academic data integrity, student autonomy, and non-commercial research ethics.
           </p>
           <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link

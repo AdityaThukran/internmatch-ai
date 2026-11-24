@@ -1289,7 +1289,7 @@ const PrivacyPolicyPage = () => {
             Academic Ethics &amp; Student Data Protection
           </h2>
           <p style={{ fontSize: '0.92rem', color: '#64748B', maxWidth: '640px', margin: '0 auto 24px auto', lineHeight: 1.6 }}>
-            Supervised by Dr. Avinash at Lingaya's Vidyapeeth, InternMatch AI is engineered to uphold student dignity, eliminate predatory job spam, and secure all personal academic data under rigorous university ethical guidelines.
+            Supervised by Dr. Avinash Kumar Namdeo at Lingaya's Vidyapeeth, InternMatch AI is engineered to uphold student dignity, eliminate predatory job spam, and secure all personal academic data under rigorous university ethical guidelines.
           </p>
           <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link

@@ -12,7 +12,7 @@ const mockUsers = [
   },
   {
     _id: 'usr_admin_01',
-    name: 'Dr. Arvind Kumar (Project Guide)',
+    name: 'Dr. Avinash Kumar Namdeo (Project Guide)',
     email: 'admin@internshipfinder.com',
     role: 'admin',
     preferences: { domain: 'Computer Science' },

@@ -84,7 +84,7 @@ const Footer = () => {
               Institution: <strong>Lingaya’s Vidyapeeth</strong>
             </p>
             <p style={{ fontSize: '0.85rem', color: '#4D5C6D', marginBottom: '6px' }}>
-              Supervisor: <strong>Dr. Avinash</strong>
+              Supervisor: <strong>Dr. Avinash Kumar Namdeo</strong>
             </p>
             <div style={{ marginTop: '14px', display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#E6F7F2', color: '#008C6B', padding: '4px 10px', borderRadius: '12px', fontSize: '0.78rem', fontWeight: 700 }}>
               <span>✓</span> Verified Capstone Project

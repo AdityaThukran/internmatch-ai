@@ -34,7 +34,7 @@ const seedData = async () => {
 
     // 1. Admin User
     const adminUser = await User.create({
-      name: 'Dr. Arvind Kumar (Admin)',
+      name: 'Dr. Avinash Kumar Namdeo (Project Guide / Admin)',
       email: 'admin@internshipfinder.com',
       passwordHash: adminPasswordHash,
       role: 'admin',
