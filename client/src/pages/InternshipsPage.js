@@ -592,7 +592,7 @@ const InternshipsPage = () => {
             </div>
 
             {/* Action Toolbar */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+            <div className="toolbar-scroll" style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
               <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#008C6B', background: '#E6F7F2', padding: '6px 14px', borderRadius: '200px' }}>
                 ● {activeUnexpiredInternships.length} Active Openings
               </span>
@@ -879,7 +879,7 @@ const InternshipsPage = () => {
                 color: activeScaleFilter === 'all' ? '#FFFFFF' : '#334155'
               }}
             >
-              <span>✨ All Opportunities</span>
+              <span>✨ All Roles</span>
               <span style={{
                 backgroundColor: activeScaleFilter === 'all' ? '#008C6B' : '#F1F5F9',
                 color: activeScaleFilter === 'all' ? '#FFFFFF' : '#475569',
@@ -910,7 +910,7 @@ const InternshipsPage = () => {
                 color: activeScaleFilter === 'large_scale' ? '#FFFFFF' : '#334155'
               }}
             >
-              <span>🏢 Large Scale (Tier-1 MNCs &amp; Global Tech)</span>
+              <span>🏢 Large Scale (MNCs)</span>
               <span style={{
                 backgroundColor: activeScaleFilter === 'large_scale' ? '#0369a1' : '#F1F5F9',
                 color: activeScaleFilter === 'large_scale' ? '#FFFFFF' : '#475569',
@@ -941,7 +941,7 @@ const InternshipsPage = () => {
                 color: activeScaleFilter === 'small_scale' ? '#FFFFFF' : '#334155'
               }}
             >
-              <span>🚀 Small Scale (Startups &amp; Internshala)</span>
+              <span>🚀 Startups &amp; Scaleups</span>
               <span style={{
                 backgroundColor: activeScaleFilter === 'small_scale' ? '#6d28d9' : '#F1F5F9',
                 color: activeScaleFilter === 'small_scale' ? '#FFFFFF' : '#475569',
@@ -1140,6 +1140,7 @@ const InternshipsPage = () => {
               return (
                 <div
                   key={job._id || job.id}
+                  className="int-card interactive-card"
                   onClick={() => setSelectedJobForDetailModal(job)}
                   style={{
                     backgroundColor: '#ffffff',
@@ -1365,7 +1366,7 @@ const InternshipsPage = () => {
                       Source: <strong>{job.source || 'Aggregator'}</strong>
                     </span>
 
-                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+                    <div className="int-card-actions-row" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
                       {job.url && (
                         <a
                           href={job.url}

@@ -948,16 +948,186 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   GLOBAL — Android / iOS final polish
+   MOBILE UTILITY CLASSES (Mobile-only cleanup, keeps PC view 100% intact)
    ══════════════════════════════════════════════════════════════════ */
-
-/* Minimum 44×44px touch targets (Apple HIG) */
 @media (max-width: 768px) {
-  button,
-  a[role="button"],
-  .btn,
-  select {
-    min-height: 44px;
+  .hide-on-mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .hide-on-desktop {
+    display: none !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   HOME PAGE — Mobile Viewport Refinements (PC View Untouched)
+   ══════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .home-hero-section {
+    min-height: auto !important;
+    padding: 30px 14px 38px !important;
+    background: #FFFFFF !important;
+  }
+
+  .home-hero-section .container {
+    padding: 10px 8px !important;
+  }
+
+  /* Sleek top announcement ribbon on mobile */
+  .announcement-ribbon {
+    padding: 8px 34px 8px 12px !important;
+    font-size: 0.76rem !important;
+    line-height: 1.35 !important;
+    gap: 6px !important;
+  }
+
+  .announcement-ribbon a {
+    font-size: 0.72rem !important;
+    padding: 2px 8px !important;
+    margin-left: 2px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   NAVBAR — Mobile Header Streamlining
+   ══════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .bonsai-navbar-container {
+    height: 56px !important;
+    padding: 0 12px !important;
+  }
+
+  .bonsai-nav-desktop {
+    display: none !important;
+  }
+
+  /* User profile on mobile: show sleek avatar circle only, hide name text & chevron */
+  .bonsai-user-name {
+    display: none !important;
+  }
+
+  .bonsai-user-trigger .bonsai-chevron {
+    display: none !important;
+  }
+
+  .bonsai-user-trigger {
+    padding: 2px !important;
+    background: transparent !important;
+    border: none !important;
+  }
+
+  .bonsai-user-avatar {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 0.80rem !important;
+  }
+
+  .bonsai-try-free-btn {
+    height: 34px !important;
+    padding: 0 12px !important;
+    font-size: 0.80rem !important;
+    border-radius: 200px !important;
+  }
+
+  .bonsai-mobile-toggle {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 8px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   INTERNSHIPS SECTION — Mobile Optimization & Proportionate Buttons
+   ══════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Toolbar strip for actions: Fetch Web, Gemini, Prune, Scan */
+  .toolbar-scroll {
+    display: flex !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    gap: 6px !important;
+    padding: 2px 0 6px !important;
+    width: 100% !important;
+  }
+
+  .toolbar-scroll::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .toolbar-scroll button,
+  .toolbar-scroll a {
+    flex-shrink: 0 !important;
+    height: 34px !important;
+    padding: 0 12px !important;
+    font-size: 0.76rem !important;
+    white-space: nowrap !important;
+  }
+
+  /* Mobile cards: compact and well-proportioned */
+  .int-card {
+    padding: 14px !important;
+    border-radius: 14px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .int-card h3 {
+    font-size: 1rem !important;
+    line-height: 1.3 !important;
+    margin: 3px 0 0 !important;
+  }
+
+  /* Card bottom action buttons: proportional, no oversized wrapping */
+  .int-card-actions-row {
+    display: flex !important;
+    gap: 6px !important;
+    width: 100% !important;
+    flex-wrap: wrap !important;
+    margin-top: 10px !important;
+    justify-content: flex-end !important;
+  }
+
+  .int-card-actions-row button,
+  .int-card-actions-row a {
+    height: 34px !important;
+    padding: 0 12px !important;
+    font-size: 0.78rem !important;
+    border-radius: 200px !important;
+    flex: 1 1 auto !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+
+  /* Search input on mobile */
+  form input[type="text"] {
+    font-size: 16px !important;
+  }
+
+  form button[type="submit"] {
+    height: 38px !important;
+    padding: 0 16px !important;
+    font-size: 0.84rem !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   GLOBAL TOUCH POLISH — Balanced Touch Targets (No Blanket 44px)
+   ══════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Only large CTA buttons get full touch height */
+  .hero-cta-stack .btn,
+  .auth-btn-mobile {
+    min-height: 46px;
+  }
+
+  /* Small badges and inline buttons stay compact */
+  .btn-sm {
+    height: 32px !important;
+    font-size: 0.76rem !important;
+    padding: 0 10px !important;
   }
 
   /* Ensure no horizontal overflow anywhere */
@@ -995,7 +1165,7 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   INTERNSHIP FILTER DROPDOWNS — make them full-width on 480px and below
+   INTERNSHIP FILTER DROPDOWNS — responsive on small screens
    ══════════════════════════════════════════════════════════════════ */
 @media (max-width: 480px) {
   select.form-input {
@@ -1003,13 +1173,7 @@ body {
     min-width: 100% !important;
   }
 
-  /* Search bar buttons: full width */
-  form div[style*="display: flex"] button[type="submit"] {
-    width: 100% !important;
-    border-radius: 10px !important;
-  }
-
-  /* Hero text on tiny phones */
+  /* Hero text on small phones */
   h1[style] {
     font-size: 1.25rem !important;
     line-height: 1.3 !important;

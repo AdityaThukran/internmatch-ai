@@ -14,7 +14,8 @@ import {
   FiBell,
   FiHelpCircle,
   FiMail,
-  FiTag
+  FiTag,
+  FiLock
 } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
 import NotificationBell from '../notifications/NotificationBell';

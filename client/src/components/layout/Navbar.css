@@ -821,9 +821,9 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .bonsai-navbar-container {
-    height: 58px;
+    height: 56px;
     padding: 0 12px;
   }
 
@@ -852,7 +852,11 @@
   }
 
   .bonsai-try-free-btn {
-    padding: 8px 14px;
-    font-size: 0.82rem;
+    padding: 6px 12px;
+    font-size: 0.80rem;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 200px;
   }
 }

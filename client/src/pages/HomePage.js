@@ -1569,6 +1569,7 @@ const HomePage = () => {
       {/* CAMPUS PRO TOP RIBBON */}
       {!ribbonDismissed && (
         <div
+          className="announcement-ribbon"
           style={{
             background: trialClaimed
               ? 'linear-gradient(90deg, #008C6B 0%, #00B289 100%)'
@@ -1878,6 +1879,7 @@ const HomePage = () => {
           1. CO-BRANDED HERO WITH MERGED LEGO THEME PARK BACKGROUND
           ═════════════════════════════════════════════════════════════════ */}
       <section
+        className="home-hero-section"
         style={{
           position: 'relative',
           overflow: 'hidden',
@@ -1890,6 +1892,7 @@ const HomePage = () => {
         }}
       >
         <div
+          className="lego-canvas-wrapper hide-on-mobile"
           style={{
             position: 'absolute',
             top: 0,
@@ -2047,6 +2050,7 @@ const HomePage = () => {
           </div>
 
           <div
+            className="lego-controls-strip hide-on-mobile"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
