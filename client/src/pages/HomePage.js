@@ -1473,6 +1473,20 @@ const HomePage = () => {
   const [trialClaimed, setTrialClaimed] = useState(false);
   const [claimingTrial, setClaimingTrial] = useState(false);
   const [celebrationText, setCelebrationText] = useState('');
+  const [ribbonDismissed, setRibbonDismissed] = useState(() => {
+    try {
+      return sessionStorage.getItem('internmatch_ribbon_dismissed') === 'true';
+    } catch (e) {
+      return false;
+    }
+  });
+
+  const handleDismissRibbon = () => {
+    setRibbonDismissed(true);
+    try {
+      sessionStorage.setItem('internmatch_ribbon_dismissed', 'true');
+    } catch (e) {}
+  };
 
   useEffect(() => {
     try {
@@ -1553,45 +1567,88 @@ const HomePage = () => {
     <div style={{ backgroundColor: '#FFFFFF', color: '#1B2533', fontFamily: "'Inter', sans-serif" }}>
 
       {/* CAMPUS PRO TOP RIBBON */}
-      <div
-        style={{
-          background: trialClaimed
-            ? 'linear-gradient(90deg, #008C6B 0%, #00B289 100%)'
-            : 'linear-gradient(90deg, #1B2533 0%, #008C6B 100%)',
-          color: '#FFFFFF',
-          padding: '10px 16px',
-          fontSize: '0.86rem',
-          fontWeight: 700,
-          textAlign: 'center',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '10px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
-        }}
-      >
-        <span>{trialClaimed ? '🟢 Career Pro Active:' : '🎁 Campus Launch Grant:'}</span>
-        <span>
-          {trialClaimed
-            ? 'You are on the 1-Year Free Campus Trial (365 Days Access) · 8-Hour Background IMAP Tracking Enabled'
-            : 'All university students get 1-Year Career Pro Free (Normally ₹499/yr) with 100% scholarship.'}
-        </span>
-        <Link
-          to="/pricing"
+      {!ribbonDismissed && (
+        <div
           style={{
-            backgroundColor: '#FFFFFF',
-            color: '#008C6B',
-            padding: '3px 12px',
-            borderRadius: '12px',
-            fontSize: '0.78rem',
-            fontWeight: 800,
-            textDecoration: 'none',
-            marginLeft: '6px'
+            background: trialClaimed
+              ? 'linear-gradient(90deg, #008C6B 0%, #00B289 100%)'
+              : 'linear-gradient(90deg, #1B2533 0%, #008C6B 100%)',
+            color: '#FFFFFF',
+            padding: '10px 44px 10px 16px',
+            fontSize: '0.86rem',
+            fontWeight: 700,
+            textAlign: 'center',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '10px',
+            flexWrap: 'wrap',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+            position: 'relative',
+            zIndex: 90
           }}
         >
-          {trialClaimed ? 'View Plan Details →' : 'Claim ₹0 Trial →'}
-        </Link>
-      </div>
+          <span>{trialClaimed ? '🟢 Career Pro Active:' : '🎁 Campus Launch Grant:'}</span>
+          <span>
+            {trialClaimed
+              ? 'You are on the 1-Year Free Campus Trial (365 Days Access) · 8-Hour Background IMAP Tracking Enabled'
+              : 'All university students get 1-Year Career Pro Free (Normally ₹499/yr) with 100% scholarship.'}
+          </span>
+          <Link
+            to="/pricing"
+            style={{
+              backgroundColor: '#FFFFFF',
+              color: '#008C6B',
+              padding: '3px 12px',
+              borderRadius: '12px',
+              fontSize: '0.78rem',
+              fontWeight: 800,
+              textDecoration: 'none',
+              marginLeft: '6px',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            {trialClaimed ? 'View Plan Details →' : 'Claim ₹0 Trial →'}
+          </Link>
+
+          {/* Cancel / Dismiss Button */}
+          <button
+            type="button"
+            onClick={handleDismissRibbon}
+            aria-label="Dismiss banner"
+            title="Dismiss announcement"
+            style={{
+              position: 'absolute',
+              right: '12px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              background: 'rgba(255, 255, 255, 0.22)',
+              border: 'none',
+              borderRadius: '50%',
+              width: '26px',
+              height: '26px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              color: '#FFFFFF',
+              padding: 0,
+              transition: 'all 0.2s ease',
+              outline: 'none'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.4)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.22)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+            }}
+          >
+            <FiX size={15} />
+          </button>
+        </div>
+      )}
 
       {/* ═════════════════════════════════════════════════════════════════
           🎉 1-YEAR FREE CAMPUS TRIAL LAUNCH MODAL
