@@ -1208,3 +1208,27 @@ body {
     line-height: 1.3 !important;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   MOBILE SIMPLIFICATION (Ultra-Clean, Fast & Minimalist Mobile View)
+   ══════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Disable distracting floating & pulsing animations on mobile */
+  [style*="floatBadge"],
+  [style*="touchPulse"],
+  [style*="bellRadarPulse"] {
+    animation: none !important;
+  }
+
+  /* Clean, proportionate section padding on mobile */
+  section {
+    padding-top: 32px !important;
+    padding-bottom: 32px !important;
+  }
+
+  /* Clean, crisp card styling on mobile */
+  .card {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+    border: 1px solid #E5E7EB !important;
+  }
+}

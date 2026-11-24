@@ -2159,7 +2159,7 @@ const HomePage = () => {
       {/* ═════════════════════════════════════════════════════════════════
           3. HALO LAB STYLE INTERACTIVE MOBILE PHONE VIDEO CARD
           ═════════════════════════════════════════════════════════════════ */}
-      <section style={{ padding: '80px 0', backgroundColor: '#FFFFFF', borderBottom: '1px solid #E5E7EB' }}>
+      <section className="hide-on-mobile" style={{ padding: '80px 0', backgroundColor: '#FFFFFF', borderBottom: '1px solid #E5E7EB' }}>
         <div className="container" style={{ maxWidth: '1120px', margin: '0 auto', padding: '0 24px' }}>
           <MobilePhoneVideoCard />
         </div>
